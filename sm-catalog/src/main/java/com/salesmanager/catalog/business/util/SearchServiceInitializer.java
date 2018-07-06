@@ -1,12 +1,14 @@
-package com.salesmanager.core.business.utils;
+package com.salesmanager.catalog.business.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextStartedEvent;
 
 import com.salesmanager.catalog.business.service.search.SearchService;
+import org.springframework.stereotype.Component;
 
-public class ApplicationContextListenerUtils implements ApplicationListener<ContextStartedEvent> {
+@Component
+public class SearchServiceInitializer implements ApplicationListener<ContextStartedEvent> {
 
 	@Override
 	public void onApplicationEvent(ContextStartedEvent event) {
@@ -14,7 +16,6 @@ public class ApplicationContextListenerUtils implements ApplicationListener<Cont
 		 /** init search service **/
 		 SearchService searchService = (SearchService)applicationContext.getBean("productSearchService");
 		 searchService.initService();
-		
 	}
 
 }
