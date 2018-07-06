@@ -2,8 +2,8 @@ package com.salesmanager.shop.populator.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ConversionException;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.file.DigitalProduct;
@@ -28,16 +28,14 @@ public class PersistableOrderProductPopulator extends
 	
 	private ProductApi productApi;
 	private DigitalProductApi digitalProductApi;
-	private ProductAttributeService productAttributeService;
+	private ProductAttributeApi productAttributeApi;
 
-
-	public ProductAttributeService getProductAttributeService() {
-		return productAttributeService;
+	public ProductAttributeApi getProductAttributeApi() {
+		return productAttributeApi;
 	}
 
-	public void setProductAttributeService(
-			ProductAttributeService productAttributeService) {
-		this.productAttributeService = productAttributeService;
+	public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
+		this.productAttributeApi = productAttributeApi;
 	}
 
 	public DigitalProductApi getDigitalProductApi() {
@@ -58,7 +56,7 @@ public class PersistableOrderProductPopulator extends
 		
 		Validate.notNull(productApi,"productApi must be set");
 		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
-		Validate.notNull(productAttributeService,"productAttributeService must be set");
+		Validate.notNull(productAttributeApi,"productAttributeApi must be set");
 
 		
 		try {
@@ -118,7 +116,7 @@ public class PersistableOrderProductPopulator extends
 					OrderProductAttribute orderProductAttribute = new OrderProductAttribute();
 					orderProductAttribute.setOrderProduct(target);
 					Long id = attribute.getId();
-					com.salesmanager.catalog.model.product.attribute.ProductAttribute attr = productAttributeService.getById(id);
+					com.salesmanager.catalog.model.product.attribute.ProductAttribute attr = productAttributeApi.getById(id);
 					if(attr==null) {
 						throw new ConversionException("Attribute id " + id + " does not exists");
 					}

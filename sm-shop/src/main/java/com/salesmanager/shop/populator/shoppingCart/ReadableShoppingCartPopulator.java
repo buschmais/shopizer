@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -15,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.salesmanager.common.business.exception.ConversionException;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
@@ -41,7 +41,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 	
 	private ProductPriceApi productPriceApi;
     private ShoppingCartCalculationService shoppingCartCalculationService;
-    private ProductAttributeService productAttributeService;
+    private ProductAttributeApi productAttributeApi;
     
     private CatalogImageFilePathUtils imageUtils;
 
@@ -54,7 +54,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
     	Validate.notNull(language, "Requires Language not null");
     	Validate.notNull(store, "Requires MerchantStore not null");
     	Validate.notNull(productPriceApi, "Requires to set priceApi");
-    	Validate.notNull(productAttributeService, "Requires to set productAttributeService");
+    	Validate.notNull(productAttributeApi, "Requires to set productAttributeApi");
     	Validate.notNull(shoppingCartCalculationService, "Requires to set shoppingCartCalculationService");
     	Validate.notNull(imageUtils, "Requires to set imageUtils");
     	Validate.notNull(customerService, "Requires CustomerService not null");
@@ -105,7 +105,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
                     if(attributes!=null) {
                         for(com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attribute : attributes) {
 
-                        	ProductAttribute productAttribute = productAttributeService.getById(attribute.getProductAttributeId());
+                        	ProductAttribute productAttribute = productAttributeApi.getById(attribute.getProductAttributeId());
                         	
                         	if(productAttribute==null) {
                         		LOGGER.warn("Product attribute with ID " + attribute.getId() + " not found, skipping cart attribute " + attribute.getId());
@@ -243,12 +243,12 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 		this.imageUtils = imageUtils;
 	}
 
-	public ProductAttributeService getProductAttributeService() {
-		return productAttributeService;
+	public ProductAttributeApi getProductAttributeApi() {
+		return productAttributeApi;
 	}
 
-	public void setProductAttributeService(ProductAttributeService productAttributeService) {
-		this.productAttributeService = productAttributeService;
+	public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
+		this.productAttributeApi = productAttributeApi;
 	}
 
 	public CustomerService getCustomerService() {

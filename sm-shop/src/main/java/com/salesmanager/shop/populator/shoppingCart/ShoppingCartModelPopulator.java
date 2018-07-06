@@ -4,8 +4,8 @@
 package com.salesmanager.shop.populator.shoppingCart;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.catalog.model.product.Product;
@@ -54,18 +54,15 @@ public class ShoppingCartModelPopulator
 		this.shoppingCartService = shoppingCartService;
 	}
 
-	private ProductAttributeService productAttributeService;
-    
-   
-    public ProductAttributeService getProductAttributeService() {
-		return productAttributeService;
-	}
+	private ProductAttributeApi productAttributeApi;
 
+    public ProductAttributeApi getProductAttributeApi() {
+        return productAttributeApi;
+    }
 
-	public void setProductAttributeService(
-			ProductAttributeService productAttributeService) {
-		this.productAttributeService = productAttributeService;
-	}
+    public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
+        this.productAttributeApi = productAttributeApi;
+    }
 
     public ProductApi getProductApi() {
         return productApi;
@@ -215,7 +212,7 @@ public class ShoppingCartModelPopulator
                 new HashSet<com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem>();
             for ( ShoppingCartAttribute attribute : cartAttributes )
             {
-                ProductAttribute productAttribute = productAttributeService.getById( attribute.getAttributeId() );
+                ProductAttribute productAttribute = productAttributeApi.getById( attribute.getAttributeId() );
                 if ( productAttribute != null
                     && productAttribute.getProduct().getId().longValue() == product.getId().longValue() )
                 {

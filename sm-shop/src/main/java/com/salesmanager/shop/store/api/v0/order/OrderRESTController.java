@@ -2,7 +2,7 @@ package com.salesmanager.shop.store.api.v0.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
+import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionValueService;
@@ -47,7 +47,7 @@ public class OrderRESTController {
 	private MerchantStoreService merchantStoreService;
 	
 	@Inject
-	private ProductAttributeService productAttributeService;
+	private ProductAttributeApi productAttributeApi;
 	
 	@Inject
 	private DigitalProductApi digitalProductApi;
@@ -133,7 +133,7 @@ public class OrderRESTController {
 		Order modelOrder = new Order();
 		PersistableOrderPopulator populator = new PersistableOrderPopulator();
 		populator.setDigitalProductApi(digitalProductApi);
-		populator.setProductAttributeService(productAttributeService);
+		populator.setProductAttributeApi(productAttributeApi);
 		populator.setProductApi(productApi);
 		
 		populator.populate(order, modelOrder, merchantStore, merchantStore.getDefaultLanguage());

@@ -15,10 +15,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.api.CatalogImageFilePathApi;
-import com.salesmanager.catalog.api.DigitalProductApi;
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.catalog.api.*;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
@@ -34,7 +31,6 @@ import org.springframework.validation.ObjectError;
 
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionValueService;
@@ -120,7 +116,7 @@ public class OrderFacadeImpl implements OrderFacade {
 	private ProductApi productApi;
 
 	@Inject
-	private ProductAttributeService productAttributeService;
+	private ProductAttributeApi productAttributeApi;
 	@Inject
 	private ShoppingCartService shoppingCartService;
 	@Inject
@@ -230,7 +226,7 @@ public class OrderFacadeImpl implements OrderFacade {
 		List<PersistableOrderProduct> orderProducts = order.getOrderProductItems();
 		
 		ShoppingCartItemPopulator populator = new ShoppingCartItemPopulator();
-		populator.setProductAttributeService(productAttributeService);
+		populator.setProductAttributeApi(productAttributeApi);
 		populator.setProductApi(productApi);
 		populator.setShoppingCartService(shoppingCartService);
 		
@@ -369,7 +365,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
-			orderProductPopulator.setProductAttributeService(productAttributeService);
+			orderProductPopulator.setProductAttributeApi(productAttributeApi);
 			orderProductPopulator.setProductApi(productApi);
 			
 			for(ShoppingCartItem item : shoppingCartItems) {
@@ -1128,7 +1124,6 @@ public class OrderFacadeImpl implements OrderFacade {
 		PersistableOrderApiPopulator populator = new PersistableOrderApiPopulator();
 		populator.setCurrencyService(currencyService);
 		populator.setCustomerService(customerService);
-		populator.setProductAttributeService(productAttributeService);
 		populator.setShoppingCartService(shoppingCartService);
 		
 		
@@ -1152,7 +1147,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
-			orderProductPopulator.setProductAttributeService(productAttributeService);
+			orderProductPopulator.setProductAttributeApi(productAttributeApi);
 			orderProductPopulator.setProductApi(productApi);
 			
 			for(ShoppingCartItem item : shoppingCartItems) {

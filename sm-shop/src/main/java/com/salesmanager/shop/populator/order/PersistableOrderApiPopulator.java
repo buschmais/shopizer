@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +34,6 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 	private CurrencyService currencyService;
 	private CustomerService customerService;
 	private ShoppingCartService shoppingCartService;
-	private ProductAttributeService productAttributeService;
 	
 
 
@@ -47,7 +45,6 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 		Validate.notNull(currencyService,"currencyService must be set");
 		Validate.notNull(customerService,"customerService must be set");
 		Validate.notNull(shoppingCartService,"shoppingCartService must be set");
-		Validate.notNull(productAttributeService,"productAttributeService must be set");
 		Validate.notNull(source.getPayment(),"Payment cannot be null");
 		
 		try {
@@ -160,15 +157,5 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 	public void setShoppingCartService(ShoppingCartService shoppingCartService) {
 		this.shoppingCartService = shoppingCartService;
 	}
-
-	public ProductAttributeService getProductAttributeService() {
-		return productAttributeService;
-	}
-
-	public void setProductAttributeService(ProductAttributeService productAttributeService) {
-		this.productAttributeService = productAttributeService;
-	}
-
-
 
 }

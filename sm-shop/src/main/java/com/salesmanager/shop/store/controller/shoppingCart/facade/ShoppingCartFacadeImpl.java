@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
@@ -29,7 +30,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.catalog.model.product.Product;
@@ -77,7 +77,7 @@ public class ShoppingCartFacadeImpl
     private ProductApi productApi;
 
     @Inject
-    private ProductAttributeService productAttributeService;
+    private ProductAttributeApi productAttributeApi;
     
 	@Autowired
 	private CatalogImageFilePathApi imageFilePathApi;
@@ -241,7 +241,7 @@ public class ShoppingCartFacadeImpl
         {
             for ( ShoppingCartAttribute attribute : cartAttributes )
             {
-                ProductAttribute productAttribute = productAttributeService.getById( attribute.getAttributeId() );
+                ProductAttribute productAttribute = productAttributeApi.getById( attribute.getAttributeId() );
                 if ( productAttribute != null
                     && productAttribute.getProduct().getId().longValue() == product.getId().longValue() )
                 {
@@ -312,7 +312,7 @@ public class ShoppingCartFacadeImpl
 		if (!CollectionUtils.isEmpty(attributes)) {
 			for(com.salesmanager.catalog.presentation.model.product.attribute.ProductAttribute attribute : attributes) {
 				
-				ProductAttribute productAttribute = productAttributeService.getById(attribute.getId());
+				ProductAttribute productAttribute = productAttributeApi.getById(attribute.getId());
 				
 				if (productAttribute != null
 						&& productAttribute.getProduct().getId().longValue() == product.getId().longValue()) {
@@ -688,7 +688,7 @@ public class ShoppingCartFacadeImpl
         
         readableShoppingCart.setImageUtils(imageUtils);
         readableShoppingCart.setProductPriceApi(productPriceApi);
-        readableShoppingCart.setProductAttributeService(productAttributeService);
+        readableShoppingCart.setProductAttributeApi(productAttributeApi);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
@@ -755,7 +755,7 @@ public class ShoppingCartFacadeImpl
         
         readableShoppingCart.setImageUtils(imageUtils);
         readableShoppingCart.setProductPriceApi(productPriceApi);
-        readableShoppingCart.setProductAttributeService(productAttributeService);
+        readableShoppingCart.setProductAttributeApi(productAttributeApi);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
   
@@ -788,7 +788,7 @@ public class ShoppingCartFacadeImpl
 	        
 	        readableShoppingCart.setImageUtils(imageUtils);
 	        readableShoppingCart.setProductPriceApi(productPriceApi);
-	        readableShoppingCart.setProductAttributeService(productAttributeService);
+	        readableShoppingCart.setProductAttributeApi(productAttributeApi);
 	        readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
             readableShoppingCart.setCustomerService(customerService);
 	        readableShoppingCart.populate(cart, readableCart,  store, language);

@@ -1,12 +1,12 @@
 package com.salesmanager.core.business.services.shoppingcart;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartAttributeRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartItemRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartRepository;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.common.business.service.SalesManagerEntityServiceImpl;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
@@ -21,6 +21,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +50,8 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 	@Inject
 	private ProductPriceApi productPriceApi;
 
-	@Inject
-	private ProductAttributeService productAttributeService;
-	
+	@Autowired
+	private ProductAttributeApi productAttributeApi;
 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
@@ -517,7 +517,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 						shoppingCartItem.getAttributes());
 				if (CollectionUtils.isNotEmpty(cartAttributes)) {
 					for (ShoppingCartAttributeItem shoppingCartAttributeItem : cartAttributes) {
-						ProductAttribute productAttribute = productAttributeService
+						ProductAttribute productAttribute = productAttributeApi
 								.getById(shoppingCartAttributeItem.getId());
 						if (productAttribute != null
 								&& productAttribute.getProduct().getId().longValue() == product.getId().longValue()) {
