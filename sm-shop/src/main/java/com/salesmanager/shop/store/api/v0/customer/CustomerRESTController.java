@@ -24,7 +24,6 @@ import com.salesmanager.shop.populator.customer.CustomerPopulator;
 import com.salesmanager.shop.populator.customer.PersistableCustomerOptionPopulator;
 import com.salesmanager.shop.populator.customer.PersistableCustomerOptionValuePopulator;
 import com.salesmanager.shop.populator.customer.ReadableCustomerPopulator;
-import com.salesmanager.catalog.presentation.api.v0.category.ShoppingCategoryRESTController;
 import com.salesmanager.shop.utils.EmailTemplatesUtils;
 import com.salesmanager.common.presentation.util.LabelUtils;
 import com.salesmanager.shop.utils.LocaleUtils;
@@ -88,7 +87,7 @@ public class CustomerRESTController {
 
 
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCategoryRESTController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerRESTController.class);
 	
 	
 	/**
