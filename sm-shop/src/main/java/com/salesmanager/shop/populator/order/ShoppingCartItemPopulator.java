@@ -1,10 +1,10 @@
 package com.salesmanager.shop.populator.order;
 
+import com.salesmanager.catalog.api.ProductApi;
 import org.apache.commons.lang3.Validate;
 
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.common.business.exception.ServiceException;
@@ -19,7 +19,7 @@ public class ShoppingCartItemPopulator extends
 		AbstractDataPopulator<PersistableOrderProduct, ShoppingCartItem> {
 	
 
-	private ProductService productService;
+	private ProductApi productApi;
 	private ProductAttributeService productAttributeService;
 	private ShoppingCartService shoppingCartService;
 
@@ -27,11 +27,11 @@ public class ShoppingCartItemPopulator extends
 	public ShoppingCartItem populate(PersistableOrderProduct source,
 			ShoppingCartItem target, MerchantStore store, Language language)
 			throws ConversionException {
-		Validate.notNull(productService, "Requires to set productService");
+		Validate.notNull(productApi, "Requires to set productApi");
 		Validate.notNull(productAttributeService, "Requires to set productAttributeService");
 		Validate.notNull(shoppingCartService, "Requires to set shoppingCartService");
 		
-		Product product = productService.getById(source.getProduct().getId());
+		Product product = productApi.getById(source.getProduct().getId());
 		if(source.getAttributes()!=null) {
 
 			for(com.salesmanager.catalog.presentation.model.product.attribute.ProductAttribute attr : source.getAttributes()) {
@@ -68,12 +68,12 @@ public class ShoppingCartItemPopulator extends
 		return productAttributeService;
 	}
 
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
+	public ProductApi getProductApi() {
+		return productApi;
 	}
 
-	public ProductService getProductService() {
-		return productService;
+	public void setProductApi(ProductApi productApi) {
+		this.productApi = productApi;
 	}
 
 	public void setShoppingCartService(ShoppingCartService shoppingCartService) {

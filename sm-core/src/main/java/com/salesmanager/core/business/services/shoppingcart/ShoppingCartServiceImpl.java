@@ -1,11 +1,11 @@
 package com.salesmanager.core.business.services.shoppingcart;
 
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartAttributeRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartItemRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartRepository;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.common.business.service.SalesManagerEntityServiceImpl;
 import com.salesmanager.catalog.model.product.Product;
@@ -38,7 +38,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 	private ShoppingCartRepository shoppingCartRepository;
 
 	@Inject
-	private ProductService productService;
+	private ProductApi productApi;
 
 	@Inject
 	private ShoppingCartItemRepository shoppingCartItemRepository;
@@ -315,7 +315,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		Product product = null;
 
 		Long productId = item.getProductId();
-		product = productService.getById(productId);
+		product = productApi.getById(productId);
 
 		if (product == null) {
 			item.setObsolete(true);
@@ -499,7 +499,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		if (CollectionUtils.isNotEmpty(sessionCart.getLineItems())) {
 			shoppingCartItemsSet = new HashSet<ShoppingCartItem>();
 			for (ShoppingCartItem shoppingCartItem : sessionCart.getLineItems()) {
-				Product product = productService.getById(shoppingCartItem.getProductId());
+				Product product = productApi.getById(shoppingCartItem.getProductId());
 				if (product == null) {
 					throw new Exception("Item with id " + shoppingCartItem.getProductId() + " does not exist");
 				}

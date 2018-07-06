@@ -13,6 +13,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
@@ -28,7 +29,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
@@ -74,7 +74,7 @@ public class ShoppingCartFacadeImpl
     private ProductPriceApi productPriceApi;
 
     @Inject
-    private ProductService productService;
+    private ProductApi productApi;
 
     @Inject
     private ProductAttributeService productAttributeService;
@@ -188,7 +188,7 @@ public class ShoppingCartFacadeImpl
         throws Exception
     {
 
-        Product product = productService.getById( shoppingCartItem.getProductId() );
+        Product product = productApi.getById( shoppingCartItem.getProductId() );
 
         if ( product == null )
         {
@@ -262,7 +262,7 @@ public class ShoppingCartFacadeImpl
 	private com.salesmanager.core.model.shoppingcart.ShoppingCartItem createCartItem(ShoppingCart cartModel,
 			 PersistableShoppingCartItem shoppingCartItem, MerchantStore store) throws Exception {
 
-		Product product = productService.getById(shoppingCartItem.getProduct());
+		Product product = productApi.getById(shoppingCartItem.getProduct());
 
 		if (product == null) {
 			throw new Exception("Item with id " + shoppingCartItem.getProduct() + " does not exist");

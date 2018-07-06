@@ -1,9 +1,9 @@
 package com.salesmanager.shop.store.controller.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.order.OrderService;
 import com.salesmanager.core.business.services.order.orderproduct.OrderProductDownloadService;
@@ -57,7 +57,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -121,22 +121,19 @@ public class ShoppingOrderController extends AbstractController {
 	
 	@Inject
 	private ProductPriceApi productPriceApi;
-	
-	@Inject
-	private ProductService productService;
-	
+
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
-	@Inject
-    private AuthenticationManager customerAuthenticationManager;
 	
 	@Inject
 	private EmailTemplatesUtils emailTemplatesUtils;
 	
 	@Inject
 	private OrderProductDownloadService orderProdctDownloadService;
-	
+
+	@Autowired
+	private ProductApi productApi;
+
 	@SuppressWarnings("unused")
 	@RequestMapping("/checkout.html")
 	public String displayCheckout(@CookieValue("cart") String cookie, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
@@ -191,7 +188,7 @@ public class ShoppingOrderController extends AbstractController {
         for(com.salesmanager.core.model.shoppingcart.ShoppingCartItem item : items) {
         	
         	Long id = item.getProduct().getId();
-        	Product p = productService.getById(id);
+        	Product p = productApi.getById(id);
         	if(p.isAvailable()) {
         		availables.add(item);
         	} else {

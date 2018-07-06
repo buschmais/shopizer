@@ -3,8 +3,8 @@
  */
 package com.salesmanager.shop.populator.shoppingCart;
 
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
@@ -43,6 +43,8 @@ public class ShoppingCartModelPopulator
     
     private Customer customer;
 
+    private ProductApi productApi;
+
     public ShoppingCartService getShoppingCartService() {
 		return shoppingCartService;
 	}
@@ -51,20 +53,6 @@ public class ShoppingCartModelPopulator
 	public void setShoppingCartService(ShoppingCartService shoppingCartService) {
 		this.shoppingCartService = shoppingCartService;
 	}
-
-
-	private ProductService productService;
-
-
-    public ProductService getProductService() {
-		return productService;
-	}
-
-
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
-	}
-
 
 	private ProductAttributeService productAttributeService;
     
@@ -79,8 +67,15 @@ public class ShoppingCartModelPopulator
 		this.productAttributeService = productAttributeService;
 	}
 
+    public ProductApi getProductApi() {
+        return productApi;
+    }
 
-	@Override
+    public void setProductApi(ProductApi productApi) {
+        this.productApi = productApi;
+    }
+
+    @Override
     public ShoppingCart populate(ShoppingCartData shoppingCart,ShoppingCart cartMdel,final MerchantStore store, Language language)
     {
 
@@ -193,7 +188,7 @@ public class ShoppingCartModelPopulator
         throws Exception
     {
 
-        Product product = productService.getById( shoppingCartItem.getProductId() );
+        Product product = productApi.getById( shoppingCartItem.getProductId());
 
         if ( product == null )
         {

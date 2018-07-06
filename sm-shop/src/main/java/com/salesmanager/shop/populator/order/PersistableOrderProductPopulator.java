@@ -1,8 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.common.business.exception.ConversionException;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.catalog.model.product.Product;
@@ -26,7 +26,7 @@ import java.util.Set;
 public class PersistableOrderProductPopulator extends
 		AbstractDataPopulator<PersistableOrderProduct, OrderProduct> {
 	
-	private ProductService productService;
+	private ProductApi productApi;
 	private DigitalProductApi digitalProductApi;
 	private ProductAttributeService productAttributeService;
 
@@ -56,13 +56,13 @@ public class PersistableOrderProductPopulator extends
 	public OrderProduct populate(PersistableOrderProduct source, OrderProduct target,
 			MerchantStore store, Language language) throws ConversionException {
 		
-		Validate.notNull(productService,"productService must be set");
+		Validate.notNull(productApi,"productApi must be set");
 		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
 		Validate.notNull(productAttributeService,"productAttributeService must be set");
 
 		
 		try {
-			Product modelProduct = productService.getById(source.getProduct().getId());
+			Product modelProduct = productApi.getById(source.getProduct().getId());
 			if(modelProduct==null) {
 				throw new ConversionException("Cannot get product with id (productId) " + source.getProduct().getId());
 			}
@@ -153,14 +153,11 @@ public class PersistableOrderProductPopulator extends
 		return null;
 	}
 
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
+	public ProductApi getProductApi() {
+		return productApi;
 	}
 
-	public ProductService getProductService() {
-		return productService;
+	public void setProductApi(ProductApi productApi) {
+		this.productApi = productApi;
 	}
-	
-
-
 }

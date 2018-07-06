@@ -1,7 +1,7 @@
 package com.salesmanager.shop.store.api.v0.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
-import com.salesmanager.catalog.business.service.product.ProductService;
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
@@ -26,6 +26,7 @@ import com.salesmanager.shop.store.controller.order.facade.OrderFacade;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +45,6 @@ public class OrderRESTController {
 	
 	@Inject
 	private MerchantStoreService merchantStoreService;
-	
-	@Inject
-	private ProductService productService;
 	
 	@Inject
 	private ProductAttributeService productAttributeService;
@@ -80,6 +78,9 @@ public class OrderRESTController {
 	
 	@Inject
 	private GroupService   groupService;
+
+	@Autowired
+	private ProductApi productApi;
 
 	/**
 	 * This method is for adding order to the system. Generally used for the purpose of migration only
@@ -133,7 +134,7 @@ public class OrderRESTController {
 		PersistableOrderPopulator populator = new PersistableOrderPopulator();
 		populator.setDigitalProductApi(digitalProductApi);
 		populator.setProductAttributeService(productAttributeService);
-		populator.setProductService(productService);
+		populator.setProductApi(productApi);
 		
 		populator.populate(order, modelOrder, merchantStore, merchantStore.getDefaultLanguage());
 		

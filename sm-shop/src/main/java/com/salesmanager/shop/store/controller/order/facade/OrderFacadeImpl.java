@@ -34,7 +34,6 @@ import org.springframework.validation.ObjectError;
 
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
@@ -116,8 +115,6 @@ public class OrderFacadeImpl implements OrderFacade {
 
 	@Inject
 	private OrderService orderService;
-	@Inject
-	private ProductService productService;
 
 	@Autowired
 	private ProductApi productApi;
@@ -234,7 +231,7 @@ public class OrderFacadeImpl implements OrderFacade {
 		
 		ShoppingCartItemPopulator populator = new ShoppingCartItemPopulator();
 		populator.setProductAttributeService(productAttributeService);
-		populator.setProductService(productService);
+		populator.setProductApi(productApi);
 		populator.setShoppingCartService(shoppingCartService);
 		
 		List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>();
@@ -373,7 +370,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
 			orderProductPopulator.setProductAttributeService(productAttributeService);
-			orderProductPopulator.setProductService(productService);
+			orderProductPopulator.setProductApi(productApi);
 			
 			for(ShoppingCartItem item : shoppingCartItems) {
 				OrderProduct orderProduct = new OrderProduct();
@@ -1132,7 +1129,6 @@ public class OrderFacadeImpl implements OrderFacade {
 		populator.setCurrencyService(currencyService);
 		populator.setCustomerService(customerService);
 		populator.setProductAttributeService(productAttributeService);
-		populator.setProductService(productService);
 		populator.setShoppingCartService(shoppingCartService);
 		
 		
@@ -1157,7 +1153,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
 			orderProductPopulator.setProductAttributeService(productAttributeService);
-			orderProductPopulator.setProductService(productService);
+			orderProductPopulator.setProductApi(productApi);
 			
 			for(ShoppingCartItem item : shoppingCartItems) {
 				OrderProduct orderProduct = new OrderProduct();

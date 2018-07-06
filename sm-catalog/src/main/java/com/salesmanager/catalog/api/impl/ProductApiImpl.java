@@ -2,13 +2,18 @@ package com.salesmanager.catalog.api.impl;
 
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
+import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.integration.core.service.TaxClassInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
+import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.catalog.model.product.ProductCriteria;
+import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.integration.language.LanguageDTO;
+import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import com.salesmanager.core.integration.tax.TaxClassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,17 +30,25 @@ public class ProductApiImpl implements ProductApi {
 
     private TaxClassInfoService taxClassInfoService;
 
+    private MerchantStoreInfoService merchantStoreInfoService;
+
     @Autowired
-    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, TaxClassInfoService taxClassInfoService) {
+    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, TaxClassInfoService taxClassInfoService, MerchantStoreInfoService merchantStoreInfoService) {
         this.productService = productService;
         this.languageInfoService = languageInfoService;
         this.taxClassInfoService = taxClassInfoService;
+        this.merchantStoreInfoService = merchantStoreInfoService;
     }
 
     @Override
     public Product getByCode(String productCode, LanguageDTO language) {
         LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
         return this.productService.getByCode(productCode, languageInfo);
+    }
+
+    @Override
+    public Product getById(Long id) {
+        return this.productService.getById(id);
     }
 
     @Override
@@ -48,5 +61,12 @@ public class ProductApiImpl implements ProductApi {
     public List<Product> listByTaxClass(TaxClassDTO taxClass) {
         TaxClassInfo taxClassInfo = this.taxClassInfoService.findById(taxClass.getId());
         return this.productService.listByTaxClass(taxClassInfo);
+    }
+
+    @Override
+    public ProductList listByStore(MerchantStoreDTO store, LanguageDTO language, ProductCriteria criteria) {
+        LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
+        MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
+        return this.productService.listByStore(merchantStoreInfo, languageInfo, criteria);
     }
 }

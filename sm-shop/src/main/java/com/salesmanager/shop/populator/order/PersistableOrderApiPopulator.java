@@ -5,12 +5,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 
 import com.salesmanager.common.business.exception.ConversionException;
-import com.salesmanager.catalog.business.service.product.ProductService;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.reference.currency.CurrencyService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
@@ -36,7 +35,6 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 	private CurrencyService currencyService;
 	private CustomerService customerService;
 	private ShoppingCartService shoppingCartService;
-	private ProductService productService;
 	private ProductAttributeService productAttributeService;
 	
 
@@ -49,7 +47,6 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 		Validate.notNull(currencyService,"currencyService must be set");
 		Validate.notNull(customerService,"customerService must be set");
 		Validate.notNull(shoppingCartService,"shoppingCartService must be set");
-		Validate.notNull(productService,"productService must be set");
 		Validate.notNull(productAttributeService,"productAttributeService must be set");
 		Validate.notNull(source.getPayment(),"Payment cannot be null");
 		
@@ -162,14 +159,6 @@ public class PersistableOrderApiPopulator extends AbstractDataPopulator<Persista
 
 	public void setShoppingCartService(ShoppingCartService shoppingCartService) {
 		this.shoppingCartService = shoppingCartService;
-	}
-
-	public ProductService getProductService() {
-		return productService;
-	}
-
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
 	}
 
 	public ProductAttributeService getProductAttributeService() {

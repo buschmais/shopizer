@@ -1,8 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.common.business.exception.ConversionException;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.reference.country.CountryService;
@@ -43,7 +43,7 @@ public class PersistableOrderPopulator extends
 
 
 	private ZoneService zoneService;
-	private ProductService productService;
+	private ProductApi productApi;
 	private DigitalProductApi digitalProductApi;
 	private ProductAttributeService productAttributeService;
 
@@ -52,7 +52,7 @@ public class PersistableOrderPopulator extends
 			MerchantStore store, Language language) throws ConversionException {
 		
 		
-		Validate.notNull(productService,"productService must be set");
+		Validate.notNull(productApi,"productApi must be set");
 		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
 		Validate.notNull(productAttributeService,"productAttributeService must be set");
 		Validate.notNull(customerService,"customerService must be set");
@@ -141,7 +141,7 @@ public class PersistableOrderPopulator extends
 			}
 			com.salesmanager.shop.populator.order.PersistableOrderProductPopulator orderProductPopulator = new PersistableOrderProductPopulator();
 			orderProductPopulator.setProductAttributeService(productAttributeService);
-			orderProductPopulator.setProductService(productService);
+			orderProductPopulator.setProductApi(productApi);
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
 			
 			for(PersistableOrderProduct orderProduct : products) {
@@ -176,12 +176,12 @@ public class PersistableOrderPopulator extends
 		return null;
 	}
 
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
+	public ProductApi getProductApi() {
+		return productApi;
 	}
 
-	public ProductService getProductService() {
-		return productService;
+	public void setProductApi(ProductApi productApi) {
+		this.productApi = productApi;
 	}
 
 	public DigitalProductApi getDigitalProductApi() {
