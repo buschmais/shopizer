@@ -13,7 +13,7 @@ import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 
 public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 	
-	@PersistenceContext
+	@PersistenceContext(unitName = "catalogEntityManagerFactory")
     private EntityManager em;
 	
 	@Override

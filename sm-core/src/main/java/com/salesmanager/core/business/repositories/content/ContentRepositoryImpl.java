@@ -17,7 +17,7 @@ import com.salesmanager.core.model.reference.language.Language;
 public class ContentRepositoryImpl implements ContentRepositoryCustom {
 
 	
-    @PersistenceContext
+    @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
     
 	@Override

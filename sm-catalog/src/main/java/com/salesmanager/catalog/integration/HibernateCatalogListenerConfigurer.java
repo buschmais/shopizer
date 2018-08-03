@@ -13,7 +13,7 @@ import javax.persistence.PersistenceUnit;
 @Component
 public class HibernateCatalogListenerConfigurer {
 
-    @PersistenceUnit(unitName = "shopizerContainer")
+    @PersistenceUnit(unitName = "catalogEntityManagerFactory")
     private EntityManagerFactory entityManagerFactory;
 
     private CatalogCreatedEventListener catalogCreatedEventListener;

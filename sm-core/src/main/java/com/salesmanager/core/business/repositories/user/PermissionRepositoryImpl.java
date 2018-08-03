@@ -16,7 +16,7 @@ import com.salesmanager.core.model.user.PermissionList;
 public class PermissionRepositoryImpl implements PermissionRepositoryCustom {
 
 	
-    @PersistenceContext
+    @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
     
 	@Override

@@ -18,7 +18,7 @@ import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 public class ProductRelationshipRepositoryImpl implements ProductRelationshipRepositoryCustom {
 
 	
-    @PersistenceContext
+    @PersistenceContext(unitName = "catalogEntityManagerFactory")
     private EntityManager em;
     
 	@Override

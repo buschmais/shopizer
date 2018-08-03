@@ -26,7 +26,7 @@ import com.salesmanager.catalog.model.product.attribute.AttributeCriteria;
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 	
-    @PersistenceContext
+    @PersistenceContext(unitName = "catalogEntityManagerFactory")
     private EntityManager em;
     
 	@Override

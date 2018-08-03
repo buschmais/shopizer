@@ -28,7 +28,7 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
 	
 	 private CategoryRepository categoryRepository;
 	
-	 @PersistenceContext(unitName = "shopizerContainer")
+	 @PersistenceContext(unitName = "catalogEntityManagerFactory")
 	 private EntityManager em;
 	  
 	 @Inject

@@ -14,7 +14,7 @@ import com.salesmanager.core.model.merchant.MerchantStore;
 public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
 
 	
-    @PersistenceContext
+    @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")

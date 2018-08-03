@@ -15,7 +15,7 @@ import com.salesmanager.core.model.order.OrderList;
 public class OrderRepositoryImpl implements OrderRepositoryCustom {
 
 	
-    @PersistenceContext
+    @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
