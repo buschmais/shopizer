@@ -1,7 +1,6 @@
 package com.salesmanager.shop.store.controller.order;
 
 import com.salesmanager.core.business.modules.integration.payment.impl.PayPalExpressCheckoutPayment;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionValueService;
@@ -80,9 +79,6 @@ public class ShoppingOrderPaymentController extends AbstractController {
 	
 	@Inject
 	private LabelUtils messages;
-	
-	@Inject
-	private PricingService pricingService;
 	
 	@Inject
 	private CustomerService customerService;

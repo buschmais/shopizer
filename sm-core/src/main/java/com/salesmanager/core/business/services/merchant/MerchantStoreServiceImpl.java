@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
-import com.salesmanager.catalog.business.service.product.manufacturer.ManufacturerService;
-import com.salesmanager.catalog.business.service.product.type.ProductTypeService;
 import com.salesmanager.common.business.service.SalesManagerEntityServiceImpl;
-import com.salesmanager.core.business.services.tax.TaxClassService;
 import com.salesmanager.core.model.merchant.MerchantStore;
 
 @Service("merchantService")
@@ -18,12 +15,6 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	
 
 		
-	@Inject
-	protected ProductTypeService productTypeService;
-	
-	@Inject
-	private TaxClassService taxClassService;
-	
 /*	@Inject
 	private ContentService contentService;
 	
@@ -41,9 +32,6 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	
 	@Inject
 	private CustomerService customerService;*/
-	
-	@Inject
-	private ManufacturerService manufacturerService;
 	
 	private MerchantRepository merchantRepository;
 	

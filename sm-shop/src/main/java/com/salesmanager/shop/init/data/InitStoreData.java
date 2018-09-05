@@ -11,13 +11,8 @@ import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.catalog.business.service.category.CategoryService;
 import com.salesmanager.catalog.business.service.product.ProductService;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
-import com.salesmanager.catalog.business.service.product.attribute.ProductOptionService;
-import com.salesmanager.catalog.business.service.product.attribute.ProductOptionValueService;
-import com.salesmanager.catalog.business.service.product.availability.ProductAvailabilityService;
 import com.salesmanager.catalog.business.service.product.image.ProductImageService;
 import com.salesmanager.catalog.business.service.product.manufacturer.ManufacturerService;
-import com.salesmanager.catalog.business.service.product.price.ProductPriceService;
 import com.salesmanager.catalog.business.service.product.relationship.ProductRelationshipService;
 import com.salesmanager.catalog.business.service.product.type.ProductTypeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -88,21 +83,6 @@ public class InitStoreData implements InitData {
 	@Inject
 	protected ProductService productService;
 
-	
-	@Inject
-	protected ProductPriceService productPriceService;
-	
-	@Inject
-	protected ProductAttributeService productAttributeService;
-	
-	@Inject
-	protected ProductOptionService productOptionService;
-	
-	@Inject
-	protected ProductOptionValueService productOptionValueService;
-	
-	@Inject
-	protected ProductAvailabilityService productAvailabilityService;
 	
 	@Inject
 	protected ProductImageService productImageService;

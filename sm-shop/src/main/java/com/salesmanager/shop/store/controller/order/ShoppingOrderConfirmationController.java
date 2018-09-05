@@ -1,7 +1,5 @@
 package com.salesmanager.shop.store.controller.order;
 
-import com.salesmanager.catalog.business.service.product.PricingService;
-import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.core.business.services.order.OrderService;
 import com.salesmanager.core.business.services.order.orderproduct.OrderProductDownloadService;
 import com.salesmanager.core.business.services.payments.PaymentService;
@@ -67,9 +65,6 @@ public class ShoppingOrderConfirmationController extends AbstractController {
 	private OrderService orderService;
 	
 	@Inject
-	private ProductService productService;
-	
-	@Inject
 	private CountryService countryService;
 	
 	@Inject
@@ -81,9 +76,6 @@ public class ShoppingOrderConfirmationController extends AbstractController {
 	@Inject
 	private LabelUtils messages;
 	
-	@Inject
-	private PricingService pricingService;
-
     @Inject
     private  CustomerFacade customerFacade;
 	

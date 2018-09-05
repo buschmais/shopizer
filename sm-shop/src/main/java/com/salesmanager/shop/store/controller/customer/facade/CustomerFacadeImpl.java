@@ -26,9 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.salesmanager.common.business.exception.ConversionException;
-import com.salesmanager.catalog.business.service.product.PricingService;
-import com.salesmanager.catalog.business.service.product.ProductService;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionValueService;
@@ -100,15 +97,6 @@ public class CustomerFacadeImpl implements CustomerFacade
      @Inject
      private ShoppingCartCalculationService shoppingCartCalculationService;
 
-     @Inject
-     private PricingService pricingService;
-
-     @Inject
-     private ProductService productService;
-
-     @Inject
-     private ProductAttributeService productAttributeService;
-     
      @Inject
      private LanguageService languageService;
 

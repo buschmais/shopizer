@@ -1,7 +1,6 @@
 package com.salesmanager.shop.admin.controller.orders;
 
 import com.salesmanager.core.business.modules.email.Email;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.order.OrderService;
 import com.salesmanager.core.business.services.order.orderproduct.OrderProductDownloadService;
@@ -78,9 +77,6 @@ private static final Logger LOGGER = LoggerFactory.getLogger(OrderControler.clas
 	
 	@Inject
 	CustomerService customerService;
-	
-	@Inject
-	PricingService pricingService;
 	
 	@Inject
 	TransactionService transactionService;

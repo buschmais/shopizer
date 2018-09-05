@@ -1,7 +1,6 @@
 package com.salesmanager.shop.store.controller.shoppingCart;
 
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.common.presentation.model.PageInformation;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -85,9 +84,6 @@ public class ShoppingCartController extends AbstractController {
 
 	@Autowired
 	private ProductApi productApi;
-
-	@Inject
-	private ProductAttributeService productAttributeService;
 
 	@Inject
 	private OrderService orderService;
