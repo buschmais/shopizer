@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
+import com.salesmanager.catalog.init.CatalogInitializer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -154,6 +155,9 @@ public class AbstractSalesManagerCoreTestCase {
 
 	@Autowired
 	protected LanguageInfoService languageInfoService;
+
+	@Autowired
+	private CatalogInitializer catalogInitializer;
 	
 	@Before
 	public void init() throws ServiceException {
@@ -171,7 +175,7 @@ public class AbstractSalesManagerCoreTestCase {
 		
 		
 		initializationDatabase.initCore("TEST");
-		initializationDatabase.initCatalog("TEST");
+		catalogInitializer.initCatalog("TEST");
 		
 
 	}

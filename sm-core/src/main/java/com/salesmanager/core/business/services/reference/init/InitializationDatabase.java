@@ -8,7 +8,4 @@ public interface InitializationDatabase {
 	
 	void initCore(String name) throws ServiceException;
 
-	void initCatalog(String name) throws ServiceException;
-
-
 }

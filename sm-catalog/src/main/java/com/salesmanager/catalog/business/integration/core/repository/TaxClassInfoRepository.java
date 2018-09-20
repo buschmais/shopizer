@@ -15,4 +15,7 @@ public interface TaxClassInfoRepository extends JpaRepository<TaxClassInfo, Long
 
     @Query("SELECT t FROM TaxClassInfo  t JOIN t.merchantStore m WHERE m.id = ?1")
     List<TaxClassInfo> listByStore(Integer id);
+
+    @Query("SELECT t FROM TaxClassInfo  t WHERE t.code = ?1")
+    TaxClassInfo findByCode(String code);
 }

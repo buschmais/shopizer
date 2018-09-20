@@ -9,18 +9,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
-import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
-import com.salesmanager.catalog.model.integration.core.LanguageInfo;
-import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.catalog.business.service.product.manufacturer.ManufacturerService;
-import com.salesmanager.catalog.business.service.product.type.ProductTypeService;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.currency.CurrencyService;
@@ -31,9 +25,6 @@ import com.salesmanager.core.business.services.reference.zone.ZoneService;
 import com.salesmanager.core.business.services.system.ModuleConfigurationService;
 import com.salesmanager.core.business.services.tax.TaxClassService;
 import com.salesmanager.core.constants.SchemaConstant;
-import com.salesmanager.catalog.model.product.manufacturer.Manufacturer;
-import com.salesmanager.catalog.model.product.manufacturer.ManufacturerDescription;
-import com.salesmanager.catalog.model.product.type.ProductType;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.country.CountryDescription;
@@ -65,13 +56,7 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 	
 	@Inject
 	protected MerchantStoreService merchantService;
-
-	@Inject
-	private MerchantStoreInfoService merchantStoreInfoService;
 		
-	@Inject
-	protected ProductTypeService productTypeService;
-	
 	@Inject
 	private TaxClassService taxClassService;
 	
@@ -82,13 +67,7 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 	private IntegrationModulesLoader modulesLoader;
 	
 	@Inject
-	private ManufacturerService manufacturerService;
-	
-	@Inject
 	private ModuleConfigurationService moduleConfigurationService;
-
-	@Inject
-	private LanguageInfoService languageInfoService;
 	
 
 	
@@ -106,16 +85,8 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 		createCountries();
 		createZones();
 		createCurrencies();
-		createSubReferences();
 		createModules();
 		createMerchant();
-	}
-
-	@Transactional
-	public void initCatalog(String contextName) throws ServiceException {
-		this.name = contextName;
-
-		createManufacturer();
 	}
 
 
@@ -262,40 +233,4 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 		
 		
 	}
-	
-	private void createSubReferences() throws ServiceException {
-		
-		LOGGER.info(String.format("%s : Loading catalog sub references ", name));
-		
-
-		
-		ProductType productType = new ProductType();
-		productType.setCode(ProductType.GENERAL_TYPE);
-		productTypeService.create(productType);
-		
-	}
-
-	private void createManufacturer() throws ServiceException {
-		MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(MerchantStore.DEFAULT_STORE);
-		LanguageInfo en = languageInfoService.findbyCode("en");
-		//create default manufacturer
-		Manufacturer defaultManufacturer = new Manufacturer();
-		defaultManufacturer.setCode("DEFAULT");
-		defaultManufacturer.setMerchantStore(storeInfo);
-
-		ManufacturerDescription manufacturerDescription = new ManufacturerDescription();
-		manufacturerDescription.setLanguage(en);
-		manufacturerDescription.setName("DEFAULT");
-		manufacturerDescription.setManufacturer(defaultManufacturer);
-		manufacturerDescription.setDescription("DEFAULT");
-		defaultManufacturer.getDescriptions().add(manufacturerDescription);
-
-		manufacturerService.create(defaultManufacturer);
-	}
-	
-
-	
-
-
-
 }

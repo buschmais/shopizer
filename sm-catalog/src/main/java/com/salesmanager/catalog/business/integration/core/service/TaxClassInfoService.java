@@ -25,4 +25,7 @@ public class TaxClassInfoService {
         return this.taxClassInfoRepository.listByStore(id);
     }
 
+    public TaxClassInfo findByCode(String code) {
+        return this.taxClassInfoRepository.findByCode(code);
+    }
 }
