@@ -21,6 +21,9 @@ import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationshipType;
 import com.salesmanager.catalog.model.product.review.ProductReview;
+import com.salesmanager.common.business.exception.ConversionException;
+import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.common.presentation.util.DateUtil;
 import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
@@ -101,7 +104,37 @@ public class ShopProductController {
 	private Cache catalogCache;
 
 	private static final Logger LOG = LoggerFactory.getLogger(ShopProductController.class);
-	
+
+	@RequestMapping("/featured")
+	public String displayFeaturedItems(Model model, HttpServletRequest request) throws ServiceException, ConversionException {
+
+		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
+		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+
+		ReadableProductPopulator populator = new ReadableProductPopulator();
+		populator.setPricingService(pricingService);
+		populator.setimageUtils(imageUtils);
+
+		//featured items
+		List<ProductRelationship> relationships = productRelationshipService.getByType(store, ProductRelationshipType.FEATURED_ITEM, language);
+		List<ReadableProduct> featuredItems = new ArrayList<ReadableProduct>();
+		Date today = new Date();
+		for(ProductRelationship relationship : relationships) {
+			Product product = relationship.getRelatedProduct();
+			if(product.isAvailable() && DateUtil.dateBeforeEqualsDate(product.getDateAvailable(), today)) {
+				ReadableProduct proxyProduct = populator.populate(product, new ReadableProduct(), store, language);
+				featuredItems.add(proxyProduct);
+			}
+		}
+
+		model.addAttribute("featuredItems", featuredItems);
+
+		StringBuilder template = new StringBuilder().append(ControllerConstants.Tiles.Product.featured).append(".").append(store.getStoreTemplate());
+
+		return template.toString();
+	}
 
 	/**
 	 * Display product details with reference to caller page

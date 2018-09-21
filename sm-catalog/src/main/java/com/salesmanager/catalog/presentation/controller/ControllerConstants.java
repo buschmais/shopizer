@@ -18,6 +18,7 @@ public interface ControllerConstants {
 
         interface Product{
             final static String product="product";
+            final static String featured = "featured";
         }
 
         interface Search{
