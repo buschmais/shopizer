@@ -16,14 +16,12 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import com.salesmanager.catalog.api.*;
-import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -98,7 +96,6 @@ import com.salesmanager.shop.populator.order.transaction.ReadableTransactionPopu
 import com.salesmanager.shop.store.controller.customer.facade.CustomerFacade;
 import com.salesmanager.shop.store.controller.shoppingCart.facade.ShoppingCartFacade;
 import com.salesmanager.shop.utils.EmailTemplatesUtils;
-import com.salesmanager.shop.utils.ImageFilePath;
 import com.salesmanager.common.presentation.util.LabelUtils;
 import com.salesmanager.shop.utils.LocaleUtils;
 
@@ -169,13 +166,6 @@ public class OrderFacadeImpl implements OrderFacade {
 
 	@Inject
 	private LabelUtils messages;
-	
-	@Inject
-	@Qualifier("img")
-	private ImageFilePath imageUtils;
-
-	@Autowired
-	private CatalogImageFilePathUtils catalogImageUtils;
 
 	@Autowired
 	private CatalogImageFilePathApi imageFilePathApi;
@@ -969,7 +959,6 @@ public class OrderFacadeImpl implements OrderFacade {
             orderProductPopulator.setLocale(locale);
             orderProductPopulator.setProductApi(productApi);
             orderProductPopulator.setProductPriceApi(productPriceApi);
-            orderProductPopulator.setimageUtils(catalogImageUtils);
             orderProductPopulator.setImageFilePathApi(imageFilePathApi);
 			orderProductPopulator.setCustomerService(customerService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
@@ -1064,7 +1053,6 @@ public class OrderFacadeImpl implements OrderFacade {
 			ReadableOrderProductPopulator orderProductPopulator = new ReadableOrderProductPopulator();
 			orderProductPopulator.setProductApi(productApi);
 			orderProductPopulator.setProductPriceApi(productPriceApi);
-			orderProductPopulator.setimageUtils(catalogImageUtils);
 			orderProductPopulator.setImageFilePathApi(imageFilePathApi);
 			orderProductPopulator.setCustomerService(customerService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();

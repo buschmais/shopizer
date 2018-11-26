@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.shop.populator.catalog.ReadableProductPopulator;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -43,9 +45,10 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
     private ShoppingCartCalculationService shoppingCartCalculationService;
     private ProductAttributeApi productAttributeApi;
     
-    private CatalogImageFilePathUtils imageUtils;
-
     private CustomerService customerService;
+
+    @Getter  @Setter
+	private CatalogImageFilePathApi imageFilePathApi;
 	
 	@Override
 	public ReadableShoppingCart populate(ShoppingCart source, ReadableShoppingCart target, MerchantStore store,
@@ -56,7 +59,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
     	Validate.notNull(productPriceApi, "Requires to set priceApi");
     	Validate.notNull(productAttributeApi, "Requires to set productAttributeApi");
     	Validate.notNull(shoppingCartCalculationService, "Requires to set shoppingCartCalculationService");
-    	Validate.notNull(imageUtils, "Requires to set imageUtils");
+    	Validate.notNull(imageFilePathApi, "Requires to set imageFilePathApi");
     	Validate.notNull(customerService, "Requires CustomerService not null");
     	
     	if(target == null) {
@@ -80,7 +83,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
                 	ReadableProductPopulator readableProductPopulator = new ReadableProductPopulator();
                 	readableProductPopulator.setProductPriceApi(productPriceApi);
-                	readableProductPopulator.setimageUtils(imageUtils);
+                	readableProductPopulator.setImageFilePathApi(imageFilePathApi);
                 	readableProductPopulator.populate(item.getProduct(), shoppingCartItem,  store, language);
                 	readableProductPopulator.setCustomerService(customerService);
 
@@ -233,14 +236,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
 	public void setShoppingCartCalculationService(ShoppingCartCalculationService shoppingCartCalculationService) {
 		this.shoppingCartCalculationService = shoppingCartCalculationService;
-	}
-
-	public CatalogImageFilePathUtils getImageUtils() {
-		return imageUtils;
-	}
-
-	public void setImageUtils(CatalogImageFilePathUtils imageUtils) {
-		this.imageUtils = imageUtils;
 	}
 
 	public ProductAttributeApi getProductAttributeApi() {

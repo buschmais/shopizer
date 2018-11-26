@@ -31,18 +31,7 @@ public class ReadableOrderProductPopulator extends
 	private ProductApi productApi;
 	private ProductPriceApi productPriceApi;
 	private CatalogImageFilePathApi imageFilePathApi;
-	private CatalogImageFilePathUtils imageUtils;
 	private CustomerService customerService;
-
-
-
-	public CatalogImageFilePathUtils getimageUtils() {
-		return imageUtils;
-	}
-
-	public void setimageUtils(CatalogImageFilePathUtils imageUtils) {
-		this.imageUtils = imageUtils;
-	}
 
 	@Override
 	public ReadableOrderProduct populate(OrderProduct source,
@@ -51,7 +40,7 @@ public class ReadableOrderProductPopulator extends
 		
 		Validate.notNull(productApi,"Requires ProductAPI");
 		Validate.notNull(productPriceApi,"Requires productPriceApi");
-		Validate.notNull(imageUtils,"Requires imageUtils");
+		Validate.notNull(imageFilePathApi,"Requires imageFilePathApi");
 		target.setId(source.getId());
 		target.setOrderedQuantity(source.getProductQuantity());
 		try {
@@ -98,7 +87,6 @@ public class ReadableOrderProductPopulator extends
 				if(product!=null) {
 
 					ReadableProductPopulator populator = new ReadableProductPopulator();
-					populator.setimageUtils(imageUtils);
 					populator.setImageFilePathApi(imageFilePathApi);
 					populator.setProductPriceApi(productPriceApi);
 					populator.setCustomerService(customerService);

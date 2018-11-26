@@ -6,4 +6,6 @@ public interface CatalogImageFilePathApi {
 
     String buildProductImageUtils(MerchantStoreDTO store, String sku, String imageName);
 
+    String getContextPath();
+
 }

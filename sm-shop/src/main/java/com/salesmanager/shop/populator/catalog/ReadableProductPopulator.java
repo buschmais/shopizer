@@ -34,20 +34,10 @@ public class ReadableProductPopulator extends
 		AbstractDataPopulator<Product, ReadableProduct> {
 	
 	private ProductPriceApi productPriceApi;
-	
-	private CatalogImageFilePathUtils imageUtils;
 
 	private CatalogImageFilePathApi imageFilePathApi;
 
 	private CustomerService customerService;
-
-	public CatalogImageFilePathUtils getimageUtils() {
-		return imageUtils;
-	}
-
-	public void setimageUtils(CatalogImageFilePathUtils imageUtils) {
-		this.imageUtils = imageUtils;
-	}
 
 	public CatalogImageFilePathApi getImageFilePathApi() {
 		return imageFilePathApi;
@@ -78,7 +68,6 @@ public class ReadableProductPopulator extends
 			ReadableProduct target, MerchantStore store, Language language)
 			throws ConversionException {
 		Validate.notNull(productPriceApi, "Requires to set ProductPriceApi");
-		Validate.notNull(imageUtils, "Requires to set imageUtils");
 		Validate.notNull(language, "Language cannot be null");
 		
 		try {
@@ -172,7 +161,7 @@ public class ReadableProductPopulator extends
 			if(images!=null && images.size()>0) {
 				List<ReadableImage> imageList = new ArrayList<ReadableImage>();
 				
-				String contextPath = imageUtils.getContextPath();
+				String contextPath = imageFilePathApi.getContextPath();
 				
 				for(ProductImage img : images) {
 					ReadableImage prdImage = new ReadableImage();

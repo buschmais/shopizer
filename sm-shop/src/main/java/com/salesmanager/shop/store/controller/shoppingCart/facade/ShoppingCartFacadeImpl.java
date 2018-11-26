@@ -17,7 +17,6 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
-import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -81,9 +80,6 @@ public class ShoppingCartFacadeImpl
     
 	@Autowired
 	private CatalogImageFilePathApi imageFilePathApi;
-
-	@Autowired
-    private CatalogImageFilePathUtils imageUtils;
 
 	@Autowired
     private CustomerService customerService;
@@ -686,7 +682,7 @@ public class ShoppingCartFacadeImpl
         
         ReadableShoppingCartPopulator readableShoppingCart = new ReadableShoppingCartPopulator();
         
-        readableShoppingCart.setImageUtils(imageUtils);
+        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
         readableShoppingCart.setProductPriceApi(productPriceApi);
         readableShoppingCart.setProductAttributeApi(productAttributeApi);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
@@ -753,7 +749,7 @@ public class ShoppingCartFacadeImpl
         
         ReadableShoppingCartPopulator readableShoppingCart = new ReadableShoppingCartPopulator();
         
-        readableShoppingCart.setImageUtils(imageUtils);
+        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
         readableShoppingCart.setProductPriceApi(productPriceApi);
         readableShoppingCart.setProductAttributeApi(productAttributeApi);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
@@ -786,7 +782,7 @@ public class ShoppingCartFacadeImpl
 			
 	        ReadableShoppingCartPopulator readableShoppingCart = new ReadableShoppingCartPopulator();
 	        
-	        readableShoppingCart.setImageUtils(imageUtils);
+	        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
 	        readableShoppingCart.setProductPriceApi(productPriceApi);
 	        readableShoppingCart.setProductAttributeApi(productAttributeApi);
 	        readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);

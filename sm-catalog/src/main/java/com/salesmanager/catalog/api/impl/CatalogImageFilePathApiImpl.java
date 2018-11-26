@@ -26,4 +26,9 @@ public class CatalogImageFilePathApiImpl implements CatalogImageFilePathApi {
         MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
         return this.catalogImageFilePathUtils.buildProductImageUtils(storeInfo, sku, imageName);
     }
+
+    @Override
+    public String getContextPath() {
+        return catalogImageFilePathUtils.getContextPath();
+    }
 }
