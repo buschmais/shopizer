@@ -2,6 +2,9 @@ package com.salesmanager.core.business.modules.order.total;
 
 import java.math.BigDecimal;
 
+import com.salesmanager.catalog.api.ProductPriceApi;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 import org.drools.KnowledgeBase;
 import org.drools.runtime.StatelessKnowledgeSession;
@@ -9,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.salesmanager.common.business.constants.Constants;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.core.model.customer.Customer;
@@ -19,8 +21,7 @@ import com.salesmanager.core.model.order.OrderTotal;
 import com.salesmanager.core.model.order.OrderTotalType;
 import com.salesmanager.core.model.shoppingcart.ShoppingCartItem;
 import com.salesmanager.core.modules.order.total.OrderTotalPostProcessorModule;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -41,17 +42,9 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 	private KnowledgeBase kbase;//injected from xml file
 	
 
-	PricingService pricingService;
-	
-
-	
-	public PricingService getPricingService() {
-		return pricingService;
-	}
-
-	public void setPricingService(PricingService pricingService) {
-		this.pricingService = pricingService;
-	}
+	@Autowired
+	@Getter @Setter
+	ProductPriceApi productPriceApi;
 
 	@Override
 	public OrderTotal caculateProductPiceVariation(final OrderSummary summary, ShoppingCartItem shoppingCartItem, Product product, Customer customer, MerchantStore store)
@@ -86,7 +79,7 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 				orderTotal.setTitle(Constants.OT_SUBTOTAL_MODULE_CODE);
 				
 				//calculate discount that will be added as a negative value
-				FinalPrice productPrice = pricingService.calculateProductPrice(product);
+				FinalPrice productPrice = productPriceApi.calculateProductPrice(product);
 				
 				Double discount = inputParameters.getDiscount();
 				BigDecimal reduction = productPrice.getFinalPrice().multiply(new BigDecimal(discount));

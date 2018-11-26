@@ -3,7 +3,6 @@ package com.salesmanager.shop.populator.order;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.presentation.model.product.ReadableProduct;
@@ -31,7 +30,6 @@ public class ReadableOrderProductPopulator extends
 	
 	private ProductApi productApi;
 	private ProductPriceApi productPriceApi;
-	private PricingService pricingService;
 	private CatalogImageFilePathApi imageFilePathApi;
 	private CatalogImageFilePathUtils imageUtils;
 	private CustomerService customerService;
@@ -100,7 +98,6 @@ public class ReadableOrderProductPopulator extends
 				if(product!=null) {
 
 					ReadableProductPopulator populator = new ReadableProductPopulator();
-					populator.setPricingService(pricingService);
 					populator.setimageUtils(imageUtils);
 					populator.setImageFilePathApi(imageFilePathApi);
 					populator.setProductPriceApi(productPriceApi);
@@ -143,14 +140,6 @@ public class ReadableOrderProductPopulator extends
 
 	public void setProductPriceApi(ProductPriceApi productPriceApi) {
 		this.productPriceApi = productPriceApi;
-	}
-
-	public PricingService getPricingService() {
-		return pricingService;
-	}
-
-	public void setPricingService(PricingService pricingService) {
-		this.pricingService = pricingService;
 	}
 
 	public CatalogImageFilePathApi getImageFilePathApi() {

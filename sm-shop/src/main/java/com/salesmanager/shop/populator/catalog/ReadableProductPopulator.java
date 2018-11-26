@@ -2,7 +2,6 @@ package com.salesmanager.shop.populator.catalog;
 
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
@@ -34,8 +33,6 @@ import java.util.Set;
 public class ReadableProductPopulator extends
 		AbstractDataPopulator<Product, ReadableProduct> {
 	
-	private PricingService pricingService;
-
 	private ProductPriceApi productPriceApi;
 	
 	private CatalogImageFilePathUtils imageUtils;
@@ -60,14 +57,6 @@ public class ReadableProductPopulator extends
 		this.imageFilePathApi = imageFilePathApi;
 	}
 
-	public PricingService getPricingService() {
-		return pricingService;
-	}
-
-	public void setPricingService(PricingService pricingService) {
-		this.pricingService = pricingService;
-	}
-
 	public ProductPriceApi getProductPriceApi() {
 		return productPriceApi;
 	}
@@ -88,7 +77,7 @@ public class ReadableProductPopulator extends
 	public ReadableProduct populate(Product source,
 			ReadableProduct target, MerchantStore store, Language language)
 			throws ConversionException {
-		Validate.notNull(pricingService, "Requires to set PricingService");
+		Validate.notNull(productPriceApi, "Requires to set ProductPriceApi");
 		Validate.notNull(imageUtils, "Requires to set imageUtils");
 		Validate.notNull(language, "Language cannot be null");
 		
@@ -251,7 +240,7 @@ public class ReadableProductPopulator extends
 	
 			target.setSku(source.getSku());
 	
-			FinalPrice price = pricingService.calculateProductPrice(source);
+			FinalPrice price = productPriceApi.calculateProductPrice(source);
 
 			target.setFinalPrice(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), price.getFinalPrice()));
 			target.setPrice(price.getFinalPrice());

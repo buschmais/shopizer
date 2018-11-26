@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -73,9 +72,6 @@ public class ShoppingCartFacadeImpl
 
     @Inject
     private ProductPriceApi productPriceApi;
-
-    @Inject
-    private PricingService pricingService;
 
     @Inject
     private ProductService productService;
@@ -694,7 +690,6 @@ public class ShoppingCartFacadeImpl
         readableShoppingCart.setProductPriceApi(productPriceApi);
         readableShoppingCart.setProductAttributeService(productAttributeService);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
-        readableShoppingCart.setPricingService(pricingService);
         readableShoppingCart.setCustomerService(customerService);
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
         
@@ -762,7 +757,6 @@ public class ShoppingCartFacadeImpl
         readableShoppingCart.setProductPriceApi(productPriceApi);
         readableShoppingCart.setProductAttributeService(productAttributeService);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
-        readableShoppingCart.setPricingService(pricingService);
         readableShoppingCart.setCustomerService(customerService);
   
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
@@ -796,7 +790,6 @@ public class ShoppingCartFacadeImpl
 	        readableShoppingCart.setProductPriceApi(productPriceApi);
 	        readableShoppingCart.setProductAttributeService(productAttributeService);
 	        readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
-            readableShoppingCart.setPricingService(pricingService);
             readableShoppingCart.setCustomerService(customerService);
 	        readableShoppingCart.populate(cart, readableCart,  store, language);
 			

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.shop.populator.catalog.ReadableProductPopulator;
@@ -41,7 +40,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReadableShoppingCartPopulator.class);
 	
 	private ProductPriceApi productPriceApi;
-	private PricingService pricingService;
     private ShoppingCartCalculationService shoppingCartCalculationService;
     private ProductAttributeService productAttributeService;
     
@@ -81,7 +79,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
                 	ReadableShoppingCartItem shoppingCartItem = new ReadableShoppingCartItem();
 
                 	ReadableProductPopulator readableProductPopulator = new ReadableProductPopulator();
-                	readableProductPopulator.setPricingService(pricingService);
+                	readableProductPopulator.setProductPriceApi(productPriceApi);
                 	readableProductPopulator.setimageUtils(imageUtils);
                 	readableProductPopulator.populate(item.getProduct(), shoppingCartItem,  store, language);
                 	readableProductPopulator.setCustomerService(customerService);
@@ -251,14 +249,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
 	public void setProductAttributeService(ProductAttributeService productAttributeService) {
 		this.productAttributeService = productAttributeService;
-	}
-
-	public PricingService getPricingService() {
-		return pricingService;
-	}
-
-	public void setPricingService(PricingService pricingService) {
-		this.pricingService = pricingService;
 	}
 
 	public CustomerService getCustomerService() {

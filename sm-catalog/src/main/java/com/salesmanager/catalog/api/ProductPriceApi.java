@@ -3,6 +3,7 @@ package com.salesmanager.catalog.api;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 
 import java.math.BigDecimal;
@@ -21,4 +22,5 @@ public interface ProductPriceApi {
 
     FinalPrice getFinalProductPrice(Product product, List<ProductAttribute> attributes);
 
+    FinalPrice calculateProductPrice(Product product) throws ServiceException;
 }

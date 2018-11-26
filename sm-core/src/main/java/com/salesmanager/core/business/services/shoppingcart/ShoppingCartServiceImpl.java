@@ -1,10 +1,10 @@
 package com.salesmanager.core.business.services.shoppingcart;
 
+import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartAttributeRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartItemRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartRepository;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.common.business.service.SalesManagerEntityServiceImpl;
@@ -47,7 +47,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 	private ShoppingCartAttributeRepository shoppingCartAttributeItemRepository;
 	
 	@Inject
-	private PricingService pricingService;
+	private ProductPriceApi productPriceApi;
 
 	@Inject
 	private ProductAttributeService productAttributeService;
@@ -303,7 +303,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		item.setProductVirtual(product.isProductVirtual());
 
 		// set item price
-		FinalPrice price = pricingService.calculateProductPrice(product);
+		FinalPrice price = productPriceApi.calculateProductPrice(product);
 		item.setItemPrice(price.getFinalPrice());
 		return item;
 
@@ -369,7 +369,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		
 
 		// set item price
-		FinalPrice price = pricingService.calculateProductPrice(product, attributesList);
+		FinalPrice price = productPriceApi.getFinalProductPrice(product, attributesList);
 		item.setItemPrice(price.getFinalPrice());
 		item.setFinalPrice(price);
 
@@ -410,7 +410,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		Set<ShoppingCartItem> items = cart.getLineItems();
 		for (ShoppingCartItem item : items) {
 			Product product = item.getProduct();
-			FinalPrice finalPrice = pricingService.calculateProductPrice(product);
+			FinalPrice finalPrice = productPriceApi.calculateProductPrice(product);
 			if (finalPrice.getFinalPrice().longValue() > 0) {
 				return false;
 			}

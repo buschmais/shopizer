@@ -55,7 +55,6 @@
   	<beans:bean id="manufacturerShippingCodeOrderTotalModule" class="com.salesmanager.core.business.modules.order.total.ManufacturerShippingCodeOrderTotalModuleImpl">
 		<beans:property name="orderTotalMethodDecision" ref="manufacturerShippingMethodOrderTotalDecision" />
 		<beans:property name="kbase" ref="manufacturerShippingMethodOrderTotalBase" />
-		<beans:property name="pricingService" ref="pricingService" />
 	</beans:bean>
 
 </beans:beans>

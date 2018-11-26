@@ -19,7 +19,6 @@ import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.business.service.product.PricingService;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
@@ -175,12 +174,6 @@ public class OrderFacadeImpl implements OrderFacade {
 	@Inject
 	private EmailTemplatesUtils emailTemplatesUtils;
 
-	@Inject
-	private PricingService pricingService;
-
-	
-
-	
 	@Inject
 	private LabelUtils messages;
 	
@@ -984,7 +977,6 @@ public class OrderFacadeImpl implements OrderFacade {
             orderProductPopulator.setProductApi(productApi);
             orderProductPopulator.setProductPriceApi(productPriceApi);
             orderProductPopulator.setimageUtils(catalogImageUtils);
-            orderProductPopulator.setPricingService(pricingService);
             orderProductPopulator.setImageFilePathApi(imageFilePathApi);
 			orderProductPopulator.setCustomerService(customerService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
@@ -1080,7 +1072,6 @@ public class OrderFacadeImpl implements OrderFacade {
 			orderProductPopulator.setProductApi(productApi);
 			orderProductPopulator.setProductPriceApi(productPriceApi);
 			orderProductPopulator.setimageUtils(catalogImageUtils);
-			orderProductPopulator.setPricingService(pricingService);
 			orderProductPopulator.setImageFilePathApi(imageFilePathApi);
 			orderProductPopulator.setCustomerService(customerService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
