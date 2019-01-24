@@ -2,14 +2,12 @@ package com.salesmanager.shop.populator.catalog;
 
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.manufacturer.ManufacturerDescription;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
-import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
 import com.salesmanager.shop.model.catalog.product.ReadableImage;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
@@ -20,7 +18,6 @@ import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 
@@ -189,24 +186,6 @@ public class ReadableProductPopulator extends
 				target
 				.setImages(imageList);
 			}
-			
-			if(!CollectionUtils.isEmpty(source.getCategories())) {
-				
-				ReadableCategoryPopulator categoryPopulator = new ReadableCategoryPopulator();
-				List<ReadableCategory> categoryList = new ArrayList<ReadableCategory>();
-				
-				for(Category category : source.getCategories()) {
-					
-					ReadableCategory readableCategory = new ReadableCategory();
-					categoryPopulator.populate(category, readableCategory, store, language);
-					categoryList.add(readableCategory);
-					
-				}
-				
-				target.setCategories(categoryList);
-				
-			}
-			
 
 			
 			//remove products from invisible category -> set visible = false
