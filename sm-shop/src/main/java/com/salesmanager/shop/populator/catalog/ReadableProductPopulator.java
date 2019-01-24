@@ -8,7 +8,6 @@ import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.manufacturer.ManufacturerDescription;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
-import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
 import com.salesmanager.shop.model.catalog.product.ReadableImage;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.common.business.constants.Constants;
@@ -139,18 +138,6 @@ public class ReadableProductPopulator extends
 				tragetDescription.setLanguage(description.getLanguage().getCode());
 				target.setDescription(tragetDescription);
 				
-			}
-			
-			if(source.getManufacturer()!=null) {
-				ManufacturerDescription manufacturer = source.getManufacturer().getDescriptions().iterator().next(); 
-				ReadableManufacturer manufacturerEntity = new ReadableManufacturer();
-				com.salesmanager.shop.model.catalog.manufacturer.ManufacturerDescription d = new com.salesmanager.shop.model.catalog.manufacturer.ManufacturerDescription();
-				d.setName(manufacturer.getName());
-				manufacturerEntity.setDescription(d);
-				manufacturerEntity.setId(source.getManufacturer().getId());
-				manufacturerEntity.setOrder(source.getManufacturer().getOrder());
-				manufacturerEntity.setCode(source.getManufacturer().getCode());
-				target.setManufacturer(manufacturerEntity);
 			}
 			
 			Set<ProductImage> images = source.getImages();

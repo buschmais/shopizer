@@ -1,6 +1,5 @@
 package com.salesmanager.shop.model.catalog.product;
 
-import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,8 +25,6 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	private ReadableImage image;
 	@Getter @Setter
 	private List<ReadableImage> images;
-	@Getter @Setter
-	private ReadableManufacturer manufacturer;
 	@Getter @Setter
 	private boolean canBePurchased = false;
 
