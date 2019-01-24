@@ -9,11 +9,10 @@ import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.manufacturer.ManufacturerDescription;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
-import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
-import com.salesmanager.catalog.presentation.model.manufacturer.ReadableManufacturer;
-import com.salesmanager.catalog.presentation.model.product.ReadableImage;
-import com.salesmanager.catalog.presentation.model.product.ReadableProduct;
-import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
+import com.salesmanager.shop.model.catalog.category.ReadableCategory;
+import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
+import com.salesmanager.shop.model.catalog.product.ReadableImage;
+import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.common.business.constants.Constants;
 import com.salesmanager.common.presentation.util.DateUtil;
 import com.salesmanager.common.business.exception.ConversionException;
@@ -128,7 +127,7 @@ public class ReadableProductPopulator extends
 				target.setRatingCount(source.getProductReviewCount().intValue());
 			}
 			if(description!=null) {
-				com.salesmanager.catalog.presentation.model.product.ProductDescription tragetDescription = new com.salesmanager.catalog.presentation.model.product.ProductDescription();
+				com.salesmanager.shop.model.catalog.product.ProductDescription tragetDescription = new com.salesmanager.shop.model.catalog.product.ProductDescription();
 				tragetDescription.setFriendlyUrl(description.getSeUrl());
 				tragetDescription.setName(description.getName());
 				tragetDescription.setId(description.getId());
@@ -148,7 +147,7 @@ public class ReadableProductPopulator extends
 			if(source.getManufacturer()!=null) {
 				ManufacturerDescription manufacturer = source.getManufacturer().getDescriptions().iterator().next(); 
 				ReadableManufacturer manufacturerEntity = new ReadableManufacturer();
-				com.salesmanager.catalog.presentation.model.manufacturer.ManufacturerDescription d = new com.salesmanager.catalog.presentation.model.manufacturer.ManufacturerDescription();
+				com.salesmanager.shop.model.catalog.manufacturer.ManufacturerDescription d = new com.salesmanager.shop.model.catalog.manufacturer.ManufacturerDescription();
 				d.setName(manufacturer.getName());
 				manufacturerEntity.setDescription(d);
 				manufacturerEntity.setId(source.getManufacturer().getId());

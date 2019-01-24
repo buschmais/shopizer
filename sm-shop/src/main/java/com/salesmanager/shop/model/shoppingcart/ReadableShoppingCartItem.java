@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.salesmanager.catalog.presentation.model.product.ReadableProduct;
+import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 
 /**
  * compatible with v1 version

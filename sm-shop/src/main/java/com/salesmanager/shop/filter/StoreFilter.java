@@ -8,7 +8,7 @@ import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.category.CategoryDescription;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
+import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 import com.salesmanager.common.presentation.model.Breadcrumb;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;

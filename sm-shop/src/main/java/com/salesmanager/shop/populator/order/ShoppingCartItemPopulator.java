@@ -38,7 +38,7 @@ public class ShoppingCartItemPopulator extends
 		Product product = productApi.getById(source.getProduct().getId());
 		if(source.getAttributes()!=null) {
 
-			for(com.salesmanager.catalog.presentation.model.product.attribute.ProductAttribute attr : source.getAttributes()) {
+			for(com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute attr : source.getAttributes()) {
 				ProductAttribute attribute = productAttributeApi.getById(attr.getId());
 				if(attribute==null) {
 					throw new ConversionException("ProductAttribute with id " + attr.getId() + " is null");

@@ -3,7 +3,7 @@ package com.salesmanager.shop.populator.catalog;
 
 import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.category.CategoryDescription;
-import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
+import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -37,7 +37,7 @@ public class ReadableCategoryPopulator extends
 		
 		
 			if(description!=null) {
-				com.salesmanager.catalog.presentation.model.category.CategoryDescription desc = new com.salesmanager.catalog.presentation.model.category.CategoryDescription();
+				com.salesmanager.shop.model.catalog.category.CategoryDescription desc = new com.salesmanager.shop.model.catalog.category.CategoryDescription();
 				desc.setFriendlyUrl(description.getSeUrl());
 				desc.setName(description.getName());
 				desc.setId(source.getId());
@@ -53,7 +53,7 @@ public class ReadableCategoryPopulator extends
 		}
 		
 		if(source.getParent()!=null) {
-			com.salesmanager.catalog.presentation.model.category.Category parent = new com.salesmanager.catalog.presentation.model.category.Category();
+			com.salesmanager.shop.model.catalog.category.Category parent = new com.salesmanager.shop.model.catalog.category.Category();
 			parent.setCode(source.getParent().getCode());
 			parent.setId(source.getParent().getId());
 			target.setParent(parent);
