@@ -1,6 +1,8 @@
 package com.salesmanager.shop.model.catalog.product;
 
 import com.salesmanager.common.presentation.model.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -10,47 +12,17 @@ public class ReadableImage extends Entity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Getter @Setter
 	private String imageName;
+	@Getter @Setter
 	private String imageUrl;
+	@Getter @Setter
 	private String externalUrl;
+	@Getter @Setter
 	private String videoUrl;
+	@Getter @Setter
 	private int imageType;
+	@Getter @Setter
 	private boolean defaultImage;
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
-	}
-	public String getImageName() {
-		return imageName;
-	}
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-	public String getImageUrl() {
-		return imageUrl;
-	}
-	public int getImageType() {
-		return imageType;
-	}
-	public void setImageType(int imageType) {
-		this.imageType = imageType;
-	}
-	public String getExternalUrl() {
-		return externalUrl;
-	}
-	public void setExternalUrl(String externalUrl) {
-		this.externalUrl = externalUrl;
-	}
-	public String getVideoUrl() {
-		return videoUrl;
-	}
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
-	}
-	public boolean isDefaultImage() {
-		return defaultImage;
-	}
-	public void setDefaultImage(boolean defaultImage) {
-		this.defaultImage = defaultImage;
-	}
 
 }

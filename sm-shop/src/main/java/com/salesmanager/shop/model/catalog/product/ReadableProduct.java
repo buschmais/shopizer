@@ -2,7 +2,8 @@ package com.salesmanager.shop.model.catalog.product;
 
 import com.salesmanager.shop.model.catalog.category.ReadableCategory;
 import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
-import com.salesmanager.shop.model.catalog.product.attribute.ReadableProductAttribute;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,77 +15,23 @@ public class ReadableProduct extends ProductEntity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Getter @Setter
 	private ProductDescription description;
+	@Getter @Setter
 	private String finalPrice = "0";
+	@Getter @Setter
 	private String originalPrice = null;
+	@Getter @Setter
 	private boolean discounted = false;
+	@Getter @Setter
 	private ReadableImage image;
+	@Getter @Setter
 	private List<ReadableImage> images;
+	@Getter @Setter
 	private ReadableManufacturer manufacturer;
-	private List<ReadableProductAttribute> attributes;
+	@Getter @Setter
 	private List<ReadableCategory> categories;
+	@Getter @Setter
 	private boolean canBePurchased = false;
-
-	public ProductDescription getDescription() {
-		return description;
-	}
-	public void setDescription(ProductDescription description) {
-		this.description = description;
-	}
-	public String getFinalPrice() {
-		return finalPrice;
-	}
-	public void setFinalPrice(String finalPrice) {
-		this.finalPrice = finalPrice;
-	}
-	public String getOriginalPrice() {
-		return originalPrice;
-	}
-	public void setOriginalPrice(String originalPrice) {
-		this.originalPrice = originalPrice;
-	}
-	public boolean isDiscounted() {
-		return discounted;
-	}
-	public void setDiscounted(boolean discounted) {
-		this.discounted = discounted;
-	}
-
-	public void setImages(List<ReadableImage> images) {
-		this.images = images;
-	}
-	public List<ReadableImage> getImages() {
-		return images;
-	}
-	public void setImage(ReadableImage image) {
-		this.image = image;
-	}
-	public ReadableImage getImage() {
-		return image;
-	}
-	public void setAttributes(List<ReadableProductAttribute> attributes) {
-		this.attributes = attributes;
-	}
-	public List<ReadableProductAttribute> getAttributes() {
-		return attributes;
-	}
-	public void setManufacturer(ReadableManufacturer manufacturer) {
-		this.manufacturer = manufacturer;
-	}
-	public ReadableManufacturer getManufacturer() {
-		return manufacturer;
-	}
-	public boolean isCanBePurchased() {
-		return canBePurchased;
-	}
-	public void setCanBePurchased(boolean canBePurchased) {
-		this.canBePurchased = canBePurchased;
-	}
-	public List<ReadableCategory> getCategories() {
-		return categories;
-	}
-	public void setCategories(List<ReadableCategory> categories) {
-		this.categories = categories;
-	}
 
 }
