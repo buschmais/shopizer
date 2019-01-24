@@ -80,7 +80,7 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
 									LanguageInfo language) {
 		return categoryRepository.findByIds(store.getId(), ids, language.getId());
 	}
-	
+
 	@Override
 	public Category getByLanguage(long categoryId, LanguageInfo language) {
 		return categoryRepository.findById(categoryId, language.getId());

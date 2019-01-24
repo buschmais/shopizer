@@ -105,7 +105,7 @@ public interface CategoryService extends SalesManagerEntityService<Long, Categor
 							 LanguageInfo language);
 
 
-	
-	
+
+
 
 }
