@@ -90,8 +90,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
 
                     shoppingCartItem.setPrice(item.getItemPrice());
-					shoppingCartItem.setFinalPrice(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), item.getItemPrice()));
-			
+
                     shoppingCartItem.setQuantity(item.getQuantity());
                     
                     cartQuantity = cartQuantity + item.getQuantity();
