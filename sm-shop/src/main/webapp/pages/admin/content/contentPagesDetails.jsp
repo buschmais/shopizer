@@ -235,7 +235,7 @@
 	                        <div class="controls">					
 	                        <form:select cssClass="productGrouplist" path="productGroup">
 	                                <form:option value="">&nbsp;</form:option>
-					  				<form:options items="${productGroups}" itemValue="code" itemLabel="code"/>
+					  				<form:options items="${productGroups}"/>
 				       		</form:select>
 	                         <span class="help-inline"><form:errors path="productGroup" cssClass="error" /></span>
 	                  		</div>

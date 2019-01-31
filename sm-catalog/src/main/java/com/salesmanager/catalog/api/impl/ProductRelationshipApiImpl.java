@@ -14,7 +14,9 @@ import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductRelationshipApiImpl implements ProductRelationshipApi {
@@ -34,9 +36,13 @@ public class ProductRelationshipApiImpl implements ProductRelationshipApi {
 
 
     @Override
-    public List<ProductRelationship> getGroups(MerchantStoreDTO store) {
+    public List<String> getGroups(MerchantStoreDTO store) {
         MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
-        return productRelationshipService.getGroups(storeInfo);
+        List<ProductRelationship> groups = productRelationshipService.getGroups(storeInfo);
+        if (groups != null) {
+            return groups.stream().map(ProductRelationship::getCode).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 
     @Override

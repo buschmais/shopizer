@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductRelationshipApi {
 
-    List<ProductRelationship> getGroups(MerchantStoreDTO store);
+    List<String> getGroups(MerchantStoreDTO store);
 
     List<ProductRelationship> getByType(MerchantStoreDTO store,
                                         ProductRelationshipType type, LanguageDTO language)

@@ -81,7 +81,7 @@ public class ContentPagesController {
 			content.getDescriptions().add(description);
 		}
 		
-		List<ProductRelationship> relationships = productRelationshipApi.getGroups(store.toDTO());
+		List<String> relationships = productRelationshipApi.getGroups(store.toDTO());
 		if(!CollectionUtils.isEmpty(relationships)) {
 			model.addAttribute("productGroups", relationships);
 		}
@@ -134,7 +134,7 @@ public class ContentPagesController {
 		content.setDescriptions(descriptions);
 		model.addAttribute("content",content);
 		
-		List<ProductRelationship> relationships = productRelationshipApi.getGroups(store.toDTO());
+		List<String> relationships = productRelationshipApi.getGroups(store.toDTO());
 		if(!CollectionUtils.isEmpty(relationships)) {
 			model.addAttribute("productGroups", relationships);
 		}
@@ -284,7 +284,7 @@ public class ContentPagesController {
 
 		contentService.saveOrUpdate(content);
 		
-		List<ProductRelationship> relationships = productRelationshipApi.getGroups(store.toDTO());
+		List<String> relationships = productRelationshipApi.getGroups(store.toDTO());
 		if(!CollectionUtils.isEmpty(relationships)) {
 			model.addAttribute("productGroups", relationships);
 		}
