@@ -29,4 +29,8 @@ public interface ProductApi {
     DimensionDTO getProductDimension(Long productId);
 
     AvailabilityInformationDTO getProductAvailabilityInformation(Long productId);
+
+    Long getProductTaxClassId(Long productId);
+
+    Integer getProductMerchantStoreId(Long productId);
 }

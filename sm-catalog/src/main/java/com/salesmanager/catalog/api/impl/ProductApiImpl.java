@@ -91,4 +91,16 @@ public class ProductApiImpl implements ProductApi {
                 product != null && product.isProductShipeable(),
                 product != null && product.isProductVirtual());
     }
+
+    @Override
+    public Long getProductTaxClassId(Long productId) {
+        Product product = this.productService.getById(productId);
+        return product != null && product.getTaxClass() != null ? product.getTaxClass().getId() : null;
+    }
+
+    @Override
+    public Integer getProductMerchantStoreId(Long productId) {
+        Product product = this.productService.getById(productId);
+        return product != null && product.getMerchantStore() != null ? product.getMerchantStore().getId() : null;
+    }
 }

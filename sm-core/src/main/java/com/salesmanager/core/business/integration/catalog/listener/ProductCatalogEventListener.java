@@ -60,6 +60,8 @@ public class ProductCatalogEventListener {
         productInfo.setDimension(dimension);
         ProductInfo.AvailabilityInformation availability = this.productInfoService.enrichAvailabilityInfoForProduct(productDTO.getId());
         productInfo.setAvailabilityInformation(availability);
+        productInfo.setTaxClass(this.productInfoService.enrichTaxClassForProduct(productDTO.getId()));
+        productInfo.setMerchantStore(this.productInfoService.enrichMerchantForProduct(productDTO.getId()));
         this.productInfoService.save(productInfo);
     }
 

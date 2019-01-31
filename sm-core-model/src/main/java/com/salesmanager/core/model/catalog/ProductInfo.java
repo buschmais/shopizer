@@ -1,5 +1,7 @@
 package com.salesmanager.core.model.catalog;
 
+import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +27,14 @@ public class ProductInfo {
 
     @Column(name = "MANUFACTURER_CODE")
     private String manufacturerCode;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="TAX_CLASS_ID", nullable=true)
+    private TaxClass taxClass;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="MERCHANT_ID", nullable=false)
+    private MerchantStore merchantStore;
 
     @Embedded
     private Dimension dimension;
