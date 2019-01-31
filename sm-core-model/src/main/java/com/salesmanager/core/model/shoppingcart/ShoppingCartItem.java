@@ -23,8 +23,8 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 
 import com.salesmanager.core.constants.SchemaConstant;
-import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
@@ -77,7 +77,7 @@ public class ShoppingCartItem extends SalesManagerEntity<Long, ShoppingCartItem>
 	
 
 	@Transient
-	private Product product;
+	private ProductInfo product;
 	
 	@Transient
 	private boolean obsolete = false;
@@ -85,7 +85,7 @@ public class ShoppingCartItem extends SalesManagerEntity<Long, ShoppingCartItem>
 
 
 
-	public ShoppingCartItem(ShoppingCart shoppingCart, Product product) {
+	public ShoppingCartItem(ShoppingCart shoppingCart, ProductInfo product) {
 		this.product = product;
 		this.productId = product.getId();
 		this.quantity = 1;
@@ -93,7 +93,7 @@ public class ShoppingCartItem extends SalesManagerEntity<Long, ShoppingCartItem>
 		
 	}
 	
-	public ShoppingCartItem(Product product) {
+	public ShoppingCartItem(ProductInfo product) {
 		this.product = product;
 		this.productId = product.getId();
 		this.quantity = 1;
@@ -176,11 +176,11 @@ public class ShoppingCartItem extends SalesManagerEntity<Long, ShoppingCartItem>
 		return productId;
 	}
 
-	public void setProduct(Product product) {
+	public void setProduct(ProductInfo product) {
 		this.product = product;
 	}
 
-	public Product getProduct() {
+	public ProductInfo getProduct() {
 		return product;
 	}
 	

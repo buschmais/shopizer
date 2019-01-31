@@ -14,7 +14,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 
 import com.salesmanager.core.constants.SchemaConstant;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
@@ -44,7 +44,7 @@ public class ShoppingCartAttributeItem extends SalesManagerEntity<Long, Shopping
 	private Long productAttributeId;
 	
 	@Transient
-	private ProductAttribute productAttribute;
+	private ProductAttributeInfo productAttribute;
 	
 
 	
@@ -52,7 +52,7 @@ public class ShoppingCartAttributeItem extends SalesManagerEntity<Long, Shopping
 	@JoinColumn(name = "SHP_CART_ITEM_ID", nullable = false)
 	private ShoppingCartItem shoppingCartItem;
 	
-	public ShoppingCartAttributeItem(ShoppingCartItem shoppingCartItem, ProductAttribute productAttribute) {
+	public ShoppingCartAttributeItem(ShoppingCartItem shoppingCartItem, ProductAttributeInfo productAttribute) {
 		this.shoppingCartItem = shoppingCartItem;
 		this.productAttribute = productAttribute;
 		this.productAttributeId = productAttribute.getId();
@@ -103,11 +103,11 @@ public class ShoppingCartAttributeItem extends SalesManagerEntity<Long, Shopping
 		return productAttributeId;
 	}
 
-	public void setProductAttribute(ProductAttribute productAttribute) {
+	public void setProductAttribute(ProductAttributeInfo productAttribute) {
 		this.productAttribute = productAttribute;
 	}
 
-	public ProductAttribute getProductAttribute() {
+	public ProductAttributeInfo getProductAttribute() {
 		return productAttribute;
 	}
 
