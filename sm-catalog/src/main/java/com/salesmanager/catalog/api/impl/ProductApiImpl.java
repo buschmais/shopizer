@@ -3,6 +3,7 @@ package com.salesmanager.catalog.api.impl;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
+import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.integration.core.service.TaxClassInfoService;
@@ -13,6 +14,7 @@ import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
+import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
@@ -20,8 +22,10 @@ import com.salesmanager.core.integration.tax.TaxClassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @Component
 public class ProductApiImpl implements ProductApi {
@@ -102,5 +106,21 @@ public class ProductApiImpl implements ProductApi {
     public Integer getProductMerchantStoreId(Long productId) {
         Product product = this.productService.getById(productId);
         return product != null && product.getMerchantStore() != null ? product.getMerchantStore().getId() : null;
+    }
+
+    @Override
+    public Set<ProductAttributeDTO> getProductAttributes(Long productId) {
+        Product product = this.productService.getById(productId);
+        Set<ProductAttributeDTO> attributes = new HashSet<>();
+        if (product != null && product.getAttributes() != null) {
+            for (ProductAttribute productAttribute : product.getAttributes()) {
+                attributes.add(new ProductAttributeDTO(
+                        productAttribute.getId(),
+                        productAttribute.getProductAttributePrice() != null ? productAttribute.getProductAttributePrice().doubleValue() : null,
+                        productAttribute.getProductAttributeIsFree(),
+                        productAttribute.getProductAttributeWeight() != null ? productAttribute.getProductAttributeWeight().doubleValue() : null));
+            }
+        }
+        return attributes;
     }
 }

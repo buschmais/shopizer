@@ -1,7 +1,9 @@
 package com.salesmanager.catalog.integration;
 
 import com.salesmanager.catalog.api.event.product.ProductCreatedEvent;
+import com.salesmanager.catalog.api.event.product.ProductUpdatedEvent;
 import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;
 import org.hibernate.persister.entity.EntityPersister;
@@ -20,6 +22,10 @@ public class CatalogCreatedEventListener implements PostInsertEventListener, App
         if (event.getEntity() instanceof Product) {
             Product product = (Product) event.getEntity();
             applicationEventPublisher.publishEvent(new ProductCreatedEvent(product.toDTO()));
+        } else if (event.getEntity() instanceof ProductAttribute) {
+            // we see the product as an aggregate root and thus publish the change of the product instead of the attribute directly
+            Product product = ((ProductAttribute) event.getEntity()).getProduct();
+            applicationEventPublisher.publishEvent(new ProductUpdatedEvent(product.toDTO()));
         }
     }
 

@@ -62,6 +62,7 @@ public class ProductCatalogEventListener {
         productInfo.setAvailabilityInformation(availability);
         productInfo.setTaxClass(this.productInfoService.enrichTaxClassForProduct(productDTO.getId()));
         productInfo.setMerchantStore(this.productInfoService.enrichMerchantForProduct(productDTO.getId()));
+        productInfo.setAttributes(this.productInfoService.enrichProductAttributesForProduct(productDTO.getId()));
         this.productInfoService.save(productInfo);
     }
 

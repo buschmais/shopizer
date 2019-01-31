@@ -2,6 +2,7 @@ package com.salesmanager.catalog.api;
 
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
+import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
@@ -12,6 +13,7 @@ import com.salesmanager.core.integration.tax.TaxClassDTO;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public interface ProductApi {
 
@@ -33,4 +35,6 @@ public interface ProductApi {
     Long getProductTaxClassId(Long productId);
 
     Integer getProductMerchantStoreId(Long productId);
+
+    Set<ProductAttributeDTO> getProductAttributes(Long productId);
 }

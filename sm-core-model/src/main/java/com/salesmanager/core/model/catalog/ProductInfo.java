@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCT_INFO")
@@ -41,6 +43,9 @@ public class ProductInfo {
 
     @Embedded
     private AvailabilityInformation availabilityInformation;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductAttributeInfo> attributes = new HashSet<>();
 
     public ProductInfo(Long id, String sku, String name, String manufacturerCode) {
         this.id = id;

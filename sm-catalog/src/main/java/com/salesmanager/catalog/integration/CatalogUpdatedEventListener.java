@@ -2,6 +2,7 @@ package com.salesmanager.catalog.integration;
 
 import com.salesmanager.catalog.api.event.product.ProductUpdatedEvent;
 import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import org.hibernate.event.spi.PostUpdateEvent;
 import org.hibernate.event.spi.PostUpdateEventListener;
 import org.hibernate.persister.entity.EntityPersister;
@@ -19,6 +20,10 @@ public class CatalogUpdatedEventListener implements PostUpdateEventListener, App
     public void onPostUpdate(PostUpdateEvent event) {
         if (event.getEntity() instanceof Product) {
             Product product = (Product) event.getEntity();
+            applicationEventPublisher.publishEvent(new ProductUpdatedEvent(product.toDTO()));
+        } else if (event.getEntity() instanceof ProductAttribute) {
+            // we see the product as an aggregate root and thus publish the change of the product instead of the attribute directly
+            Product product = ((ProductAttribute) event.getEntity()).getProduct();
             applicationEventPublisher.publishEvent(new ProductUpdatedEvent(product.toDTO()));
         }
     }
