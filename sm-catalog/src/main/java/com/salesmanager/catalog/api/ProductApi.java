@@ -1,5 +1,6 @@
 package com.salesmanager.catalog.api;
 
+import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
@@ -24,4 +25,5 @@ public interface ProductApi {
     ProductList listByStore(MerchantStoreDTO store, LanguageDTO language,
                             ProductCriteria criteria);
 
+    DimensionDTO getProductDimension(Long productId);
 }

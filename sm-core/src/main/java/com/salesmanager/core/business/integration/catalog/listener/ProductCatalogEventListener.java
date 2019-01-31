@@ -4,6 +4,7 @@ import com.salesmanager.catalog.api.dto.product.ProductDTO;
 import com.salesmanager.common.model.integration.CreatedEvent;
 import com.salesmanager.common.model.integration.DeletedEvent;
 import com.salesmanager.common.model.integration.UpdatedEvent;
+import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,10 @@ public class ProductCatalogEventListener {
 
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductCreateEvent(CreatedEvent<ProductDTO> event) {
+    public void handleProductCreateEvent(CreatedEvent<ProductDTO> event) throws ServiceException {
         ProductDTO productDTO = event.getDto();
         if (productDTO != null) {
-            ProductInfo productInfo = new ProductInfo(
-                    productDTO.getId(),
-                    productDTO.getSku(),
-                    productDTO.getName(),
-                    productDTO.getManufacturerCode());
-            this.productInfoService.save(productInfo);
+            createOrUpdateProductInfo(productDTO);
         }
     }
 
@@ -47,16 +43,22 @@ public class ProductCatalogEventListener {
 
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductUpdateEvent(UpdatedEvent<ProductDTO> event) {
+    public void handleProductUpdateEvent(UpdatedEvent<ProductDTO> event) throws ServiceException {
         ProductDTO productDTO = event.getDto();
         if (productDTO != null) {
-            ProductInfo productInfo = new ProductInfo(
-                    productDTO.getId(),
-                    productDTO.getSku(),
-                    productDTO.getName(),
-                    productDTO.getManufacturerCode());
-            this.productInfoService.save(productInfo);
+            createOrUpdateProductInfo(productDTO);
         }
+    }
+
+    private void createOrUpdateProductInfo(ProductDTO productDTO) throws ServiceException {
+        ProductInfo productInfo = new ProductInfo(
+                productDTO.getId(),
+                productDTO.getSku(),
+                productDTO.getName(),
+                productDTO.getManufacturerCode());
+        ProductInfo.Dimension dimension = this.productInfoService.enrichDimensionsForProduct(productDTO.getId());
+        productInfo.setDimension(dimension);
+        this.productInfoService.save(productInfo);
     }
 
 }

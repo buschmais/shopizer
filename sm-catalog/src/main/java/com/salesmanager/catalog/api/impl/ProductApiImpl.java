@@ -1,6 +1,7 @@
 package com.salesmanager.catalog.api.impl;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.integration.core.service.TaxClassInfoService;
@@ -68,5 +69,16 @@ public class ProductApiImpl implements ProductApi {
         LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
         MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
         return this.productService.listByStore(merchantStoreInfo, languageInfo, criteria);
+    }
+
+    @Override
+    public DimensionDTO getProductDimension(Long productId) {
+        Product product = this.productService.getById(productId);
+        return new DimensionDTO(
+                product != null && product.getProductWidth() != null ? product.getProductWidth().doubleValue() : null,
+                product != null && product.getProductLength() != null ? product.getProductLength().doubleValue() : null,
+                product != null && product.getProductHeight() != null ? product.getProductHeight().doubleValue() : null,
+                product != null && product.getProductWeight() != null ? product.getProductWeight().doubleValue() : null
+        );
     }
 }

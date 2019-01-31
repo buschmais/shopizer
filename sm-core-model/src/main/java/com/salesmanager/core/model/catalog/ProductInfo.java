@@ -2,16 +2,12 @@ package com.salesmanager.core.model.catalog;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "PRODUCT_INFO")
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of="id")
 @Getter
 @Setter
@@ -29,5 +25,28 @@ public class ProductInfo {
 
     @Column(name = "MANUFACTURER_CODE")
     private String manufacturerCode;
+
+    @Embedded
+    private Dimension dimension;
+
+    public ProductInfo(Long id, String sku, String name, String manufacturerCode) {
+        this.id = id;
+        this.sku = sku;
+        this.name = name;
+        this.manufacturerCode = manufacturerCode;
+    }
+
+    @Embeddable
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter @Setter
+    public static class Dimension {
+
+        private Double width;
+        private Double length;
+        private Double height;
+        private Double weight;
+
+    }
 
 }
