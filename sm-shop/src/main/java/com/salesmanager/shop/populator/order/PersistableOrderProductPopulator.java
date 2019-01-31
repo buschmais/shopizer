@@ -69,11 +69,11 @@ public class PersistableOrderProductPopulator extends
 				throw new ConversionException("Invalid product id " + source.getProduct().getId());
 			}
 
-			DigitalProduct digitalProduct = digitalProductApi.getByProduct(store.toDTO(), modelProduct);
-			
-			if(digitalProduct!=null) {
-				OrderProductDownload orderProductDownload = new OrderProductDownload();	
-				orderProductDownload.setOrderProductFilename(digitalProduct.getProductFileName());
+			String digitalProductFileName = digitalProductApi.getFileNameByProduct(store.toDTO(), modelProduct);
+
+			if(digitalProductFileName != null) {
+				OrderProductDownload orderProductDownload = new OrderProductDownload();
+				orderProductDownload.setOrderProductFilename(digitalProductFileName);
 				orderProductDownload.setOrderProduct(target);
 				orderProductDownload.setDownloadCount(0);
 				orderProductDownload.setMaxdays(ApplicationConstants.MAX_DOWNLOAD_DAYS);

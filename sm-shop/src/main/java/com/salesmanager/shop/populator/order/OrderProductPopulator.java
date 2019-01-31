@@ -72,11 +72,11 @@ public class OrderProductPopulator extends
 				throw new ConversionException("Invalid product id " + source.getProductId());
 			}
 
-			DigitalProduct digitalProduct = digitalProductApi.getByProduct(store.toDTO(), modelProduct);
+			String digitalProductFileName = digitalProductApi.getFileNameByProduct(store.toDTO(), modelProduct);
 			
-			if(digitalProduct!=null) {
+			if(digitalProductFileName != null) {
 				OrderProductDownload orderProductDownload = new OrderProductDownload();	
-				orderProductDownload.setOrderProductFilename(digitalProduct.getProductFileName());
+				orderProductDownload.setOrderProductFilename(digitalProductFileName);
 				orderProductDownload.setOrderProduct(target);
 				orderProductDownload.setDownloadCount(0);
 				orderProductDownload.setMaxdays(ApplicationConstants.MAX_DOWNLOAD_DAYS);

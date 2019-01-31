@@ -25,9 +25,10 @@ public class DigitalProductApiImpl implements DigitalProductApi {
     }
 
     @Override
-    public DigitalProduct getByProduct(MerchantStoreDTO store, Product product) throws ServiceException {
+    public String getFileNameByProduct(MerchantStoreDTO store, Product product) throws ServiceException {
         MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
-        return digitalProductService.getByProduct(storeInfo, product);
+        DigitalProduct digitalProduct = digitalProductService.getByProduct(storeInfo, product);
+        return digitalProduct != null ? digitalProduct.getProductFileName() : null;
     }
 
 }
