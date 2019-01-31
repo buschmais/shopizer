@@ -3,6 +3,7 @@ package com.salesmanager.catalog.api;
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
+import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
@@ -40,4 +41,6 @@ public interface ProductApi {
     Set<ProductAttributeDTO> getProductAttributes(Long productId);
 
     boolean isAvailable(Long productId);
+
+    Set<ProductDescriptionDTO> getProductDescriptions(Long productId);
 }

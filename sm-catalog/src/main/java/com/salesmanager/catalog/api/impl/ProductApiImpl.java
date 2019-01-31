@@ -4,6 +4,7 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
+import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
@@ -14,6 +15,7 @@ import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
+import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
@@ -155,5 +157,22 @@ public class ProductApiImpl implements ProductApi {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Set<ProductDescriptionDTO> getProductDescriptions(Long productId) {
+        Product product = this.productService.getById(productId);
+        Set<ProductDescriptionDTO> descriptions= new HashSet<>();
+        if (product != null && product.getDescriptions() != null) {
+            for (ProductDescription productDescription : product.getDescriptions()) {
+                descriptions.add(new ProductDescriptionDTO(
+                        productDescription.getId(),
+                        productDescription.getName(),
+                        productDescription.getSeUrl(),
+                        productDescription.getLanguage() != null ? productDescription.getLanguage().getId().longValue() : null
+                ));
+            }
+        }
+        return descriptions;
     }
 }

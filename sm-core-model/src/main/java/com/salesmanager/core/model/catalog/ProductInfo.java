@@ -47,6 +47,9 @@ public class ProductInfo {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductAttributeInfo> attributes = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductDescriptionInfo> descriptions = new HashSet<>();
+
     public ProductInfo(Long id, String sku, String name, String manufacturerCode) {
         this.id = id;
         this.sku = sku;

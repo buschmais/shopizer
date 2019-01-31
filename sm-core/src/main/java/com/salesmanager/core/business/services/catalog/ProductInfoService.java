@@ -4,15 +4,13 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
+import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductOptionInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductOptionValueInfoRepository;
 import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
 import com.salesmanager.core.business.repositories.tax.TaxClassRepository;
-import com.salesmanager.core.model.catalog.ProductAttributeInfo;
-import com.salesmanager.core.model.catalog.ProductInfo;
-import com.salesmanager.core.model.catalog.ProductOptionInfo;
-import com.salesmanager.core.model.catalog.ProductOptionValueInfo;
+import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,5 +99,16 @@ public class ProductInfoService {
             }
         }
         return productAttributeInfos;
+    }
+
+    public Set<ProductDescriptionInfo> enrichProductDescriptionsForProduct(Long productId) {
+        Set<ProductDescriptionDTO> productDescriptionDTOs = productApi.getProductDescriptions(productId);
+        Set<ProductDescriptionInfo> productDescriptionInfos = new HashSet<>();
+        if (productDescriptionDTOs != null) {
+            for (ProductDescriptionDTO dto : productDescriptionDTOs) {
+                productDescriptionInfos.add(new ProductDescriptionInfo(dto.getId(), dto.getName(), dto.getSeUrl(), dto.getLanguageId()));
+            }
+        }
+        return productDescriptionInfos;
     }
 }
