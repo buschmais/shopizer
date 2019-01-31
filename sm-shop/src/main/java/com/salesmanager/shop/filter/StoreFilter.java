@@ -3,8 +3,6 @@ package com.salesmanager.shop.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salesmanager.catalog.api.CategoryApi;
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.model.category.Category;
-import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.common.presentation.model.Breadcrumb;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;

@@ -3,13 +3,12 @@
  */
 package com.salesmanager.shop.populator.shoppingCart;
 
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -17,6 +16,8 @@ import com.salesmanager.core.model.shoppingcart.ShoppingCart;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartAttribute;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartData;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartItem;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.configuration.ConversionException;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +44,8 @@ public class ShoppingCartModelPopulator
     
     private Customer customer;
 
-    private ProductApi productApi;
+    @Getter @Setter
+    private ProductInfoRepository productInfoRepository;
 
     public ShoppingCartService getShoppingCartService() {
 		return shoppingCartService;
@@ -53,24 +55,6 @@ public class ShoppingCartModelPopulator
 	public void setShoppingCartService(ShoppingCartService shoppingCartService) {
 		this.shoppingCartService = shoppingCartService;
 	}
-
-	private ProductAttributeApi productAttributeApi;
-
-    public ProductAttributeApi getProductAttributeApi() {
-        return productAttributeApi;
-    }
-
-    public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
-        this.productAttributeApi = productAttributeApi;
-    }
-
-    public ProductApi getProductApi() {
-        return productApi;
-    }
-
-    public void setProductApi(ProductApi productApi) {
-        this.productApi = productApi;
-    }
 
     @Override
     public ShoppingCart populate(ShoppingCartData shoppingCart,ShoppingCart cartMdel,final MerchantStore store, Language language)
@@ -158,7 +142,7 @@ public class ShoppingCartModelPopulator
                         cartMdel.getLineItems();
                     if ( lineItems == null )
                     {
-                        lineItems = new HashSet<com.salesmanager.core.model.shoppingcart.ShoppingCartItem>();
+                        lineItems = new HashSet<>();
                         cartMdel.setLineItems( lineItems );
                     }
                     lineItems.add( cartItem );
@@ -185,7 +169,7 @@ public class ShoppingCartModelPopulator
         throws Exception
     {
 
-        Product product = productApi.getById( shoppingCartItem.getProductId());
+        ProductInfo product = productInfoRepository.findOne(shoppingCartItem.getProductId());
 
         if ( product == null )
         {
@@ -212,21 +196,18 @@ public class ShoppingCartModelPopulator
                 new HashSet<com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem>();
             for ( ShoppingCartAttribute attribute : cartAttributes )
             {
-                ProductAttribute productAttribute = productAttributeApi.getById( attribute.getAttributeId() );
-                if ( productAttribute != null
-                    && productAttribute.getProduct().getId().longValue() == product.getId().longValue() )
-                {
-                    com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attributeItem =
-                        new com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem( item,
-                                                                                                         productAttribute );
-                    if ( attribute.getAttributeId() > 0 )
-                    {
-                        attributeItem.setId( attribute.getId() );
+                for (ProductAttributeInfo productAttribute : product.getAttributes()) {
+                    if (attribute.getAttributeId() == productAttribute.getId()) {
+                        com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attributeItem =
+                                new com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem( item,
+                                        productAttribute );
+                        if ( attribute.getAttributeId() > 0 )
+                        {
+                            attributeItem.setId( attribute.getId() );
+                        }
+                        item.addAttributes( attributeItem );
                     }
-                    item.addAttributes( attributeItem );
-                    //newAttributes.add( attributeItem );
                 }
-
             }
             
             //item.setAttributes( newAttributes );

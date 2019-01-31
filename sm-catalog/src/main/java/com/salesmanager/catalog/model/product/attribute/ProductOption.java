@@ -157,6 +157,6 @@ public class ProductOption extends SalesManagerEntity<Long, ProductOption> imple
 				descriptionDTOS.add(description.toDTO());
 			}
 		}
-		return new ProductOptionDTO(id, descriptionDTOS);
+		return new ProductOptionDTO(id, code, descriptionDTOS);
 	}
 }

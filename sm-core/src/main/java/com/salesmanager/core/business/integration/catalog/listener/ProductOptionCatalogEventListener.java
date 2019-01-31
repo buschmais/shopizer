@@ -69,7 +69,7 @@ public class ProductOptionCatalogEventListener {
                 descriptions.add(new ProductOptionDescriptionInfo(productOptionDescriptionDTO.getId(), productOptionDescriptionDTO.getName(), language));
             }
         }
-        return new ProductOptionInfo(productOptionDTO.getId(), descriptions);
+        return new ProductOptionInfo(productOptionDTO.getId(), productOptionDTO.getCode(), descriptions);
     }
 
 }

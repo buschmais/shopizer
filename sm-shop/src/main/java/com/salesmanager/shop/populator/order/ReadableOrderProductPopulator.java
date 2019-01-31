@@ -3,8 +3,10 @@ package com.salesmanager.shop.populator.order;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.image.ProductImage;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
+import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -16,13 +18,14 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.model.order.ReadableOrderProduct;
 import com.salesmanager.shop.model.order.ReadableOrderProductAttribute;
 import com.salesmanager.shop.populator.catalog.ReadableProductPopulator;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ReadableOrderProductPopulator extends
 		AbstractDataPopulator<OrderProduct, ReadableOrderProduct> {
@@ -31,6 +34,12 @@ public class ReadableOrderProductPopulator extends
 	private ProductPriceApi productPriceApi;
 	private CatalogImageFilePathApi imageFilePathApi;
 	private CustomerService customerService;
+
+	@Getter @Setter
+	private ProductInfoService productInfoService;
+
+	@Getter @Setter
+	private LanguageService languageService;
 
 	@Override
 	public ReadableOrderProduct populate(OrderProduct source,
@@ -75,29 +84,19 @@ public class ReadableOrderProductPopulator extends
 
 			String productSku = source.getSku();
 			if(!StringUtils.isBlank(productSku)) {
-				Product product = productApi.getByCode(productSku, language.toDTO());
+				ProductInfo product = productInfoService.getProductForLocale(productSku, language);
 				if(product!=null) {
 
 					ReadableProductPopulator populator = new ReadableProductPopulator();
 					populator.setImageFilePathApi(imageFilePathApi);
 					populator.setProductPriceApi(productPriceApi);
-					populator.setCustomerService(customerService);
+					populator.setLanguageService(languageService);
+					populator.setProductApi(productApi);
 					
 					ReadableProduct productProxy = populator.populate(product, new ReadableProduct(), store, language);
 					target.setProduct(productProxy);
 					
-					Set<ProductImage> images = product.getImages();
-					ProductImage defaultImage = null;
-					if(images!=null) {
-						for(ProductImage image : images) {
-							if(defaultImage==null) {
-								defaultImage = image;
-							}
-							if(image.isDefaultImage()) {
-								defaultImage = image;
-							}
-						}
-					}
+					ProductImage defaultImage = this.productApi.getDefaultImage(product.getId());
 					if(defaultImage!=null) {
 						target.setImage(defaultImage.getProductImage());
 					}

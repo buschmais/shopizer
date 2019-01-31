@@ -13,4 +13,7 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> 
     @Query("SELECT p FROM ProductInfo p WHERE p.taxClass.id = ?1")
     List<ProductInfo> listByTaxClass(Long taxClassId);
 
+    @Query("SELECT p FROM ProductInfo p WHERE p.sku = ?1")
+    ProductInfo findOneBySku(String sku);
+
 }

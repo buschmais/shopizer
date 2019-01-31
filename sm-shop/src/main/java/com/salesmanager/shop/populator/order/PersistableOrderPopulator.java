@@ -1,9 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ConversionException;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.currency.CurrencyService;
@@ -26,6 +25,8 @@ import com.salesmanager.shop.model.order.PersistableOrder;
 import com.salesmanager.shop.model.order.PersistableOrderProduct;
 import com.salesmanager.shop.model.order.total.OrderTotal;
 import com.salesmanager.shop.utils.LocaleUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
@@ -43,18 +44,17 @@ public class PersistableOrderPopulator extends
 
 
 	private ZoneService zoneService;
-	private ProductApi productApi;
 	private DigitalProductApi digitalProductApi;
-	private ProductAttributeApi productAttributeApi;
+
+	@Getter @Setter
+	private ProductInfoRepository productInfoRepository;
 
 	@Override
 	public Order populate(PersistableOrder source, Order target,
 			MerchantStore store, Language language) throws ConversionException {
 		
 		
-		Validate.notNull(productApi,"productApi must be set");
 		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
-		Validate.notNull(productAttributeApi,"productAttributeApi must be set");
 		Validate.notNull(customerService,"customerService must be set");
 		Validate.notNull(countryService,"countryService must be set");
 		Validate.notNull(zoneService,"zoneService must be set");
@@ -140,8 +140,7 @@ public class PersistableOrderPopulator extends
 				throw new ConversionException("Requires at least 1 PersistableOrderProduct");
 			}
 			com.salesmanager.shop.populator.order.PersistableOrderProductPopulator orderProductPopulator = new PersistableOrderProductPopulator();
-			orderProductPopulator.setProductAttributeApi(productAttributeApi);
-			orderProductPopulator.setProductApi(productApi);
+			orderProductPopulator.setProductInfoRepository(productInfoRepository);
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
 			
 			for(PersistableOrderProduct orderProduct : products) {
@@ -176,28 +175,12 @@ public class PersistableOrderPopulator extends
 		return null;
 	}
 
-	public ProductApi getProductApi() {
-		return productApi;
-	}
-
-	public void setProductApi(ProductApi productApi) {
-		this.productApi = productApi;
-	}
-
 	public DigitalProductApi getDigitalProductApi() {
 		return digitalProductApi;
 	}
 
 	public void setDigitalProductApi(DigitalProductApi digitalProductApi) {
 		this.digitalProductApi = digitalProductApi;
-	}
-
-	public ProductAttributeApi getProductAttributeApi() {
-		return productAttributeApi;
-	}
-
-	public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
-		this.productAttributeApi = productAttributeApi;
 	}
 
 	public CustomerService getCustomerService() {

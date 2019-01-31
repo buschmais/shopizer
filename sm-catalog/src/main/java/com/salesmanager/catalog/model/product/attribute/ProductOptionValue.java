@@ -164,6 +164,6 @@ public class ProductOptionValue extends SalesManagerEntity<Long, ProductOptionVa
 				descriptionDTOs.add(description.toDTO());
 			}
 		}
-		return new ProductOptionValueDTO(id, descriptionDTOs);
+		return new ProductOptionValueDTO(id, code, descriptionDTOs);
 	}
 }

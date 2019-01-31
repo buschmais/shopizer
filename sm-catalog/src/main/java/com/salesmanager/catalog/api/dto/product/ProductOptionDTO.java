@@ -16,6 +16,8 @@ public class ProductOptionDTO extends AbstractCatalogDTO {
 
     private Long id;
 
+    private String code;
+
     private List<ProductOptionDescriptionDTO> descriptions;
 
     @NoArgsConstructor

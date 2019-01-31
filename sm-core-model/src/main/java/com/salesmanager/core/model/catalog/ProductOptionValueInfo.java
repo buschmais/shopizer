@@ -19,6 +19,9 @@ public class ProductOptionValueInfo {
     @Column(name="PRODUCT_OPTION_VALUE_ID")
     private Long id;
 
+    @Column(name="PRODUCT_OPTION_VAL_CODE")
+    private String code;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ProductOptionValueDescriptionInfo> descriptions = new HashSet<>();
 

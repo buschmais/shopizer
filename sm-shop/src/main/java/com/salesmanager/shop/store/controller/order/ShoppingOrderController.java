@@ -1,9 +1,9 @@
 package com.salesmanager.shop.store.controller.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.order.OrderService;
 import com.salesmanager.core.business.services.order.orderproduct.OrderProductDownloadService;
@@ -12,7 +12,7 @@ import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.zone.ZoneService;
 import com.salesmanager.core.business.services.shipping.ShippingService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
-import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.common.Billing;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -132,7 +132,7 @@ public class ShoppingOrderController extends AbstractController {
 	private OrderProductDownloadService orderProdctDownloadService;
 
 	@Autowired
-	private ProductApi productApi;
+	private ProductInfoRepository productInfoRepository;
 
 	@SuppressWarnings("unused")
 	@RequestMapping("/checkout.html")
@@ -188,8 +188,8 @@ public class ShoppingOrderController extends AbstractController {
         for(com.salesmanager.core.model.shoppingcart.ShoppingCartItem item : items) {
         	
         	Long id = item.getProduct().getId();
-        	Product p = productApi.getById(id);
-        	if(p.isAvailable()) {
+        	ProductInfo p = productInfoRepository.findOne(id);
+        	if(p.getAvailabilityInformation().getAvailable()) {
         		availables.add(item);
         	} else {
         		allAvailables = false;

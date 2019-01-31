@@ -1,12 +1,11 @@
 package com.salesmanager.shop.store.controller.shoppingCart;
 
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.common.presentation.model.PageInformation;
 import com.salesmanager.common.presentation.util.LabelUtils;
-import com.salesmanager.core.business.services.order.OrderService;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.common.business.ajax.AjaxResponse;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -82,12 +81,6 @@ public class ShoppingCartController extends AbstractController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ShoppingCartController.class);
 
-	@Autowired
-	private ProductApi productApi;
-
-	@Inject
-	private OrderService orderService;
-
 	@Inject
 	private ShoppingCartService shoppingCartService;
 
@@ -99,6 +92,9 @@ public class ShoppingCartController extends AbstractController {
 	
 	@Inject
 	private LanguageUtils languageUtils;
+
+	@Autowired
+	private ProductInfoService productInfoService;
 	
 	
 
@@ -244,13 +240,12 @@ public class ShoppingCartController extends AbstractController {
         List<ShoppingCartItem> items = shoppingCart.getShoppingCartItems();
         for(ShoppingCartItem item : items) {
         	String code = item.getProductCode();
-        	Product p =productApi.getByCode(code, lang.toDTO());
-        	if(!p.isAvailable()) {
-        		unavailables.add(item);
-        	} else {
+        	ProductInfo p = productInfoService.getProductForLocale(code, lang);
+        	if (p != null && p.getAvailabilityInformation().getAvailable()) {
         		availables.add(item);
-        	}
-        	
+			} else {
+        		unavailables.add(item);
+			}
         }
         shoppingCart.setShoppingCartItems(availables);
         shoppingCart.setUnavailables(unavailables);
@@ -297,13 +292,12 @@ public class ShoppingCartController extends AbstractController {
 	        List<ShoppingCartItem> items = cart.getShoppingCartItems();
 	        for(ShoppingCartItem item : items) {
 	        	String code = item.getProductCode();
-	        	Product p =productApi.getByCode(code, lang.toDTO());
-	        	if(!p.isAvailable()) {
-	        		unavailables.add(item);
-	        	} else {
-	        		availables.add(item);
-	        	}
-	        	
+				ProductInfo p = productInfoService.getProductForLocale(code, lang);
+				if (p != null && p.getAvailabilityInformation().getAvailable()) {
+					availables.add(item);
+				} else {
+					unavailables.add(item);
+				}
 	        }
 	        cart.setShoppingCartItems(availables);
 	        cart.setUnavailables(unavailables);

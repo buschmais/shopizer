@@ -113,6 +113,11 @@ public class ProductInfoService {
         return productDescriptionInfos;
     }
 
+    public ProductInfo getProductForLocale(String sku, Language language) {
+        ProductInfo productInfo = this.productInfoRepository.findOneBySku(sku);
+        return productInfo != null ? getProductForLocale(productInfo, language) : null;
+    }
+
     public ProductInfo getProductForLocale(ProductInfo productInfo, Language language) {
         ProductDescriptionInfo productDescription = null;
         for (ProductDescriptionInfo description : productInfo.getDescriptions()) {

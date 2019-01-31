@@ -1,14 +1,12 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -22,28 +20,28 @@ public class ShoppingCartItemPopulator extends
 		AbstractDataPopulator<PersistableOrderProduct, ShoppingCartItem> {
 	
 
-	private ProductApi productApi;
-	@Getter @Setter
-	private ProductAttributeApi productAttributeApi;
 	private ShoppingCartService shoppingCartService;
+
+	@Getter @Setter
+	private ProductInfoRepository productInfoRepository;
 
 	@Override
 	public ShoppingCartItem populate(PersistableOrderProduct source,
 			ShoppingCartItem target, MerchantStore store, Language language)
 			throws ConversionException {
-		Validate.notNull(productApi, "Requires to set productApi");
-		Validate.notNull(productAttributeApi, "Requires to set productAttributeApi");
 		Validate.notNull(shoppingCartService, "Requires to set shoppingCartService");
 		
-		Product product = productApi.getById(source.getProduct().getId());
+		ProductInfo product = productInfoRepository.findOne(source.getProduct().getId());
 		if(source.getAttributes()!=null) {
 
-			for(com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute attr : source.getAttributes()) {
-				ProductAttribute attribute = productAttributeApi.getById(attr.getId());
-				if(attribute==null) {
-					throw new ConversionException("ProductAttribute with id " + attr.getId() + " is null");
+			for(ProductAttributeInfo attr : source.getAttributes()) {
+				ProductAttributeInfo attribute = null;
+				for (ProductAttributeInfo productAttribute : product.getAttributes()) {
+					if (productAttribute.getId().equals(attr.getId())) {
+						attribute = productAttribute;
+					}
 				}
-				if(attribute.getProduct().getId().longValue()!=source.getProduct().getId().longValue()) {
+				if(attribute == null) {
 					throw new ConversionException("ProductAttribute with id " + attr.getId() + " is not assigned to Product id " + source.getProduct().getId());
 				}
 				product.getAttributes().add(attribute);
@@ -62,13 +60,6 @@ public class ShoppingCartItemPopulator extends
 	protected ShoppingCartItem createTarget() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	public ProductApi getProductApi() {
-		return productApi;
-	}
-
-	public void setProductApi(ProductApi productApi) {
-		this.productApi = productApi;
 	}
 
 	public void setShoppingCartService(ShoppingCartService shoppingCartService) {

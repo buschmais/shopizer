@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import com.salesmanager.catalog.api.*;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
@@ -111,9 +112,6 @@ public class OrderFacadeImpl implements OrderFacade {
 
 	@Autowired
 	private ProductApi productApi;
-
-	@Inject
-	private ProductAttributeApi productAttributeApi;
 	@Inject
 	private ShoppingCartService shoppingCartService;
 	@Inject
@@ -170,6 +168,9 @@ public class OrderFacadeImpl implements OrderFacade {
 	@Autowired
 	private CatalogImageFilePathApi imageFilePathApi;
 
+	@Autowired
+	private ProductInfoRepository productInfoRepository;
+
 
 	@Override
 	public ShopOrder initializeOrder(MerchantStore store, Customer customer,
@@ -216,8 +217,7 @@ public class OrderFacadeImpl implements OrderFacade {
 		List<PersistableOrderProduct> orderProducts = order.getOrderProductItems();
 		
 		ShoppingCartItemPopulator populator = new ShoppingCartItemPopulator();
-		populator.setProductAttributeApi(productAttributeApi);
-		populator.setProductApi(productApi);
+		populator.setProductInfoRepository(productInfoRepository);
 		populator.setShoppingCartService(shoppingCartService);
 		
 		List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>();
@@ -355,9 +355,8 @@ public class OrderFacadeImpl implements OrderFacade {
 			
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
-			orderProductPopulator.setProductAttributeApi(productAttributeApi);
-			orderProductPopulator.setProductApi(productApi);
-			
+			orderProductPopulator.setProductInfoRepository(productInfoRepository);
+
 			for(ShoppingCartItem item : shoppingCartItems) {
 				OrderProduct orderProduct = new OrderProduct();
 				orderProduct = orderProductPopulator.populate(item, orderProduct , store, language);
@@ -1135,9 +1134,8 @@ public class OrderFacadeImpl implements OrderFacade {
 			
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
 			orderProductPopulator.setDigitalProductApi(digitalProductApi);
-			orderProductPopulator.setProductAttributeApi(productAttributeApi);
-			orderProductPopulator.setProductApi(productApi);
-			
+			orderProductPopulator.setProductInfoRepository(productInfoRepository);
+
 			for(ShoppingCartItem item : shoppingCartItems) {
 				OrderProduct orderProduct = new OrderProduct();
 				orderProduct = orderProductPopulator.populate(item, orderProduct , store, language);

@@ -4,11 +4,12 @@ import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ConversionException;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.catalog.model.product.price.ProductPrice;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 import com.salesmanager.core.model.order.orderproduct.OrderProductAttribute;
@@ -18,9 +19,12 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem;
 import com.salesmanager.core.model.shoppingcart.ShoppingCartItem;
 import com.salesmanager.shop.constants.ApplicationConstants;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,17 +32,10 @@ import java.util.Set;
 public class OrderProductPopulator extends
 		AbstractDataPopulator<ShoppingCartItem, OrderProduct> {
 	
-	private ProductApi productApi;
 	private DigitalProductApi digitalProductApi;
-	private ProductAttributeApi productAttributeApi;
 
-	public ProductAttributeApi getProductAttributeApi() {
-		return productAttributeApi;
-	}
-
-	public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
-		this.productAttributeApi = productAttributeApi;
-	}
+	@Getter @Setter
+	private ProductInfoRepository productInfoRepository;
 
 	public DigitalProductApi getDigitalProductApi() {
 		return digitalProductApi;
@@ -56,13 +53,10 @@ public class OrderProductPopulator extends
 	public OrderProduct populate(ShoppingCartItem source, OrderProduct target,
 			MerchantStore store, Language language) throws ConversionException {
 		
-		Validate.notNull(productApi,"productApi must be set");
 		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
-		Validate.notNull(productAttributeApi,"productAttributeApi must be set");
 
-		
 		try {
-			Product modelProduct = productApi.getById(source.getProductId());
+			ProductInfo modelProduct = productInfoRepository.findOne(source.getProductId());
 			if(modelProduct==null) {
 				throw new ConversionException("Cannot get product with id (productId) " + source.getProductId());
 			}
@@ -118,20 +112,21 @@ public class OrderProductPopulator extends
 					OrderProductAttribute orderProductAttribute = new OrderProductAttribute();
 					orderProductAttribute.setOrderProduct(target);
 					Long id = attribute.getProductAttributeId();
-					ProductAttribute attr = productAttributeApi.getById(id);
+					ProductAttributeInfo attr = null;
+					for (ProductAttributeInfo productAttribute : modelProduct.getAttributes()) {
+						if (productAttribute.getId().equals(id)) {
+							attr = productAttribute;
+						}
+					}
 					if(attr==null) {
 						throw new ConversionException("Attribute id " + id + " does not exists");
 					}
 					
-					if(attr.getProduct().getMerchantStore().getId().intValue()!=store.getId().intValue()) {
-						throw new ConversionException("Attribute id " + id + " invalid for this store");
-					}
-					
-					orderProductAttribute.setProductAttributeIsFree(attr.getProductAttributeIsFree());
-					orderProductAttribute.setProductAttributeName(attr.getProductOption().getDescriptionsSettoList().get(0).getName());
-					orderProductAttribute.setProductAttributeValueName(attr.getProductOptionValue().getDescriptionsSettoList().get(0).getName());
-					orderProductAttribute.setProductAttributePrice(attr.getProductAttributePrice());
-					orderProductAttribute.setProductAttributeWeight(attr.getProductAttributeWeight());
+					orderProductAttribute.setProductAttributeIsFree(attr.getFree());
+					orderProductAttribute.setProductAttributeName(attr.getProductOption().getDescriptions().iterator().next().getName());
+					orderProductAttribute.setProductAttributeValueName(attr.getProductOptionValue().getDescriptions().iterator().next().getName());
+					orderProductAttribute.setProductAttributePrice(BigDecimal.valueOf(attr.getPrice()));
+					orderProductAttribute.setProductAttributeWeight(BigDecimal.valueOf(attr.getWeight()));
 					orderProductAttribute.setProductOptionId(attr.getProductOption().getId());
 					orderProductAttribute.setProductOptionValueId(attr.getProductOptionValue().getId());
 					attributes.add(orderProductAttribute);
@@ -151,14 +146,6 @@ public class OrderProductPopulator extends
 	@Override
 	protected OrderProduct createTarget() {
 		return null;
-	}
-
-	public ProductApi getProductApi() {
-		return productApi;
-	}
-
-	public void setProductApi(ProductApi productApi) {
-		this.productApi = productApi;
 	}
 
 	private OrderProductPrice orderProductPrice(FinalPrice price) {

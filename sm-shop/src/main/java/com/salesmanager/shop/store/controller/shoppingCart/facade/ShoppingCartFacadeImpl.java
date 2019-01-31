@@ -14,10 +14,14 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
+import com.salesmanager.core.business.repositories.catalog.ProductAttributeInfoRepository;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.customer.CustomerService;
+import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -31,8 +35,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -72,15 +74,21 @@ public class ShoppingCartFacadeImpl
 
     @Inject
     private ProductApi productApi;
-
-    @Inject
-    private ProductAttributeApi productAttributeApi;
     
 	@Autowired
 	private CatalogImageFilePathApi imageFilePathApi;
 
 	@Autowired
     private CustomerService customerService;
+
+	@Autowired
+    private ProductInfoRepository productInfoRepository;
+
+	@Autowired
+    private LanguageService languageService;
+
+	@Autowired
+    private ProductAttributeInfoRepository productAttributeInfoRepository;
 
     public void deleteShoppingCart(final Long id, final MerchantStore store) throws Exception {
     	ShoppingCart cart = shoppingCartService.getById(id, store);
@@ -182,7 +190,7 @@ public class ShoppingCartFacadeImpl
         throws Exception
     {
 
-        Product product = productApi.getById( shoppingCartItem.getProductId() );
+        ProductInfo product = productInfoRepository.findOne(shoppingCartItem.getProductId());
 
         if ( product == null )
         {
@@ -211,15 +219,14 @@ public class ShoppingCartFacadeImpl
         {
             for ( ShoppingCartAttribute attribute : cartAttributes )
             {
-                ProductAttribute productAttribute = productAttributeApi.getById( attribute.getAttributeId() );
-                if ( productAttribute != null
-                    && productAttribute.getProduct().getId().longValue() == product.getId().longValue() )
-                {
-                    com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attributeItem =
-                        new com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem( item,
-                                                                                                         productAttribute );
+                for (ProductAttributeInfo productAttribute : product.getAttributes()) {
+                    if (productAttribute.getId() == attribute.getAttributeId()) {
+                        com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attributeItem =
+                                new com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem( item,
+                                        productAttribute );
 
-                    item.addAttributes( attributeItem );
+                        item.addAttributes( attributeItem );
+                    }
                 }
             }
         }
@@ -232,7 +239,7 @@ public class ShoppingCartFacadeImpl
 	private com.salesmanager.core.model.shoppingcart.ShoppingCartItem createCartItem(ShoppingCart cartModel,
 			 PersistableShoppingCartItem shoppingCartItem, MerchantStore store) throws Exception {
 
-		Product product = productApi.getById(shoppingCartItem.getProduct());
+		ProductInfo product = productInfoRepository.findOne(shoppingCartItem.getProduct());
 
 		if (product == null) {
 			throw new Exception("Item with id " + shoppingCartItem.getProduct() + " does not exist");
@@ -257,17 +264,15 @@ public class ShoppingCartFacadeImpl
 		List<com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute> attributes = shoppingCartItem.getAttributes();
 		if (!CollectionUtils.isEmpty(attributes)) {
 			for(com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute attribute : attributes) {
-				
-				ProductAttribute productAttribute = productAttributeApi.getById(attribute.getId());
-				
-				if (productAttribute != null
-						&& productAttribute.getProduct().getId().longValue() == product.getId().longValue()) {
-					
-					com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attributeItem = new com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem(
-							item, productAttribute);
+                for (ProductAttributeInfo productAttribute : product.getAttributes()) {
+                    if (productAttribute.getId().equals(attribute.getId())) {
+                        com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attributeItem = new com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem(
+                                item, productAttribute);
 
-					item.addAttributes(attributeItem);
-				}				
+                        item.addAttributes(attributeItem);
+                    }
+                }
+
 			}
 		}
 
@@ -480,10 +485,10 @@ public class ShoppingCartFacadeImpl
 
                 LOG.info( "Updating cart entry quantity to" + newQuantity );
                 entryToUpdate.setQuantity( (int) newQuantity );
-                List<ProductAttribute> productAttributes = new ArrayList<ProductAttribute>();
+                List<ProductAttributeInfo> productAttributes = new ArrayList<>();
                 productAttributes.addAll( entryToUpdate.getProduct().getAttributes() );
                 final FinalPrice finalPrice =
-                    productPriceApi.getFinalProductPrice( entryToUpdate.getProduct().getId(), productAttributes.stream().map(ProductAttribute::getId).collect(Collectors.toList()));
+                    productPriceApi.getFinalProductPrice( entryToUpdate.getProduct().getId(), productAttributes.stream().map(ProductAttributeInfo::getId).collect(Collectors.toList()));
                 entryToUpdate.setItemPrice( finalPrice.getFinalPrice() );
                 shoppingCartService.saveOrUpdate( cartModel );
 
@@ -529,11 +534,11 @@ public class ShoppingCartFacadeImpl
                 LOG.info( "Updating cart entry quantity to" + item.getQuantity() );
                 entryToUpdate.setQuantity( (int) item.getQuantity() );
                 
-                List<ProductAttribute> productAttributes = new ArrayList<ProductAttribute>();
+                List<ProductAttributeInfo> productAttributes = new ArrayList<>();
                 productAttributes.addAll( entryToUpdate.getProduct().getAttributes() );
                 
                 final FinalPrice finalPrice =
-                        productPriceApi.getFinalProductPrice( entryToUpdate.getProduct().getId(), productAttributes.stream().map(ProductAttribute::getId).collect(Collectors.toList()));
+                        productPriceApi.getFinalProductPrice( entryToUpdate.getProduct().getId(), productAttributes.stream().map(ProductAttributeInfo::getId).collect(Collectors.toList()));
                 entryToUpdate.setItemPrice( finalPrice.getFinalPrice() );
                     
 
@@ -634,9 +639,11 @@ public class ShoppingCartFacadeImpl
         
         readableShoppingCart.setImageFilePathApi(imageFilePathApi);
         readableShoppingCart.setProductPriceApi(productPriceApi);
-        readableShoppingCart.setProductAttributeApi(productAttributeApi);
+        readableShoppingCart.setProductAttributeInfoRepository(productAttributeInfoRepository);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
+        readableShoppingCart.setLanguageService(languageService);
+        readableShoppingCart.setProductApi(productApi);
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
         
         readableShoppingCart.populate(cartModel, readableCart,  store, language);
@@ -701,9 +708,11 @@ public class ShoppingCartFacadeImpl
         
         readableShoppingCart.setImageFilePathApi(imageFilePathApi);
         readableShoppingCart.setProductPriceApi(productPriceApi);
-        readableShoppingCart.setProductAttributeApi(productAttributeApi);
+        readableShoppingCart.setProductAttributeInfoRepository(productAttributeInfoRepository);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
+        readableShoppingCart.setLanguageService(languageService);
+        readableShoppingCart.setProductApi(productApi);
   
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
         
@@ -734,9 +743,12 @@ public class ShoppingCartFacadeImpl
 	        
 	        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
 	        readableShoppingCart.setProductPriceApi(productPriceApi);
-	        readableShoppingCart.setProductAttributeApi(productAttributeApi);
-	        readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
+            readableShoppingCart.setProductAttributeInfoRepository(productAttributeInfoRepository);
+            readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
             readableShoppingCart.setCustomerService(customerService);
+            readableShoppingCart.setLanguageService(languageService);
+            readableShoppingCart.setProductApi(productApi);
+
 	        readableShoppingCart.populate(cart, readableCart,  store, language);
 			
 			

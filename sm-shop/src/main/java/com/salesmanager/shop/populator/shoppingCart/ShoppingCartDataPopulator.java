@@ -7,10 +7,10 @@ import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
-import com.salesmanager.catalog.model.product.attribute.ProductOptionDescription;
-import com.salesmanager.catalog.model.product.attribute.ProductOptionValueDescription;
-import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
+import com.salesmanager.core.model.catalog.ProductDescriptionInfo;
+import com.salesmanager.core.model.catalog.ProductOptionDescriptionInfo;
+import com.salesmanager.core.model.catalog.ProductOptionValueDescriptionInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderSummary;
 import com.salesmanager.core.model.order.OrderTotalSummary;
@@ -102,8 +102,8 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
                     
                     String itemName = item.getProduct().getProductDescription().getName();
                     if(!CollectionUtils.isEmpty(item.getProduct().getDescriptions())) {
-                    	for(ProductDescription productDescription : item.getProduct().getDescriptions()) {
-                    		if(language != null && language.getId().intValue() == productDescription.getLanguage().getId().intValue()) {
+                    	for(ProductDescriptionInfo productDescription : item.getProduct().getDescriptions()) {
+                    		if(language != null && language.getId().intValue() == productDescription.getLanguageId()) {
                     			itemName = productDescription.getName();
                     			break;
                     		}
@@ -134,21 +134,21 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
                             cartAttribute.setAttributeId(attribute.getProductAttributeId());
                             cartAttribute.setOptionId(attribute.getProductAttribute().getProductOption().getId());
                             cartAttribute.setOptionValueId(attribute.getProductAttribute().getProductOptionValue().getId());
-                            List<ProductOptionDescription> optionDescriptions = attribute.getProductAttribute().getProductOption().getDescriptionsSettoList();
-                            List<ProductOptionValueDescription> optionValueDescriptions = attribute.getProductAttribute().getProductOptionValue().getDescriptionsSettoList();
+                            Set<ProductOptionDescriptionInfo> optionDescriptions = attribute.getProductAttribute().getProductOption().getDescriptions();
+                            Set<ProductOptionValueDescriptionInfo> optionValueDescriptions = attribute.getProductAttribute().getProductOptionValue().getDescriptions();
                             if(!CollectionUtils.isEmpty(optionDescriptions) && !CollectionUtils.isEmpty(optionValueDescriptions)) {
                             	
-                            	String optionName = optionDescriptions.get(0).getName();
-                            	String optionValue = optionValueDescriptions.get(0).getName();
+                            	String optionName = optionDescriptions.iterator().next().getName();
+                            	String optionValue = optionValueDescriptions.iterator().next().getName();
                             	
-                            	for(ProductOptionDescription optionDescription : optionDescriptions) {
+                            	for(ProductOptionDescriptionInfo optionDescription : optionDescriptions) {
                             		if(optionDescription.getLanguage() != null && optionDescription.getLanguage().getId().intValue() == language.getId().intValue()) {
                             			optionName = optionDescription.getName();
                             			break;
                             		}
                             	}
                             	
-                            	for(ProductOptionValueDescription optionValueDescription : optionValueDescriptions) {
+                            	for(ProductOptionValueDescriptionInfo optionValueDescription : optionValueDescriptions) {
                             		if(optionValueDescription.getLanguage() != null && optionValueDescription.getLanguage().getId().intValue() == language.getId().intValue()) {
                             			optionValue = optionValueDescription.getName();
                             			break;

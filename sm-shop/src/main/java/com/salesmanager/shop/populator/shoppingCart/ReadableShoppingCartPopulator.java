@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.salesmanager.catalog.api.CatalogImageFilePathApi;
+import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.repositories.catalog.ProductAttributeInfoRepository;
 import com.salesmanager.core.business.services.customer.CustomerService;
+import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.shop.populator.catalog.ReadableProductPopulator;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +24,6 @@ import org.slf4j.LoggerFactory;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
-import com.salesmanager.catalog.model.product.attribute.ProductOption;
-import com.salesmanager.catalog.model.product.attribute.ProductOptionDescription;
-import com.salesmanager.catalog.model.product.attribute.ProductOptionValue;
-import com.salesmanager.catalog.model.product.attribute.ProductOptionValueDescription;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderSummary;
 import com.salesmanager.core.model.order.OrderTotalSummary;
@@ -43,12 +42,20 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 	
 	private ProductPriceApi productPriceApi;
     private ShoppingCartCalculationService shoppingCartCalculationService;
-    private ProductAttributeApi productAttributeApi;
-    
+
     private CustomerService customerService;
 
     @Getter  @Setter
 	private CatalogImageFilePathApi imageFilePathApi;
+
+    @Getter @Setter
+	private LanguageService languageService;
+
+    @Getter @Setter
+	private ProductApi productApi;
+
+    @Getter @Setter
+	private ProductAttributeInfoRepository productAttributeInfoRepository;
 	
 	@Override
 	public ReadableShoppingCart populate(ShoppingCart source, ReadableShoppingCart target, MerchantStore store,
@@ -57,7 +64,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
     	Validate.notNull(language, "Requires Language not null");
     	Validate.notNull(store, "Requires MerchantStore not null");
     	Validate.notNull(productPriceApi, "Requires to set priceApi");
-    	Validate.notNull(productAttributeApi, "Requires to set productAttributeApi");
     	Validate.notNull(shoppingCartCalculationService, "Requires to set shoppingCartCalculationService");
     	Validate.notNull(imageFilePathApi, "Requires to set imageFilePathApi");
     	Validate.notNull(customerService, "Requires CustomerService not null");
@@ -84,8 +90,10 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
                 	ReadableProductPopulator readableProductPopulator = new ReadableProductPopulator();
                 	readableProductPopulator.setProductPriceApi(productPriceApi);
                 	readableProductPopulator.setImageFilePathApi(imageFilePathApi);
-                	readableProductPopulator.populate(item.getProduct(), shoppingCartItem,  store, language);
-                	readableProductPopulator.setCustomerService(customerService);
+					readableProductPopulator.setLanguageService(languageService);
+					readableProductPopulator.setProductApi(productApi);
+
+					readableProductPopulator.populate(item.getProduct(), shoppingCartItem,  store, language);
 
 
 
@@ -107,7 +115,7 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
                     if(attributes!=null) {
                         for(com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attribute : attributes) {
 
-                        	ProductAttribute productAttribute = productAttributeApi.getById(attribute.getProductAttributeId());
+                        	ProductAttributeInfo productAttribute = productAttributeInfoRepository.findOne(attribute.getProductAttributeId());
                         	
                         	if(productAttribute==null) {
                         		LOGGER.warn("Product attribute with ID " + attribute.getId() + " not found, skipping cart attribute " + attribute.getId());
@@ -119,28 +127,28 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
                             cartAttribute.setId(attribute.getId());
                             
-                            ProductOption option = productAttribute.getProductOption();
-                            ProductOptionValue optionValue = productAttribute.getProductOptionValue();
+                            ProductOptionInfo option = productAttribute.getProductOption();
+                            ProductOptionValueInfo optionValue = productAttribute.getProductOptionValue();
 
 
-                            List<ProductOptionDescription> optionDescriptions = option.getDescriptionsSettoList();
-                            List<ProductOptionValueDescription> optionValueDescriptions = optionValue.getDescriptionsSettoList();
+                            Set<ProductOptionDescriptionInfo> optionDescriptions = option.getDescriptions();
+                            Set<ProductOptionValueDescriptionInfo> optionValueDescriptions = optionValue.getDescriptions();
                             
                             String optName = null;
                             String optValue = null;
                             if(!CollectionUtils.isEmpty(optionDescriptions) && !CollectionUtils.isEmpty(optionValueDescriptions)) {
                             	
-                            	optName = optionDescriptions.get(0).getName();
-                            	optValue = optionValueDescriptions.get(0).getName();
+                            	optName = optionDescriptions.iterator().next().getName();
+                            	optValue = optionValueDescriptions.iterator().next().getName();
                             	
-                            	for(ProductOptionDescription optionDescription : optionDescriptions) {
+                            	for(ProductOptionDescriptionInfo optionDescription : optionDescriptions) {
                             		if(optionDescription.getLanguage() != null && optionDescription.getLanguage().getId().intValue() == language.getId().intValue()) {
                             			optName = optionDescription.getName();
                             			break;
                             		}
                             	}
                             	
-                            	for(ProductOptionValueDescription optionValueDescription : optionValueDescriptions) {
+                            	for(ProductOptionValueDescriptionInfo optionValueDescription : optionValueDescriptions) {
                             		if(optionValueDescription.getLanguage() != null && optionValueDescription.getLanguage().getId().intValue() == language.getId().intValue()) {
                             			optValue = optionValueDescription.getName();
                             			break;
@@ -235,14 +243,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
 	public void setShoppingCartCalculationService(ShoppingCartCalculationService shoppingCartCalculationService) {
 		this.shoppingCartCalculationService = shoppingCartCalculationService;
-	}
-
-	public ProductAttributeApi getProductAttributeApi() {
-		return productAttributeApi;
-	}
-
-	public void setProductAttributeApi(ProductAttributeApi productAttributeApi) {
-		this.productAttributeApi = productAttributeApi;
 	}
 
 	public CustomerService getCustomerService() {

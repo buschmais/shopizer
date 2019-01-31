@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute;
-
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 
 public class PersistableOrderProduct extends OrderProductEntity implements
 		Serializable {
@@ -15,15 +14,15 @@ public class PersistableOrderProduct extends OrderProductEntity implements
 	 */
 	private static final long serialVersionUID = 1L;
 	private BigDecimal price;//specify final price
-	private List<ProductAttribute> attributes;//may have attributes
+	private List<ProductAttributeInfo> attributes;//may have attributes
 
 
 
-	public void setAttributes(List<ProductAttribute> attributes) {
+	public void setAttributes(List<ProductAttributeInfo> attributes) {
 		this.attributes = attributes;
 	}
 
-	public List<ProductAttribute> getAttributes() {
+	public List<ProductAttributeInfo> getAttributes() {
 		return attributes;
 	}
 

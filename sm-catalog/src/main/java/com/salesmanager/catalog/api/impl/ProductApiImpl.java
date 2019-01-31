@@ -16,6 +16,7 @@ import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
+import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
@@ -174,5 +175,27 @@ public class ProductApiImpl implements ProductApi {
             }
         }
         return descriptions;
+    }
+
+    @Override
+    public ProductImage getDefaultImage(Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            return product.getProductImage();
+        }
+        return null;
+    }
+
+    @Override
+    public Integer getAvailabilityForRegion(Long productId, String region) {
+        Product product = this.productService.getById(productId);
+        if (product != null && product.getAvailabilities() != null) {
+            for (ProductAvailability productAvailability : product.getAvailabilities()) {
+                if (productAvailability.getRegion().equals(region)) {
+                    return productAvailability.getProductQuantity();
+                }
+            }
+        }
+        return 0;
     }
 }
