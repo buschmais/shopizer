@@ -36,7 +36,6 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.salesmanager.core.constants.SchemaConstant;
-import com.salesmanager.catalog.model.product.review.ProductReview;
 import com.salesmanager.core.model.common.Billing;
 import com.salesmanager.core.model.common.Delivery;
 import com.salesmanager.core.model.common.audit.AuditSection;
@@ -107,11 +106,6 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
 	@JoinColumn(name = "LANGUAGE_ID", nullable=false)
 	private Language defaultLanguage;
-	
-
-
-	@OneToMany(mappedBy = "customer", targetEntity = ProductReview.class)
-	private List<ProductReview> reviews = new ArrayList<ProductReview>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="MERCHANT_ID", nullable=false)
@@ -217,14 +211,6 @@ public class Customer extends SalesManagerEntity<Long, Customer> implements Audi
 		this.anonymous = anonymous;
 	}
 
-
-	public List<ProductReview> getReviews() {
-		return reviews;
-	}
-
-	public void setReviews(List<ProductReview> reviews) {
-		this.reviews = reviews;
-	}
 
 	public void setMerchantStore(MerchantStore merchantStore) {
 		this.merchantStore = merchantStore;
