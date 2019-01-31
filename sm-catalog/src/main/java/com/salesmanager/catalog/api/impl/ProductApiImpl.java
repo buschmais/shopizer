@@ -1,6 +1,7 @@
 package com.salesmanager.catalog.api.impl;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
@@ -80,5 +81,14 @@ public class ProductApiImpl implements ProductApi {
                 product != null && product.getProductHeight() != null ? product.getProductHeight().doubleValue() : null,
                 product != null && product.getProductWeight() != null ? product.getProductWeight().doubleValue() : null
         );
+    }
+
+    @Override
+    public AvailabilityInformationDTO getProductAvailabilityInformation(Long productId) {
+        Product product = this.productService.getById(productId);
+        return new AvailabilityInformationDTO(
+                product != null && product.isAvailable(),
+                product != null && product.isProductShipeable(),
+                product != null && product.isProductVirtual());
     }
 }

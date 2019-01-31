@@ -1,6 +1,7 @@
 package com.salesmanager.core.business.services.catalog;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.model.catalog.ProductInfo;
@@ -33,6 +34,14 @@ public class ProductInfoService {
         DimensionDTO dimensionDTO = productApi.getProductDimension(productId);
         if (dimensionDTO != null) {
             return new ProductInfo.Dimension(dimensionDTO.getWidth(), dimensionDTO.getLength(), dimensionDTO.getHeight(), dimensionDTO.getWeight());
+        }
+        return null;
+    }
+
+    public ProductInfo.AvailabilityInformation enrichAvailabilityInfoForProduct(Long productId) {
+        AvailabilityInformationDTO availabilityDTO = productApi.getProductAvailabilityInformation(productId);
+        if (availabilityDTO != null) {
+            return new ProductInfo.AvailabilityInformation(availabilityDTO.isAvailable(), availabilityDTO.isShippable(), availabilityDTO.isVirtual());
         }
         return null;
     }

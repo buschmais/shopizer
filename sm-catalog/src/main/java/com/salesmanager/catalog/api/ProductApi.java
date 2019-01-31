@@ -1,5 +1,6 @@
 package com.salesmanager.catalog.api;
 
+import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
@@ -26,4 +27,6 @@ public interface ProductApi {
                             ProductCriteria criteria);
 
     DimensionDTO getProductDimension(Long productId);
+
+    AvailabilityInformationDTO getProductAvailabilityInformation(Long productId);
 }

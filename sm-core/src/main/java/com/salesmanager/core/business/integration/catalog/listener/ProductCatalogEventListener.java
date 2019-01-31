@@ -58,6 +58,8 @@ public class ProductCatalogEventListener {
                 productDTO.getManufacturerCode());
         ProductInfo.Dimension dimension = this.productInfoService.enrichDimensionsForProduct(productDTO.getId());
         productInfo.setDimension(dimension);
+        ProductInfo.AvailabilityInformation availability = this.productInfoService.enrichAvailabilityInfoForProduct(productDTO.getId());
+        productInfo.setAvailabilityInformation(availability);
         this.productInfoService.save(productInfo);
     }
 

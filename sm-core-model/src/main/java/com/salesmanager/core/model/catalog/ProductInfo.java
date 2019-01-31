@@ -29,6 +29,9 @@ public class ProductInfo {
     @Embedded
     private Dimension dimension;
 
+    @Embedded
+    private AvailabilityInformation availabilityInformation;
+
     public ProductInfo(Long id, String sku, String name, String manufacturerCode) {
         this.id = id;
         this.sku = sku;
@@ -46,6 +49,18 @@ public class ProductInfo {
         private Double length;
         private Double height;
         private Double weight;
+
+    }
+
+    @Embeddable
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter @Setter
+    public static class AvailabilityInformation {
+
+        private Boolean available;
+        private Boolean shippable;
+        private Boolean virtual;
 
     }
 
