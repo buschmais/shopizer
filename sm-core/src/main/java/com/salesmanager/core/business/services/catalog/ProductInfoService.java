@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -51,6 +52,10 @@ public class ProductInfoService {
 
     public void delete(Long productId) {
         this.productInfoRepository.delete(productId);
+    }
+
+    public List<ProductInfo> listByTaxClass(Long taxClassId) {
+        return this.productInfoRepository.listByTaxClass(taxClassId);
     }
 
     public ProductInfo.Dimension enrichDimensionsForProduct(Long productId) {

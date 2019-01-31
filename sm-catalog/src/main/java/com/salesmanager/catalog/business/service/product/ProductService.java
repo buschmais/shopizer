@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.business.service.SalesManagerEntityService;
 import com.salesmanager.catalog.model.category.Category;
@@ -34,8 +33,6 @@ public interface ProductService extends SalesManagerEntityService<Long, Product>
 			ProductCriteria criteria);
 
 	List<Product> listByStore(MerchantStoreInfo store);
-
-	List<Product> listByTaxClass(TaxClassInfo taxClass);
 
 	List<Product> getProducts(List<Long> categoryIds, LanguageInfo language)
 			throws ServiceException;

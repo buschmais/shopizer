@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
@@ -26,8 +25,6 @@ public interface ProductRepositoryCustom {
 
 		List<Product> getProductsListByCategories(Set<Long> categoryIds,
 												  LanguageInfo language);
-
-		List<Product> listByTaxClass(TaxClassInfo taxClass);
 
 		List<Product> listByStore(MerchantStoreInfo store);
 

@@ -1,10 +1,10 @@
 package com.salesmanager.shop.admin.controller.tax;
 
-import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.tax.TaxClassService;
 import com.salesmanager.common.business.ajax.AjaxPageableResponse;
 import com.salesmanager.common.business.ajax.AjaxResponse;
-import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import com.salesmanager.common.presentation.model.admin.Menu;
@@ -46,7 +46,7 @@ public class TaxClassController {
 	LabelUtils messages;
 
 	@Autowired
-	private ProductApi productApi;
+	private ProductInfoService productInfoService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TaxClassController.class);
 
@@ -230,7 +230,7 @@ public class TaxClassController {
 			}
 			
 			//look if the taxclass is used for products
-			List<Product> products = productApi.listByTaxClass(taxClass.toDTO());
+			List<ProductInfo> products = productInfoService.listByTaxClass(taxClass.getId());
 
 			if(products!=null && products.size()>0) {
 				resp.setStatusMessage(messages.getMessage("message.product.association", locale));

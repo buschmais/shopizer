@@ -13,7 +13,6 @@ import javax.persistence.Query;
 
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -897,71 +896,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		Query q = this.em.createQuery(hql);
 
     	q.setParameter("mid", store.getId());
-
-
-    	
-    	@SuppressWarnings("unchecked")
-		List<Product> products =  q.getResultList();
-
-    	
-    	return products;
-		
-		
-	}
-	
-	
-	@Override
-	public List<Product> listByTaxClass(TaxClassInfo taxClass) {
-
-		
-		/**
-		 * Testing in debug mode takes a long time with this query
-		 * running in normal mode is fine
-		 */
-
-		
-		StringBuilder qs = new StringBuilder();
-		qs.append("select p from Product as p ");
-		qs.append("join fetch p.merchantStore merch ");
-		qs.append("join fetch p.availabilities pa ");
-		qs.append("left join fetch pa.prices pap ");
-		
-		qs.append("join fetch p.descriptions pd ");
-		qs.append("join fetch p.categories categs ");
-		
-		
-		
-		qs.append("left join fetch pap.descriptions papd ");
-		
-		
-		//images
-		qs.append("left join fetch p.images images ");
-		
-		//options (do not need attributes for listings)
-		qs.append("left join fetch p.attributes pattr ");
-		qs.append("left join fetch pattr.productOption po ");
-		qs.append("left join fetch po.descriptions pod ");
-		qs.append("left join fetch pattr.productOptionValue pov ");
-		qs.append("left join fetch pov.descriptions povd ");
-		
-		//other lefts
-		qs.append("left join fetch p.manufacturer manuf ");
-		qs.append("left join fetch manuf.descriptions manufd ");
-		qs.append("left join fetch p.type type ");
-		qs.append("left join fetch p.taxClass tx ");
-		
-		//RENTAL
-		qs.append("left join fetch p.owner owner ");
-		
-		//qs.append("where pa.region in (:lid) ");
-		qs.append("where tx.id=:tid");
-
-
-
-    	String hql = qs.toString();
-		Query q = this.em.createQuery(hql);
-
-    	q.setParameter("tid", taxClass.getId());
 
 
     	

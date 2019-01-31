@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,12 +191,7 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 		
 		return productRepository.listByStore(store);
 	}
-	
-	@Override
-	public List<Product> listByTaxClass(TaxClassInfo taxClass) {
-		return productRepository.listByTaxClass(taxClass);
-	}
-	
+
 	@Override
 	public Product getByCode(String productCode, LanguageInfo language) {
 		return productRepository.getByCode(productCode, language);

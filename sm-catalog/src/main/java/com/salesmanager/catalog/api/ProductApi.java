@@ -23,8 +23,6 @@ public interface ProductApi {
 
     Product getProductForLocale(long productId, LanguageDTO language, Locale locale) throws ServiceException;
 
-    List<Product> listByTaxClass(TaxClassDTO taxClass);
-
     ProductList listByStore(MerchantStoreDTO store, LanguageDTO language,
                             ProductCriteria criteria);
 

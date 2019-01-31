@@ -34,15 +34,12 @@ public class ProductApiImpl implements ProductApi {
 
     private LanguageInfoService languageInfoService;
 
-    private TaxClassInfoService taxClassInfoService;
-
     private MerchantStoreInfoService merchantStoreInfoService;
 
     @Autowired
-    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, TaxClassInfoService taxClassInfoService, MerchantStoreInfoService merchantStoreInfoService) {
+    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, MerchantStoreInfoService merchantStoreInfoService) {
         this.productService = productService;
         this.languageInfoService = languageInfoService;
-        this.taxClassInfoService = taxClassInfoService;
         this.merchantStoreInfoService = merchantStoreInfoService;
     }
 
@@ -61,12 +58,6 @@ public class ProductApiImpl implements ProductApi {
     public Product getProductForLocale(long productId, LanguageDTO language, Locale locale) throws ServiceException {
         LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
         return this.productService.getProductForLocale(productId, languageInfo, locale);
-    }
-
-    @Override
-    public List<Product> listByTaxClass(TaxClassDTO taxClass) {
-        TaxClassInfo taxClassInfo = this.taxClassInfoService.findById(taxClass.getId());
-        return this.productService.listByTaxClass(taxClassInfo);
     }
 
     @Override
