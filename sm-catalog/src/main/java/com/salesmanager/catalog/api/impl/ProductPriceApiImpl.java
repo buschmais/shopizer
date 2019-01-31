@@ -3,20 +3,16 @@ package com.salesmanager.catalog.api.impl;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.dto.product.FinalPriceDTO;
 import com.salesmanager.catalog.api.dto.product.ProductPriceDTO;
-import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.catalog.business.util.ProductPriceUtils;
-import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.catalog.model.product.price.ProductPrice;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,29 +22,15 @@ public class ProductPriceApiImpl implements ProductPriceApi {
 
     private ProductPriceUtils productPriceUtils;
 
-    private MerchantStoreInfoService merchantStoreInfoService;
-
     private ProductService productService;
 
     private ProductAttributeService productAttributeService;
 
     @Autowired
-    public ProductPriceApiImpl(ProductPriceUtils productPriceUtils, MerchantStoreInfoService merchantStoreInfoService, ProductService productService, ProductAttributeService productAttributeService) {
+    public ProductPriceApiImpl(ProductPriceUtils productPriceUtils, ProductService productService, ProductAttributeService productAttributeService) {
         this.productPriceUtils = productPriceUtils;
-        this.merchantStoreInfoService = merchantStoreInfoService;
         this.productService = productService;
         this.productAttributeService = productAttributeService;
-    }
-
-    @Override
-    public String getStoreFormattedAmountWithCurrency(MerchantStoreDTO merchantStoreDTO, BigDecimal amount) throws Exception {
-        MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
-        return this.productPriceUtils.getStoreFormatedAmountWithCurrency(storeInfo, amount);
-    }
-
-    @Override
-    public BigDecimal getAmount(String formattedAmount) throws Exception {
-        return this.productPriceUtils.getAmount(formattedAmount);
     }
 
     @Override

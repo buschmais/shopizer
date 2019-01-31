@@ -3,13 +3,9 @@ package com.salesmanager.catalog.api.impl;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
-import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
-import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.ProductCriteria;
-import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
@@ -20,7 +16,6 @@ import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
 import com.salesmanager.common.presentation.util.DateUtil;
 import com.salesmanager.core.integration.language.LanguageDTO;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,33 +31,13 @@ public class ProductApiImpl implements ProductApi {
 
     private LanguageInfoService languageInfoService;
 
-    private MerchantStoreInfoService merchantStoreInfoService;
-
     private CatalogImageFilePathUtils catalogImageFilePathUtils;
 
     @Autowired
-    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, MerchantStoreInfoService merchantStoreInfoService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
+    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
         this.productService = productService;
         this.languageInfoService = languageInfoService;
-        this.merchantStoreInfoService = merchantStoreInfoService;
         this.catalogImageFilePathUtils = catalogImageFilePathUtils;
-    }
-
-    @Override
-    public Product getByCode(String productCode, LanguageDTO language) {
-        LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
-        return this.productService.getByCode(productCode, languageInfo);
-    }
-
-    @Override
-    public Product getById(Long id) {
-        return this.productService.getById(id);
-    }
-
-    @Override
-    public Product getProductForLocale(long productId, LanguageDTO language, Locale locale) throws ServiceException {
-        LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
-        return this.productService.getProductForLocale(productId, languageInfo, locale);
     }
 
     @Override
@@ -78,13 +53,6 @@ public class ProductApiImpl implements ProductApi {
             return productItem;
         }
         return null;
-    }
-
-    @Override
-    public ProductList listByStore(MerchantStoreDTO store, LanguageDTO language, ProductCriteria criteria) {
-        LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
-        MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
-        return this.productService.listByStore(merchantStoreInfo, languageInfo, criteria);
     }
 
     @Override
