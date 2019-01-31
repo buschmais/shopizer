@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -61,7 +61,7 @@ public class OrderShippingApi {
 	private LabelUtils messages;
 	
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	
 	/**
 	 * Get shipping quote for a given shopping cart
@@ -114,7 +114,7 @@ public class OrderShippingApi {
 			
 			ReadableShippingSummary shippingSummary = new ReadableShippingSummary();
 			ReadableShippingSummaryPopulator populator = new ReadableShippingSummaryPopulator();
-			populator.setProductPriceApi(productPriceApi);
+			populator.setPriceUtils(priceUtils);
 			populator.populate(summary, shippingSummary, merchantStore, language);
 			
 			List<ShippingOption> options = quote.getShippingOptions();

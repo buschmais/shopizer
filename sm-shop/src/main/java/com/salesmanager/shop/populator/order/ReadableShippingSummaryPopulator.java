@@ -1,6 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 
 import com.salesmanager.common.business.exception.ConversionException;
@@ -13,15 +15,16 @@ import com.salesmanager.shop.model.order.shipping.ReadableShippingSummary;
 
 public class ReadableShippingSummaryPopulator extends
 		AbstractDataPopulator<ShippingSummary, ReadableShippingSummary> {
-	
-	private ProductPriceApi productPriceApi;
+
+	@Getter @Setter
+	private PriceUtils priceUtils;
 
 	@Override
 	public ReadableShippingSummary populate(ShippingSummary source,
 			ReadableShippingSummary target, MerchantStore store,
 			Language language) throws ConversionException {
 		
-		Validate.notNull(productPriceApi,"productPriceApi must be set");
+		Validate.notNull(priceUtils,"priceUtils must be set");
 	
 		try {
 			
@@ -31,8 +34,8 @@ public class ReadableShippingSummaryPopulator extends
 			target.setShippingModule(source.getShippingModule());
 			target.setShippingOption(source.getShippingOption());
 			target.setTaxOnShipping(source.isTaxOnShipping());
-			target.setHandlingText(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getHandling()));
-			target.setShippingText(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getShipping()));
+			target.setHandlingText(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getHandling()));
+			target.setShippingText(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getShipping()));
 			
 			if(source.getDeliveryAddress()!=null) {
 			
@@ -67,13 +70,5 @@ public class ReadableShippingSummaryPopulator extends
 	protected ReadableShippingSummary createTarget() {
 		return new 
 				ReadableShippingSummary();
-	}
-
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
 	}
 }

@@ -1,6 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,9 @@ public class ReadableOrderSummaryPopulator extends AbstractDataPopulator<OrderTo
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ReadableOrderSummaryPopulator.class);
-	
-	private ProductPriceApi productPriceApi;
+
+	@Getter @Setter
+	private PriceUtils priceUtils;
 	
 	private LabelUtils messages;
 	
@@ -31,7 +34,7 @@ public class ReadableOrderSummaryPopulator extends AbstractDataPopulator<OrderTo
 	public ReadableOrderTotalSummary populate(OrderTotalSummary source, ReadableOrderTotalSummary target,
 			MerchantStore store, Language language) throws ConversionException {
 		
-		Validate.notNull(productPriceApi,"productPriceApi must be set");
+		Validate.notNull(priceUtils,"priceUtils must be set");
 		Validate.notNull(messages,"LabelUtils must be set");
 		
 		if(target==null) {
@@ -41,19 +44,19 @@ public class ReadableOrderSummaryPopulator extends AbstractDataPopulator<OrderTo
 		try {
 		
 			if(source.getSubTotal() != null) {
-				target.setSubTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getSubTotal()));
+				target.setSubTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getSubTotal()));
 			}
 			if(source.getTaxTotal()!=null) {
-				target.setTaxTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getTaxTotal()));
+				target.setTaxTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getTaxTotal()));
 			}
 			if(source.getTotal() != null) {
-				target.setTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getTotal()));
+				target.setTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getTotal()));
 			}
 			
 			if(!CollectionUtils.isEmpty(source.getTotals())) {
 				ReadableOrderTotalPopulator orderTotalPopulator = new ReadableOrderTotalPopulator();
 				orderTotalPopulator.setMessages(messages);
-				orderTotalPopulator.setProductPriceApi(productPriceApi);
+				orderTotalPopulator.setPriceUtils(priceUtils);
 				for(OrderTotal orderTotal : source.getTotals()) {
 					ReadableOrderTotal t = new ReadableOrderTotal();
 					orderTotalPopulator.populate(orderTotal, t, store, language);
@@ -75,14 +78,6 @@ public class ReadableOrderSummaryPopulator extends AbstractDataPopulator<OrderTo
 	protected ReadableOrderTotalSummary createTarget() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
 	}
 
 	public LabelUtils getMessages() {

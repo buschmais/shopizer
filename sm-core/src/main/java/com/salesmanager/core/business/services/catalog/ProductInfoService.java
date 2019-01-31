@@ -1,6 +1,7 @@
 package com.salesmanager.core.business.services.catalog;
 
 import com.salesmanager.catalog.api.ProductApi;
+import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductOptionInfoRepository;
@@ -14,9 +15,11 @@ import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -30,16 +33,17 @@ public class ProductInfoService {
     private final TaxClassRepository taxClassRepository;
     private final ProductOptionInfoRepository productOptionInfoRepository;
     private final ProductOptionValueInfoRepository productOptionValueInfoRepository;
-
+    private final ProductPriceApi productPriceApi;
 
     @Autowired
-    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository, ProductOptionInfoRepository productOptionInfoRepository, ProductOptionValueInfoRepository productOptionValueInfoRepository) {
+    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository, ProductOptionInfoRepository productOptionInfoRepository, ProductOptionValueInfoRepository productOptionValueInfoRepository, ProductPriceApi productPriceApi) {
         this.productApi = productApi;
         this.productInfoRepository = productInfoRepository;
         this.merchantRepository = merchantRepository;
         this.taxClassRepository = taxClassRepository;
         this.productOptionInfoRepository = productOptionInfoRepository;
         this.productOptionValueInfoRepository = productOptionValueInfoRepository;
+        this.productPriceApi = productPriceApi;
     }
 
     public ProductInfo save(ProductInfo productInfo) {
@@ -144,5 +148,35 @@ public class ProductInfoService {
             return new ProductImageInfo(productImageDTO.getId(), productImageDTO.getImageName(), productImageDTO.isDefaultImage(), productImageDTO.getImageUrl());
         }
         return null;
+    }
+
+    public FinalPriceInfo getProductFinalPrice(Long productId, List<ProductAttributeInfo> productAttributes) {
+        List<Long> productAttributeIds = productAttributes != null ? productAttributes.stream().map(ProductAttributeInfo::getId).collect(Collectors.toList()) : null;
+        FinalPriceDTO finalPriceDTO = productPriceApi.getProductFinalPrice(productId, productAttributeIds);
+        if (finalPriceDTO != null) {
+            return toFinalPriceInfo(finalPriceDTO);
+        }
+        return null;
+    }
+
+    private FinalPriceInfo toFinalPriceInfo(FinalPriceDTO finalPriceDTO) {
+        List<FinalPriceInfo> additionalPrices = finalPriceDTO.getAdditionalPrices() != null ?
+                finalPriceDTO.getAdditionalPrices().stream().map(this::toFinalPriceInfo).collect(Collectors.toList()) :
+                new ArrayList<>();
+        ProductPriceDTO productPriceDTO = finalPriceDTO.getProductPrice();
+        ProductPriceInfo productPriceInfo = productPriceDTO != null ?
+                new ProductPriceInfo(
+                        productPriceDTO.getCode(), productPriceDTO.getProductPriceType(),
+                        productPriceDTO.getDefaultPrice(), productPriceDTO.getName(),
+                        productPriceDTO.getProductPriceSpecialAmount(), productPriceDTO.getProductPriceSpecialStartDate(),
+                        productPriceDTO.getProductPriceSpecialEndDate()
+                ) : null;
+        return new FinalPriceInfo(
+                finalPriceDTO.getDiscounted(),
+                finalPriceDTO.getFinalPrice(),
+                finalPriceDTO.getDefaultPrice(),
+                additionalPrices,
+                productPriceInfo
+        );
     }
 }

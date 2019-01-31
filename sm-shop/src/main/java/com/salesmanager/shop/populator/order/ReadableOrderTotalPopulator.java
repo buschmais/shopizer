@@ -1,15 +1,17 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.constants.Constants;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderTotal;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.model.order.total.ReadableOrderTotal;
 import com.salesmanager.common.presentation.util.LabelUtils;
 import com.salesmanager.shop.utils.LocaleUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,9 +19,9 @@ import java.util.Locale;
 
 public class ReadableOrderTotalPopulator extends
 		AbstractDataPopulator<OrderTotal, ReadableOrderTotal> {
-	
-	
-	private ProductPriceApi productPriceApi;
+
+	@Getter @Setter
+	private PriceUtils priceUtils;
 
 
 	private LabelUtils messages;
@@ -32,7 +34,7 @@ public class ReadableOrderTotalPopulator extends
 			ReadableOrderTotal target, MerchantStore store, Language language)
 			throws ConversionException {
 		
-			Validate.notNull(productPriceApi,"productPriceApi must be set");
+			Validate.notNull(priceUtils,"priceUtils must be set");
 			Validate.notNull(messages,"LabelUtils must be set");
 			
 			Locale locale = LocaleUtils.getLocale(language);
@@ -49,7 +51,7 @@ public class ReadableOrderTotalPopulator extends
 				target.setText(source.getText());
 				
 				target.setValue(source.getValue());
-				target.setTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getValue()));
+				target.setTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getValue()));
 				
 				if(!StringUtils.isBlank(source.getOrderTotalCode())) {
 					if(Constants.OT_DISCOUNT_TITLE.equals(source.getOrderTotalCode())) {
@@ -68,14 +70,6 @@ public class ReadableOrderTotalPopulator extends
 	@Override
 	protected ReadableOrderTotal createTarget() {
 		return new ReadableOrderTotal();
-	}
-
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
 	}
 
 	public LabelUtils getMessages() {

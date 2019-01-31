@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -67,7 +67,7 @@ public class OrderPaymentApi {
 	private ShoppingCartService shoppingCartService;
 	
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	
 	@Inject
 	private PaymentService paymentService;
@@ -115,7 +115,7 @@ public class OrderPaymentApi {
 			
 
 			PersistablePaymentPopulator populator = new PersistablePaymentPopulator();
-			populator.setProductPriceApi(productPriceApi);
+			populator.setPriceUtils(priceUtils);
 			
 			Payment paymentModel = new Payment();
 			
@@ -128,7 +128,7 @@ public class OrderPaymentApi {
 			ReadableTransaction transaction = new ReadableTransaction();
 			ReadableTransactionPopulator trxPopulator = new ReadableTransactionPopulator();
 			trxPopulator.setOrderService(orderService);
-			trxPopulator.setProductPriceApi(productPriceApi);
+			trxPopulator.setPriceUtils(priceUtils);
 			
 			trxPopulator.populate(transactionModel, transaction, merchantStore, language);
 			

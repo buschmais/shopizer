@@ -1,7 +1,6 @@
 package com.salesmanager.shop.store.controller.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -12,6 +11,7 @@ import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.zone.ZoneService;
 import com.salesmanager.core.business.services.shipping.ShippingService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.common.Billing;
 import com.salesmanager.core.model.customer.Customer;
@@ -120,7 +120,7 @@ public class ShoppingOrderController extends AbstractController {
 	private LabelUtils messages;
 	
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
@@ -776,7 +776,7 @@ public class ShoppingOrderController extends AbstractController {
 
 					ReadableShippingSummary readableSummary = new ReadableShippingSummary();
 					ReadableShippingSummaryPopulator readableSummaryPopulator = new ReadableShippingSummaryPopulator();
-					readableSummaryPopulator.setProductPriceApi(productPriceApi);
+					readableSummaryPopulator.setPriceUtils(priceUtils);
 					readableSummaryPopulator.populate(summary, readableSummary, store, language);
 					
 					
@@ -951,7 +951,7 @@ public class ShoppingOrderController extends AbstractController {
 					
 					ReadableShippingSummary readableSummary = new ReadableShippingSummary();
 					ReadableShippingSummaryPopulator readableSummaryPopulator = new ReadableShippingSummaryPopulator();
-					readableSummaryPopulator.setProductPriceApi(productPriceApi);
+					readableSummaryPopulator.setPriceUtils(priceUtils);
 					readableSummaryPopulator.populate(summary, readableSummary, store, language);
 					
 					//additional informations
@@ -1079,7 +1079,7 @@ public class ShoppingOrderController extends AbstractController {
 			
 			ReadableOrderTotalPopulator totalPopulator = new ReadableOrderTotalPopulator();
 			totalPopulator.setMessages(messages);
-			totalPopulator.setProductPriceApi(productPriceApi);
+			totalPopulator.setPriceUtils(priceUtils);
 
 			List<ReadableOrderTotal> subtotals = new ArrayList<ReadableOrderTotal>();
 			for(OrderTotal total : orderTotalSummary.getTotals()) {
@@ -1145,7 +1145,7 @@ public class ShoppingOrderController extends AbstractController {
 						
 						ReadableShippingSummary readableSummary = new ReadableShippingSummary();
 						ReadableShippingSummaryPopulator readableSummaryPopulator = new ReadableShippingSummaryPopulator();
-						readableSummaryPopulator.setProductPriceApi(productPriceApi);
+						readableSummaryPopulator.setPriceUtils(priceUtils);
 						readableSummaryPopulator.populate(summary, readableSummary, store, language);
 						
 						//override summary
@@ -1228,7 +1228,7 @@ public class ShoppingOrderController extends AbstractController {
 			
 			ReadableOrderTotalPopulator totalPopulator = new ReadableOrderTotalPopulator();
 			totalPopulator.setMessages(messages);
-			totalPopulator.setProductPriceApi(productPriceApi);
+			totalPopulator.setPriceUtils(priceUtils);
 
 			List<ReadableOrderTotal> subtotals = new ArrayList<ReadableOrderTotal>();
 			for(OrderTotal total : orderTotalSummary.getTotals()) {

@@ -2,9 +2,9 @@ package com.salesmanager.shop.populator.catalog;
 
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.model.catalog.FinalPriceInfo;
 import com.salesmanager.core.model.catalog.ProductDescriptionInfo;
 import com.salesmanager.core.model.catalog.ProductImageInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
@@ -18,6 +18,8 @@ import com.salesmanager.core.model.reference.language.Language;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.Validate;
+
+import java.math.BigDecimal;
 import java.util.Set;
 
 
@@ -109,9 +111,9 @@ public class ReadableProductPopulator extends
 	
 			target.setSku(source.getSku());
 
-			FinalPrice price = productPriceApi.calculateProductPrice(source.getId());
+			FinalPriceInfo price = productInfoService.getProductFinalPrice(source.getId(), null);
 
-			target.setPrice(price.getFinalPrice());
+			target.setPrice(BigDecimal.valueOf(price.getFinalPrice()));
 
 			target.setQuantity(productApi.getAvailabilityForRegion(source.getId(), Constants.ALL_REGIONS));
 			

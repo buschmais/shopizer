@@ -1,10 +1,10 @@
 package com.salesmanager.shop.admin.controller.shipping;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.shipping.ShippingService;
 import com.salesmanager.common.business.ajax.AjaxPageableResponse;
 import com.salesmanager.common.business.ajax.AjaxResponse;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.language.Language;
@@ -58,7 +58,7 @@ public class CustomShippingMethodsController {
 	private CountryService countryService;
 	
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	
 	@Inject
 	LabelUtils messages;
@@ -528,7 +528,7 @@ public class CustomShippingMethodsController {
 						if(quoteItems!=null) {
 							for(CustomShippingQuoteWeightItem quoteItem : quoteItems) {
 								Map<String,String> entry = new HashMap<String,String> ();
-								entry.put("price", productPriceApi.getAdminFormattedAmountWithCurrency(store.toDTO(), quoteItem.getPrice()));
+								entry.put("price", priceUtils.getAdminFormattedAmountWithCurrency(store, quoteItem.getPrice()));
 								entry.put("weight", String.valueOf(quoteItem.getMaximumWeight()));
 								resp.addDataEntry(entry);
 							}

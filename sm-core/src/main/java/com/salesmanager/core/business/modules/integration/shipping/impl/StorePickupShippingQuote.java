@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.apache.commons.lang.Validate;
 
 import com.salesmanager.core.business.services.system.MerchantConfigurationService;
@@ -25,6 +25,7 @@ import com.salesmanager.core.model.system.IntegrationModule;
 import com.salesmanager.core.modules.integration.IntegrationException;
 import com.salesmanager.core.modules.integration.shipping.model.ShippingQuoteModule;
 import com.salesmanager.core.modules.integration.shipping.model.ShippingQuotePrePostProcessModule;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -45,8 +46,8 @@ public class StorePickupShippingQuote implements ShippingQuoteModule, ShippingQu
 	@Inject
 	private MerchantConfigurationService merchantConfigurationService;
 	
-	@Inject
-	private ProductPriceApi productPriceApi;
+	@Autowired
+	private PriceUtils priceUtils;
 
 
 	@Override
@@ -147,9 +148,9 @@ public class StorePickupShippingQuote implements ShippingQuoteModule, ShippingQu
 			shippingOption.setOptionCode(MODULE_CODE);
 			shippingOption.setOptionId(new StringBuilder().append(MODULE_CODE).append("_").append(region).toString());
 			
-			shippingOption.setOptionPrice(productPriceApi.getAmount(price));
+			shippingOption.setOptionPrice(priceUtils.getAmount(price));
 	
-			shippingOption.setOptionPriceText(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), productPriceApi.getAmount(price)));
+			shippingOption.setOptionPriceText(priceUtils.getStoreFormattedAmountWithCurrency(store, priceUtils.getAmount(price)));
 	
 			List<ShippingOption> options = quote.getShippingOptions();
 			

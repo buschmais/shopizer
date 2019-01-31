@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import com.salesmanager.catalog.api.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
@@ -113,6 +114,7 @@ public class OrderFacadeImpl implements OrderFacade {
 
 	@Autowired
 	private ProductApi productApi;
+
 	@Inject
 	private ShoppingCartService shoppingCartService;
 	@Inject
@@ -124,7 +126,7 @@ public class OrderFacadeImpl implements OrderFacade {
 	@Inject
 	private CustomerFacade customerFacade;
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	@Inject
 	private ShoppingCartFacade shoppingCartFacade;
 	@Inject
@@ -958,9 +960,10 @@ public class OrderFacadeImpl implements OrderFacade {
             ReadableOrderProductPopulator orderProductPopulator = new ReadableOrderProductPopulator();
             orderProductPopulator.setLocale(locale);
             orderProductPopulator.setProductApi(productApi);
-            orderProductPopulator.setProductPriceApi(productPriceApi);
+            orderProductPopulator.setPriceUtils(priceUtils);
             orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setCustomerService(customerService);
+			orderProductPopulator.setLanguageService(languageService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
             orderProductPopulator.populate(p, orderProduct, store, language);
             
@@ -1052,9 +1055,10 @@ public class OrderFacadeImpl implements OrderFacade {
 		for(OrderProduct p : modelOrder.getOrderProducts()) {
 			ReadableOrderProductPopulator orderProductPopulator = new ReadableOrderProductPopulator();
 			orderProductPopulator.setProductApi(productApi);
-			orderProductPopulator.setProductPriceApi(productPriceApi);
+			orderProductPopulator.setPriceUtils(priceUtils);
 			orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setCustomerService(customerService);
+			orderProductPopulator.setLanguageService(languageService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
 			orderProductPopulator.populate(p, orderProduct, store, language);
 			orderProducts.add(orderProduct);
@@ -1189,7 +1193,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			
 			
 			BigDecimal calculatedAmount = orderTotalSummary.getTotal();
-			String strCalculatedTotal = productPriceApi.getAdminFormattedAmount(store.toDTO(), calculatedAmount);
+			String strCalculatedTotal = priceUtils.getAdminFormattedAmount(calculatedAmount);
 			
 			//compare both prices
 			if(!submitedAmount.equals(strCalculatedTotal)) {
@@ -1209,7 +1213,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			modelOrder.setOrderTotal(set);
 			
 			PersistablePaymentPopulator paymentPopulator = new PersistablePaymentPopulator();
-			paymentPopulator.setProductPriceApi(productPriceApi);
+			paymentPopulator.setPriceUtils(priceUtils);
 			Payment paymentModel = new Payment();
 			paymentPopulator.populate(order.getPayment(), paymentModel,  store, language);
 
@@ -1295,7 +1299,7 @@ public class OrderFacadeImpl implements OrderFacade {
 		ReadableTransaction transaction = new ReadableTransaction();
 		ReadableTransactionPopulator trxPopulator = new ReadableTransactionPopulator();
 		trxPopulator.setOrderService(orderService);
-		trxPopulator.setProductPriceApi(productPriceApi);
+		trxPopulator.setPriceUtils(priceUtils);
 		
 		trxPopulator.populate(transactionModel, transaction, store, language);
 

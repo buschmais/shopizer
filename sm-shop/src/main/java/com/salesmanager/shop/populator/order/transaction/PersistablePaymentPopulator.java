@@ -3,7 +3,9 @@ package com.salesmanager.shop.populator.order.transaction;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 
 import com.salesmanager.common.business.exception.ConversionException;
@@ -17,24 +19,22 @@ import com.salesmanager.shop.model.order.transaction.PersistablePayment;
 
 public class PersistablePaymentPopulator extends AbstractDataPopulator<PersistablePayment, Payment> {
 	
-	
-	ProductPriceApi productPriceApi;
-
-
+	@Getter @Setter
+	private PriceUtils priceUtils;
 
 	@Override
 	public Payment populate(PersistablePayment source, Payment target, MerchantStore store, Language language)
 			throws ConversionException {
 		
 		Validate.notNull(source,"PersistablePayment cannot be null");
-		Validate.notNull(productPriceApi,"productPriceApi must be set");
+		Validate.notNull(priceUtils,"priceUtils must be set");
 		if(target == null) {
 			target = new Payment();
 		}
 		
 		try {
 		
-			target.setAmount(productPriceApi.getAmount(source.getAmount()));
+			target.setAmount(priceUtils.getAmount(source.getAmount()));
 			target.setModuleName(source.getPaymentModule());
 			target.setPaymentType(PaymentType.valueOf(source.getPaymentType()));
 			target.setTransactionType(TransactionType.valueOf(source.getTransactionType()));
@@ -56,11 +56,4 @@ public class PersistablePaymentPopulator extends AbstractDataPopulator<Persistab
 		return null;
 	}
 
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
-	}
 }

@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +30,7 @@ import com.salesmanager.core.modules.integration.shipping.model.CustomShippingQu
 import com.salesmanager.core.modules.integration.shipping.model.CustomShippingQuotesConfiguration;
 import com.salesmanager.core.modules.integration.shipping.model.CustomShippingQuotesRegion;
 import com.salesmanager.core.modules.integration.shipping.model.ShippingQuoteModule;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class CustomWeightBasedShippingQuote implements ShippingQuoteModule {
@@ -40,8 +41,8 @@ public class CustomWeightBasedShippingQuote implements ShippingQuoteModule {
 	@Inject
 	private MerchantConfigurationService merchantConfigurationService;
 	
-	@Inject
-	private ProductPriceApi productPriceApi;
+	@Autowired
+	private PriceUtils priceUtils;
 
 
 	@Override
@@ -130,7 +131,7 @@ public class CustomWeightBasedShippingQuote implements ShippingQuoteModule {
 								shippingOption.setOptionCode(new StringBuilder().append(CUSTOM_WEIGHT).toString());
 								shippingOption.setOptionId(new StringBuilder().append(CUSTOM_WEIGHT).append("_").append(region.getCustomRegionName()).toString());
 								shippingOption.setOptionPrice(quoteItem.getPrice());
-								shippingOption.setOptionPriceText(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), quoteItem.getPrice()));
+								shippingOption.setOptionPriceText(priceUtils.getStoreFormattedAmountWithCurrency(store, quoteItem.getPrice()));
 								break;
 							}
 						}

@@ -2,10 +2,9 @@ package com.salesmanager.core.business.modules.order.total;
 
 import java.math.BigDecimal;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
+import com.salesmanager.core.model.catalog.FinalPriceInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang.Validate;
 import org.drools.KnowledgeBase;
 import org.drools.runtime.StatelessKnowledgeSession;
@@ -13,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.salesmanager.common.business.constants.Constants;
-import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderSummary;
@@ -43,8 +41,7 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 	
 
 	@Autowired
-	@Getter @Setter
-	ProductPriceApi productPriceApi;
+	ProductInfoService productInfoService;
 
 	@Override
 	public OrderTotal caculateProductPiceVariation(final OrderSummary summary, ShoppingCartItem shoppingCartItem, ProductInfo product, Customer customer, MerchantStore store)
@@ -79,13 +76,13 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 				orderTotal.setTitle(Constants.OT_SUBTOTAL_MODULE_CODE);
 				
 				//calculate discount that will be added as a negative value
-				FinalPrice productPrice = productPriceApi.calculateProductPrice(product.getId());
+				FinalPriceInfo productPrice = productInfoService.getProductFinalPrice(product.getId(), null);
 				
 				Double discount = inputParameters.getDiscount();
-				BigDecimal reduction = productPrice.getFinalPrice().multiply(new BigDecimal(discount));
-				reduction = reduction.multiply(new BigDecimal(shoppingCartItem.getQuantity()));
+				Double reduction = productPrice.getFinalPrice() * discount;
+				reduction = reduction * shoppingCartItem.getQuantity();
 				
-				orderTotal.setValue(reduction);
+				orderTotal.setValue(BigDecimal.valueOf(reduction));
 		}
 			
 		

@@ -52,8 +52,7 @@ public class PersistableOrderPopulator extends
 	@Override
 	public Order populate(PersistableOrder source, Order target,
 			MerchantStore store, Language language) throws ConversionException {
-		
-		
+
 		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
 		Validate.notNull(customerService,"customerService must be set");
 		Validate.notNull(countryService,"countryService must be set");

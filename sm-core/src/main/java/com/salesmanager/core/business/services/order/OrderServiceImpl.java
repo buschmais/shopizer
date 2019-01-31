@@ -11,7 +11,7 @@ import com.salesmanager.core.business.services.payments.PaymentService;
 import com.salesmanager.core.business.services.payments.TransactionService;
 import com.salesmanager.core.business.services.shipping.ShippingService;
 import com.salesmanager.core.business.services.tax.TaxService;
-import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.core.model.catalog.FinalPriceInfo;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.*;
@@ -178,12 +178,12 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
             item.setSubTotal(st);
             subTotal = subTotal.add(st);
             //Other prices
-            FinalPrice finalPrice = item.getFinalPrice();
+            FinalPriceInfo finalPrice = item.getFinalPrice();
             if(finalPrice!=null) {
-                List<FinalPrice> otherPrices = finalPrice.getAdditionalPrices();
+                List<FinalPriceInfo> otherPrices = finalPrice.getAdditionalPrices();
                 if(otherPrices!=null) {
-                    for(FinalPrice price : otherPrices) {
-                        if(!price.isDefaultPrice()) {
+                    for(FinalPriceInfo price : otherPrices) {
+                        if(!price.getDefaultPrice()) {
                             OrderTotal itemSubTotal = otherPricesTotals.get(price.getProductPrice().getCode());
 
                             if(itemSubTotal==null) {
@@ -203,10 +203,10 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
                                 orderTotalValue.setScale(2, RoundingMode.HALF_UP);
                             }
 
-                            orderTotalValue = orderTotalValue.add(price.getFinalPrice());
+                            orderTotalValue = orderTotalValue.add(BigDecimal.valueOf(price.getFinalPrice()));
                             itemSubTotal.setValue(orderTotalValue);
-                            if(price.getProductPrice().getProductPriceType().name().equals(OrderValueType.ONE_TIME)) {
-                                subTotal = subTotal.add(price.getFinalPrice());
+                            if(price.getProductPrice().getProductPriceType().equals(OrderValueType.ONE_TIME.name())) {
+                                subTotal = subTotal.add(BigDecimal.valueOf(price.getFinalPrice()));
                             }
                         }
                     }

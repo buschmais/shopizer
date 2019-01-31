@@ -1,6 +1,8 @@
 package com.salesmanager.shop.populator.order.transaction;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 
 import com.salesmanager.common.business.exception.ConversionException;
@@ -18,7 +20,9 @@ import com.shopizer.search.utils.DateUtil;
 public class PersistableTransactionPopulator extends AbstractDataPopulator<PersistableTransaction, Transaction> {
 
 	private OrderService orderService;
-	private ProductPriceApi productPriceApi;
+
+	@Getter @Setter
+	private PriceUtils priceUtils;
 	
 	@Override
 	public Transaction populate(PersistableTransaction source, Transaction target, MerchantStore store,
@@ -26,7 +30,7 @@ public class PersistableTransactionPopulator extends AbstractDataPopulator<Persi
 		
 		Validate.notNull(source,"PersistableTransaction must not be null");
 		Validate.notNull(orderService,"OrderService must not be null");
-		Validate.notNull(productPriceApi,"OrderService must not be null");
+		Validate.notNull(priceUtils,"priceUtils must not be null");
 		
 		if(target == null) {
 			target = new Transaction();
@@ -36,7 +40,7 @@ public class PersistableTransactionPopulator extends AbstractDataPopulator<Persi
 		try {
 			
 
-			target.setAmount(productPriceApi.getAmount(source.getAmount()));
+			target.setAmount(priceUtils.getAmount(source.getAmount()));
 			target.setDetails(source.getDetails());
 			target.setPaymentType(PaymentType.valueOf(source.getPaymentType()));
 			target.setTransactionType(TransactionType.valueOf(source.getTransactionType()));
@@ -78,11 +82,4 @@ public class PersistableTransactionPopulator extends AbstractDataPopulator<Persi
 		this.orderService = orderService;
 	}
 
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
-	}
 }

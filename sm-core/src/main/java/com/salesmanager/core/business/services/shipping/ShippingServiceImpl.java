@@ -1,7 +1,6 @@
 package com.salesmanager.core.business.services.shipping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.constants.ShippingConstants;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.services.reference.country.CountryService;
@@ -10,8 +9,9 @@ import com.salesmanager.core.business.services.reference.loader.ConfigurationMod
 import com.salesmanager.core.business.services.system.MerchantConfigurationService;
 import com.salesmanager.core.business.services.system.MerchantLogService;
 import com.salesmanager.core.business.services.system.ModuleConfigurationService;
-import com.salesmanager.core.model.catalog.ProductInfo;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.common.Delivery;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.language.Language;
@@ -32,6 +32,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,8 +55,8 @@ public class ShippingServiceImpl implements ShippingService {
 	private MerchantConfigurationService merchantConfigurationService;
 	
 
-	@Inject
-	private ProductPriceApi productPriceApi;
+	@Autowired
+	private PriceUtils priceUtils;
 	
 	@Inject
 	private ModuleConfigurationService moduleConfigurationService;
@@ -574,7 +575,7 @@ public class ShippingServiceImpl implements ShippingService {
 						selectedOption = option;
 					}
 					//set price text
-					String priceText = productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), option.getOptionPrice());
+					String priceText = priceUtils.getStoreFormattedAmountWithCurrency(store, option.getOptionPrice());
 					option.setOptionPriceText(priceText);
 					option.setShippingModuleCode(moduleName);
 				
@@ -828,15 +829,15 @@ public class ShippingServiceImpl implements ShippingService {
 
 	private BigDecimal calculateOrderTotal(List<ShippingProduct> products, MerchantStore store) throws Exception {
 		
-		BigDecimal total = new BigDecimal(0);
+		Double total = 0.0;
 		for(ShippingProduct shippingProduct : products) {
-			BigDecimal currentPrice = shippingProduct.getFinalPrice().getFinalPrice();
-			currentPrice = currentPrice.multiply(new BigDecimal(shippingProduct.getQuantity()));
-			total = total.add(currentPrice);
+			Double currentPrice = shippingProduct.getFinalPrice().getFinalPrice();
+			currentPrice = currentPrice * shippingProduct.getQuantity();
+			total = total + currentPrice;
 		}
 		
 		
-		return total;
+		return BigDecimal.valueOf(total);
 		
 		
 	}

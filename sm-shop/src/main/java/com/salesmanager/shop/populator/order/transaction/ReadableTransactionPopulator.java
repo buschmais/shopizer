@@ -1,6 +1,8 @@
 package com.salesmanager.shop.populator.order.transaction;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 
 import com.salesmanager.common.business.exception.ConversionException;
@@ -17,7 +19,9 @@ public class ReadableTransactionPopulator extends AbstractDataPopulator<Transact
 
 	
 	private OrderService orderService;
-	private ProductPriceApi productPriceApi;
+
+	@Getter @Setter
+	private PriceUtils priceUtils;
 	
 	@Override
 	public ReadableTransaction populate(Transaction source, ReadableTransaction target, MerchantStore store,
@@ -26,7 +30,7 @@ public class ReadableTransactionPopulator extends AbstractDataPopulator<Transact
 		
 		Validate.notNull(source,"PersistableTransaction must not be null");
 		Validate.notNull(orderService,"OrderService must not be null");
-		Validate.notNull(productPriceApi,"OrderService must not be null");
+		Validate.notNull(priceUtils,"priceUtils must not be null");
 		
 		if(target == null) {
 			target = new ReadableTransaction();
@@ -36,7 +40,7 @@ public class ReadableTransactionPopulator extends AbstractDataPopulator<Transact
 		try {
 			
 
-			target.setAmount(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getAmount()));
+			target.setAmount(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getAmount()));
 			target.setDetails(source.getDetails());
 			target.setPaymentType(source.getPaymentType());
 			target.setTransactionType(source.getTransactionType());
@@ -72,11 +76,4 @@ public class ReadableTransactionPopulator extends AbstractDataPopulator<Transact
 		this.orderService = orderService;
 	}
 
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
-	}
 }

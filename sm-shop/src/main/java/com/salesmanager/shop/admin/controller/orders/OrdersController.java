@@ -1,11 +1,11 @@
 package com.salesmanager.shop.admin.controller.orders;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.order.OrderService;
 import com.salesmanager.core.business.services.system.ModuleConfigurationService;
 import com.salesmanager.common.business.ajax.AjaxPageableResponse;
 import com.salesmanager.common.business.ajax.AjaxResponse;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.common.CriteriaOrderBy;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.Order;
@@ -17,7 +17,6 @@ import com.salesmanager.shop.admin.controller.ControllerConstants;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.DateUtil;
-import com.salesmanager.common.presentation.util.LabelUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,10 +54,7 @@ public class OrdersController {
 	OrderService orderService;
 	
 	@Inject
-	LabelUtils messages;
-	
-	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	
 	@Inject
 	protected ModuleConfigurationService moduleConfigurationService;
@@ -122,7 +118,7 @@ public class OrdersController {
 					Map entry = new HashMap();
 					entry.put("orderId", order.getId());
 					entry.put("customer", order.getBilling().getFirstName() + " " + order.getBilling().getLastName());
-					entry.put("amount", productPriceApi.getAdminFormattedAmountWithCurrency(store.toDTO(), order.getTotal()));//todo format total
+					entry.put("amount", priceUtils.getAdminFormattedAmountWithCurrency(store, order.getTotal()));//todo format total
 					entry.put("date", DateUtil.formatDate(order.getDatePurchased()));
 					entry.put("status", order.getStatus().name());
 					

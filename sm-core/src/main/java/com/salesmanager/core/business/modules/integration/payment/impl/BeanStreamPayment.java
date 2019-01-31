@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,12 +40,13 @@ import com.salesmanager.core.model.system.MerchantLog;
 import com.salesmanager.core.model.system.ModuleConfig;
 import com.salesmanager.core.modules.integration.IntegrationException;
 import com.salesmanager.core.modules.integration.payment.model.PaymentModule;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class BeanStreamPayment implements PaymentModule {
 	
-	@Inject
-	private ProductPriceApi productPriceApi;
+	@Autowired
+	private PriceUtils priceUtils;
 	
 	@Inject
 	private MerchantLogService merchantLogService;
@@ -91,7 +92,7 @@ public class BeanStreamPayment implements PaymentModule {
 		
 				String trnID = capturableTransaction.getTransactionDetails().get("TRANSACTIONID");
 				
-				String amnt = productPriceApi.getAdminFormattedAmount(store.toDTO(), order.getTotal());
+				String amnt = priceUtils.getAdminFormattedAmount(order.getTotal());
 				
 				/**
 				merchant_id=123456789&requestType=BACKEND
@@ -185,7 +186,7 @@ public class BeanStreamPayment implements PaymentModule {
 
 			String trnID = transaction.getTransactionDetails().get("TRANSACTIONID");
 			
-			String amnt = productPriceApi.getAdminFormattedAmount(store.toDTO(), amount);
+			String amnt = priceUtils.getAdminFormattedAmount(amount);
 			
 			/**
 			merchant_id=123456789&requestType=BACKEND
@@ -506,7 +507,7 @@ public class BeanStreamPayment implements PaymentModule {
 			
 		String orderNumber = uniqueId;
 		
-		String amnt = productPriceApi.getAdminFormattedAmount(store.toDTO(), amount);
+		String amnt = priceUtils.getAdminFormattedAmount(amount);
 		
 		
 		StringBuilder messageString = new StringBuilder();

@@ -1,15 +1,13 @@
 package com.salesmanager.core.business.services.shoppingcart;
 
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartAttributeRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartItemRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartRepository;
 import com.salesmanager.common.business.service.SalesManagerEntityServiceImpl;
-import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
+import com.salesmanager.core.model.catalog.FinalPriceInfo;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.customer.Customer;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service("shoppingCartService")
 public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long, ShoppingCart>
@@ -41,22 +38,16 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 	private ShoppingCartRepository shoppingCartRepository;
 
 	@Inject
-	private ProductApi productApi;
-
-	@Inject
 	private ShoppingCartItemRepository shoppingCartItemRepository;
 	
 	@Inject
 	private ShoppingCartAttributeRepository shoppingCartAttributeItemRepository;
-	
-	@Inject
-	private ProductPriceApi productPriceApi;
-
-	@Autowired
-	private ProductAttributeApi productAttributeApi;
 
 	@Autowired
 	private ProductInfoRepository productInfoRepository;
+
+	@Autowired
+	private ProductInfoService productInfoService;
 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
@@ -308,8 +299,8 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		item.setProductVirtual(product.getAvailabilityInformation().getVirtual());
 
 		// set item price
-		FinalPrice price = productPriceApi.calculateProductPrice(product.getId());
-		item.setItemPrice(price.getFinalPrice());
+		FinalPriceInfo price = productInfoService.getProductFinalPrice(product.getId(), null);
+		item.setItemPrice(BigDecimal.valueOf(price.getFinalPrice()));
 		return item;
 
 	}
@@ -374,8 +365,8 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		
 
 		// set item price
-		FinalPrice price = productPriceApi.getFinalProductPrice(product.getId(), attributesList.stream().map(ProductAttributeInfo::getId).collect(Collectors.toList()));
-		item.setItemPrice(price.getFinalPrice());
+		FinalPriceInfo price = productInfoService.getProductFinalPrice(product.getId(), attributesList);
+		item.setItemPrice(BigDecimal.valueOf(price.getFinalPrice()));
 		item.setFinalPrice(price);
 
 		BigDecimal subTotal = item.getItemPrice().multiply(new BigDecimal(item.getQuantity().intValue()));
@@ -415,8 +406,8 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		Set<ShoppingCartItem> items = cart.getLineItems();
 		for (ShoppingCartItem item : items) {
 			ProductInfo product = item.getProduct();
-			FinalPrice finalPrice = productPriceApi.calculateProductPrice(product.getId());
-			if (finalPrice.getFinalPrice().longValue() > 0) {
+			FinalPriceInfo finalPrice = productInfoService.getProductFinalPrice(product.getId(), null);
+			if (finalPrice.getFinalPrice() > 0) {
 				return false;
 			}
 		}

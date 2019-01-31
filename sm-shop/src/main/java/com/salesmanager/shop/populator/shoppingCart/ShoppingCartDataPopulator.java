@@ -3,10 +3,10 @@
  */
 package com.salesmanager.shop.populator.shoppingCart;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.catalog.ProductDescriptionInfo;
 import com.salesmanager.core.model.catalog.ProductImageInfo;
 import com.salesmanager.core.model.catalog.ProductOptionDescriptionInfo;
@@ -45,10 +45,11 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
 
     private static final Logger LOG = LoggerFactory.getLogger(ShoppingCartDataPopulator.class);
 
-    private ProductPriceApi productPriceApi;
+    @Getter @Setter
+    private PriceUtils priceUtils;
 
     private  ShoppingCartCalculationService shoppingCartCalculationService;
-    
+
     @Getter @Setter
     private ProductInfoService productInfoService;
 
@@ -63,12 +64,6 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
 
     public ShoppingCartCalculationService getOrderService() {
         return shoppingCartCalculationService;
-    }
-
-
-
-    public ProductPriceApi getProductPriceApi() {
-        return productPriceApi;
     }
 
 
@@ -107,14 +102,14 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
                     
                     shoppingCartItem.setName(itemName);
 
-                    shoppingCartItem.setPrice(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), item.getItemPrice()));
+                    shoppingCartItem.setPrice(priceUtils.getStoreFormattedAmountWithCurrency(store, item.getItemPrice()));
                     shoppingCartItem.setQuantity(item.getQuantity());
                     
                     
                     cartQuantity = cartQuantity + item.getQuantity();
                     
                     shoppingCartItem.setProductPrice(item.getItemPrice());
-                    shoppingCartItem.setSubTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), item.getSubTotal()));
+                    shoppingCartItem.setSubTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, item.getSubTotal()));
                     ProductImageInfo image = productInfoService.getDefaultImage(item.getProduct().getId());
                     if(image != null) {
                         shoppingCartItem.setImage(image.getImageUrl());
@@ -179,8 +174,8 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
             	cart.setTotals(totals);
             }
             
-            cart.setSubTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), orderSummary.getSubTotal()));
-            cart.setTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), orderSummary.getTotal()));
+            cart.setSubTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, orderSummary.getSubTotal()));
+            cart.setTotal(priceUtils.getStoreFormattedAmountWithCurrency(store, orderSummary.getTotal()));
             cart.setQuantity(cartQuantity);
             cart.setId(shoppingCart.getId());
         }
@@ -191,26 +186,10 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
         return cart;
 
 
-    };
-
-
-
-
-
-    public void setProductPriceApi(final ProductPriceApi productPriceApi) {
-        this.productPriceApi = productPriceApi;
     }
-
-
-
-
-
 
     public void setShoppingCartCalculationService(final ShoppingCartCalculationService shoppingCartCalculationService) {
         this.shoppingCartCalculationService = shoppingCartCalculationService;
     }
-
-
-
 
 }

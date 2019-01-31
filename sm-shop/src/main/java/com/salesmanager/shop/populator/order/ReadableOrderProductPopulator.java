@@ -1,9 +1,9 @@
 package com.salesmanager.shop.populator.order;
 
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.catalog.ProductImageInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
@@ -30,7 +30,10 @@ public class ReadableOrderProductPopulator extends
 		AbstractDataPopulator<OrderProduct, ReadableOrderProduct> {
 	
 	private ProductApi productApi;
-	private ProductPriceApi productPriceApi;
+
+	@Getter @Setter
+	private PriceUtils priceUtils;
+
 	private CustomerService customerService;
 
 	@Getter @Setter
@@ -45,11 +48,11 @@ public class ReadableOrderProductPopulator extends
 			throws ConversionException {
 		
 		Validate.notNull(productApi,"Requires ProductAPI");
-		Validate.notNull(productPriceApi,"Requires productPriceApi");
+		Validate.notNull(priceUtils,"Requires priceUtils");
 		target.setId(source.getId());
 		target.setOrderedQuantity(source.getProductQuantity());
 		try {
-			target.setPrice(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), source.getOneTimeCharge()));
+			target.setPrice(priceUtils.getStoreFormattedAmountWithCurrency(store, source.getOneTimeCharge()));
 		} catch(Exception e) {
 			throw new ConversionException("Cannot convert price",e);
 		}
@@ -61,7 +64,7 @@ public class ReadableOrderProductPopulator extends
 		subTotal = subTotal.multiply(new BigDecimal(source.getProductQuantity()));
 		
 		try {
-			String subTotalPrice = productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), subTotal);
+			String subTotalPrice = priceUtils.getStoreFormattedAmountWithCurrency(store, subTotal);
 			target.setSubTotal(subTotalPrice);
 		} catch(Exception e) {
 			throw new ConversionException("Cannot format price",e);
@@ -85,7 +88,6 @@ public class ReadableOrderProductPopulator extends
 				if(product!=null) {
 
 					ReadableProductPopulator populator = new ReadableProductPopulator();
-					populator.setProductPriceApi(productPriceApi);
 					populator.setLanguageService(languageService);
 					populator.setProductApi(productApi);
 					populator.setProductInfoService(productInfoService);
@@ -108,14 +110,6 @@ public class ReadableOrderProductPopulator extends
 	protected ReadableOrderProduct createTarget() {
 
 		return null;
-	}
-
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
 	}
 
 	public ProductApi getProductApi() {

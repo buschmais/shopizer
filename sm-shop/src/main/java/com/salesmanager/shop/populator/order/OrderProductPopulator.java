@@ -1,15 +1,13 @@
 package com.salesmanager.shop.populator.order;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
-import com.salesmanager.catalog.model.product.price.FinalPrice;
-import com.salesmanager.catalog.model.product.price.ProductPrice;
+import com.salesmanager.core.model.catalog.FinalPriceInfo;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
+import com.salesmanager.core.model.catalog.ProductPriceInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 import com.salesmanager.core.model.order.orderproduct.OrderProductAttribute;
@@ -81,7 +79,7 @@ public class OrderProductPopulator extends
 			target.setProductQuantity(source.getQuantity());
 			target.setSku(source.getProduct().getSku());
 			
-			FinalPrice finalPrice = source.getFinalPrice();
+			FinalPriceInfo finalPrice = source.getFinalPrice();
 			if(finalPrice==null) {
 				throw new ConversionException("Object final price not populated in shoppingCartItem (source)");
 			}
@@ -93,9 +91,9 @@ public class OrderProductPopulator extends
 			prices.add(orderProductPrice);
 
 			//Other prices
-			List<FinalPrice> otherPrices = finalPrice.getAdditionalPrices();
+			List<FinalPriceInfo> otherPrices = finalPrice.getAdditionalPrices();
 			if(otherPrices!=null) {
-				for(FinalPrice otherPrice : otherPrices) {
+				for(FinalPriceInfo otherPrice : otherPrices) {
 					OrderProductPrice other = orderProductPrice(otherPrice);
 					other.setOrderProduct(target);
 					prices.add(other);
@@ -148,21 +146,19 @@ public class OrderProductPopulator extends
 		return null;
 	}
 
-	private OrderProductPrice orderProductPrice(FinalPrice price) {
+	private OrderProductPrice orderProductPrice(FinalPriceInfo price) {
 		
 		OrderProductPrice orderProductPrice = new OrderProductPrice();
 		
-		ProductPrice productPrice = price.getProductPrice();
+		ProductPriceInfo productPrice = price.getProductPrice();
 		
-		orderProductPrice.setDefaultPrice(productPrice.isDefaultPrice());
+		orderProductPrice.setDefaultPrice(productPrice.getDefaultPrice());
 
-		orderProductPrice.setProductPrice(price.getFinalPrice());
+		orderProductPrice.setProductPrice(BigDecimal.valueOf(price.getFinalPrice()));
 		orderProductPrice.setProductPriceCode(productPrice.getCode());
-		if(productPrice.getDescriptions()!=null && productPrice.getDescriptions().size()>0) {
-			orderProductPrice.setProductPriceName(productPrice.getDescriptions().iterator().next().getName());
-		}
-		if(price.isDiscounted()) {
-			orderProductPrice.setProductPriceSpecial(productPrice.getProductPriceSpecialAmount());
+		orderProductPrice.setProductPriceName(productPrice.getName());
+		if(price.getDiscounted()) {
+			orderProductPrice.setProductPriceSpecial(BigDecimal.valueOf(productPrice.getProductPriceSpecialAmount()));
 			orderProductPrice.setProductPriceSpecialStartDate(productPrice.getProductPriceSpecialStartDate());
 			orderProductPrice.setProductPriceSpecialEndDate(productPrice.getProductPriceSpecialEndDate());
 		}

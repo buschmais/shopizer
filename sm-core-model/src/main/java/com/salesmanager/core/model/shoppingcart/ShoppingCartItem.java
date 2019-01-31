@@ -23,7 +23,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 
 import com.salesmanager.core.constants.SchemaConstant;
-import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.core.model.catalog.FinalPriceInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
@@ -73,7 +73,7 @@ public class ShoppingCartItem extends SalesManagerEntity<Long, ShoppingCartItem>
 	private BigDecimal subTotal;//item final price * quantity
 	
 	@Transient
-	private FinalPrice finalPrice;//contains price details (raw prices)
+	private FinalPriceInfo finalPrice;//contains price details (raw prices)
 	
 
 	@Transient
@@ -206,11 +206,11 @@ public class ShoppingCartItem extends SalesManagerEntity<Long, ShoppingCartItem>
 		return subTotal;
 	}
 
-	public void setFinalPrice(FinalPrice finalPrice) {
+	public void setFinalPrice(FinalPriceInfo finalPrice) {
 		this.finalPrice = finalPrice;
 	}
 
-	public FinalPrice getFinalPrice() {
+	public FinalPriceInfo getFinalPrice() {
 		return finalPrice;
 	}
 	

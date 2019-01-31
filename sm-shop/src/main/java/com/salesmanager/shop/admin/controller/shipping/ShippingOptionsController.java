@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.utils.PriceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class ShippingOptionsController {
 	LabelUtils messages;
 	
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	
 	/**
 	 * Displays shipping options
@@ -75,11 +75,11 @@ public class ShippingOptionsController {
 		if(shippingConfiguration!=null) {
 			
 			if(shippingConfiguration.getHandlingFees()!=null) {
-				shippingConfiguration.setHandlingFeesText(productPriceApi.getAdminFormattedAmount(store.toDTO(), shippingConfiguration.getHandlingFees()));
+				shippingConfiguration.setHandlingFeesText(priceUtils.getAdminFormattedAmount(shippingConfiguration.getHandlingFees()));
 			}
 			
 			if(shippingConfiguration.getOrderTotalFreeShipping()!=null) {
-				shippingConfiguration.setOrderTotalFreeShippingText(productPriceApi.getAdminFormattedAmount(store.toDTO(), shippingConfiguration.getOrderTotalFreeShipping()));
+				shippingConfiguration.setOrderTotalFreeShippingText(priceUtils.getAdminFormattedAmount(shippingConfiguration.getOrderTotalFreeShipping()));
 			}
 			
 		}
@@ -120,7 +120,7 @@ public class ShippingOptionsController {
 		BigDecimal submitedOrderPrice = null;
 		if(!StringUtils.isBlank(configuration.getOrderTotalFreeShippingText())){
 			try {
-				submitedOrderPrice = productPriceApi.getAmount(configuration.getOrderTotalFreeShippingText());
+				submitedOrderPrice = priceUtils.getAmount(configuration.getOrderTotalFreeShippingText());
 				shippingConfiguration.setOrderTotalFreeShipping(submitedOrderPrice);
 			} catch (Exception e) {
 				ObjectError error = new ObjectError("orderTotalFreeShippingText",messages.getMessage("message.invalid.price", locale));
@@ -131,7 +131,7 @@ public class ShippingOptionsController {
 		BigDecimal submitedHandlingPrice = null;
 		if(!StringUtils.isBlank(configuration.getHandlingFeesText())){
 			try {
-				submitedHandlingPrice = productPriceApi.getAmount(configuration.getHandlingFeesText());
+				submitedHandlingPrice = priceUtils.getAmount(configuration.getHandlingFeesText());
 				shippingConfiguration.setHandlingFees(submitedHandlingPrice);
 			} catch (Exception e) {
 				ObjectError error = new ObjectError("handlingFeesText",messages.getMessage("message.invalid.price", locale));

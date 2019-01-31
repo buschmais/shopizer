@@ -1,14 +1,11 @@
 package com.salesmanager.shop.admin.controller.orders;
 
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.order.OrderService;
 import com.salesmanager.core.business.services.payments.PaymentService;
 import com.salesmanager.core.business.services.payments.TransactionService;
-import com.salesmanager.core.business.services.reference.country.CountryService;
-import com.salesmanager.core.business.services.reference.zone.ZoneService;
-import com.salesmanager.core.business.services.system.EmailService;
 import com.salesmanager.common.business.ajax.AjaxResponse;
+import com.salesmanager.core.business.utils.PriceUtils;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.Order;
@@ -56,13 +53,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(OrderActionsControl
 	
 	@Inject
 	private OrderService orderService;
-	
-	@Inject
-	CountryService countryService;
-	
-	@Inject
-	ZoneService zoneService;
-	
+
 	@Inject
 	PaymentService paymentService;
 	
@@ -71,15 +62,12 @@ private static final Logger LOGGER = LoggerFactory.getLogger(OrderActionsControl
 	
 	@Inject
 	TransactionService transactionService;
-	
-	@Inject
-	EmailService emailService;
-	
+
 	@Inject
 	EmailTemplatesUtils emailTemplatesUtils;
 
 	@Inject
-	private ProductPriceApi productPriceApi;
+	private PriceUtils priceUtils;
 	
 	
 	@PreAuthorize("hasRole('ORDER')")
@@ -339,7 +327,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(OrderActionsControl
 					entry.put("transactionDate", DateUtil.formatLongDate(transaction.getTransactionDate()));
 					entry.put("transactionType", transaction.getTransactionType().name());
 					entry.put("paymentType", transaction.getPaymentType().name());
-					entry.put("transactionAmount", productPriceApi.getAdminFormattedAmount(store.toDTO(), transaction.getAmount()));
+					entry.put("transactionAmount", priceUtils.getAdminFormattedAmount(transaction.getAmount()));
 					entry.put("transactionDetails", transaction.getTransactionDetails());
 					resp.addDataEntry(entry);
 				}
