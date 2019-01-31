@@ -7,6 +7,8 @@ import com.salesmanager.catalog.business.service.category.CategoryService;
 import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
+import com.salesmanager.common.presentation.model.BreadcrumbItem;
+import com.salesmanager.common.presentation.model.BreadcrumbItemType;
 import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,21 @@ public class CategoryApiImpl implements CategoryApi {
         this.categoryService = categoryService;
         this.merchantStoreInfoService = merchantStoreInfoService;
         this.languageInfoService = languageInfoService;
+    }
+
+    @Override
+    public BreadcrumbItem getBreadcrumbItemForLocale(Long categoryId, LanguageDTO languageDTO) {
+        LanguageInfo languageInfo = this.languageInfoService.findbyCode(languageDTO.getCode());
+        Category category = this.categoryService.getByLanguage(categoryId, languageInfo);
+        if(category!=null) {
+            BreadcrumbItem categoryItem = new  BreadcrumbItem();
+            categoryItem.setId(category.getId());
+            categoryItem.setItemType(BreadcrumbItemType.CATEGORY);
+            categoryItem.setLabel(category.getDescription().getName());
+            categoryItem.setUrl(category.getDescription().getSeUrl());
+            return categoryItem;
+        }
+        return null;
     }
 
     @Override

@@ -15,13 +15,18 @@ import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.common.presentation.model.BreadcrumbItem;
+import com.salesmanager.common.presentation.model.BreadcrumbItemType;
 import com.salesmanager.common.presentation.util.DateUtil;
 import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 @Component
 public class ProductApiImpl implements ProductApi {
@@ -54,6 +59,21 @@ public class ProductApiImpl implements ProductApi {
     public Product getProductForLocale(long productId, LanguageDTO language, Locale locale) throws ServiceException {
         LanguageInfo languageInfo = this.languageInfoService.findbyCode(language.getCode());
         return this.productService.getProductForLocale(productId, languageInfo, locale);
+    }
+
+    @Override
+    public BreadcrumbItem getBreadcrumbItemForLocale(long productId, LanguageDTO languageDTO, Locale locale) throws ServiceException {
+        LanguageInfo languageInfo = this.languageInfoService.findbyCode(languageDTO.getCode());
+        Product product = this.productService.getProductForLocale(productId, languageInfo, locale);
+        if(product!=null) {
+            BreadcrumbItem productItem = new  BreadcrumbItem();
+            productItem.setId(product.getId());
+            productItem.setItemType(BreadcrumbItemType.PRODUCT);
+            productItem.setLabel(product.getProductDescription().getName());
+            productItem.setUrl(product.getProductDescription().getSeUrl());
+            return productItem;
+        }
+        return null;
     }
 
     @Override

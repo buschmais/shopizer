@@ -738,23 +738,13 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 								homeItem.setUrl(Constants.HOME_URL);
 								items.add(homeItem);
 							} else if(item.getItemType().name().equals(BreadcrumbItemType.PRODUCT)) {
-								Product product = productApi.getProductForLocale(item.getId(), language.toDTO(), locale);
-								if(product!=null) {
-									BreadcrumbItem productItem = new  BreadcrumbItem();
-									productItem.setId(product.getId());
-									productItem.setItemType(BreadcrumbItemType.PRODUCT);
-									productItem.setLabel(product.getProductDescription().getName());
-									productItem.setUrl(product.getProductDescription().getSeUrl());
+								BreadcrumbItem productItem = productApi.getBreadcrumbItemForLocale(item.getId(), language.toDTO(), locale);
+								if (productItem != null) {
 									items.add(productItem);
 								}
 							}else if(item.getItemType().name().equals(BreadcrumbItemType.CATEGORY)) {
-								Category category = categoryApi.getByLanguage(item.getId(), language.toDTO());
-								if(category!=null) {
-									BreadcrumbItem categoryItem = new  BreadcrumbItem();
-									categoryItem.setId(category.getId());
-									categoryItem.setItemType(BreadcrumbItemType.CATEGORY);
-									categoryItem.setLabel(category.getDescription().getName());
-									categoryItem.setUrl(category.getDescription().getSeUrl());
+								BreadcrumbItem categoryItem = categoryApi.getBreadcrumbItemForLocale(item.getId(), language.toDTO());
+								if (categoryItem != null) {
 									items.add(categoryItem);
 								}
 							}else if(item.getItemType().name().equals(BreadcrumbItemType.PAGE)) {
