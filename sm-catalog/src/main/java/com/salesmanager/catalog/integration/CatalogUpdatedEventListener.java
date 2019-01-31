@@ -1,5 +1,7 @@
 package com.salesmanager.catalog.integration;
 
+import com.salesmanager.catalog.api.event.product.ProductUpdatedEvent;
+import com.salesmanager.catalog.model.product.Product;
 import org.hibernate.event.spi.PostUpdateEvent;
 import org.hibernate.event.spi.PostUpdateEventListener;
 import org.hibernate.persister.entity.EntityPersister;
@@ -15,6 +17,10 @@ public class CatalogUpdatedEventListener implements PostUpdateEventListener, App
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
+        if (event.getEntity() instanceof Product) {
+            Product product = (Product) event.getEntity();
+            applicationEventPublisher.publishEvent(new ProductUpdatedEvent(product.toDTO()));
+        }
     }
 
     @Override

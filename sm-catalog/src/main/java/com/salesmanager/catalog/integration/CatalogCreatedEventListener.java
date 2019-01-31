@@ -1,5 +1,7 @@
 package com.salesmanager.catalog.integration;
 
+import com.salesmanager.catalog.api.event.product.ProductCreatedEvent;
+import com.salesmanager.catalog.model.product.Product;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;
 import org.hibernate.persister.entity.EntityPersister;
@@ -15,6 +17,10 @@ public class CatalogCreatedEventListener implements PostInsertEventListener, App
 
     @Override
     public void onPostInsert(PostInsertEvent event) {
+        if (event.getEntity() instanceof Product) {
+            Product product = (Product) event.getEntity();
+            applicationEventPublisher.publishEvent(new ProductCreatedEvent(product.toDTO()));
+        }
     }
 
     @Override

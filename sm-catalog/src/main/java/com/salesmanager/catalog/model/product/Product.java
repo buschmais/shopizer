@@ -26,6 +26,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
+import com.salesmanager.catalog.api.dto.product.ProductDTO;
+import com.salesmanager.catalog.integration.TransferableEntity;
 import com.salesmanager.catalog.model.integration.core.CustomerInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
@@ -50,7 +52,7 @@ import com.salesmanager.common.model.SalesManagerEntity;
 @EntityListeners(value = AuditListener.class)
 @Table(name = "PRODUCT", uniqueConstraints=
 @UniqueConstraint(columnNames = {"MERCHANT_ID", "SKU"}))
-public class Product extends SalesManagerEntity<Long, Product> implements Auditable {
+public class Product extends SalesManagerEntity<Long, Product> implements Auditable, TransferableEntity<ProductDTO> {
 	private static final long serialVersionUID = -6228066416290007047L;
 
 	@Id
@@ -507,6 +509,12 @@ public class Product extends SalesManagerEntity<Long, Product> implements Audita
 	}
 
 
-
-
+	@Override
+	public ProductDTO toDTO() {
+		return new ProductDTO(
+				this.id,
+				this.sku,
+				this.getProductDescription() != null ? this.getProductDescription().getName() : null,
+				this.manufacturer != null ? this.manufacturer.getCode() : null);
+	}
 }

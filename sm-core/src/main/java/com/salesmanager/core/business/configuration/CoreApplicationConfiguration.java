@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ImportResource;
 @Configuration
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.salesmanager.core.model"})
-@ComponentScan({"com.salesmanager.core.business.services","com.salesmanager.core.business.utils","com.salesmanager.core.integration"})
+@ComponentScan({"com.salesmanager.core.business.services","com.salesmanager.core.business.utils","com.salesmanager.core.business.integration","com.salesmanager.core.integration"})
 @ImportResource("classpath:/spring/shopizer-core-context.xml")
 public class CoreApplicationConfiguration {
 }

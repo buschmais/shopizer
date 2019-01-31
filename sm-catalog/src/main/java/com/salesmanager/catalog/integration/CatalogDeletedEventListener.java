@@ -1,5 +1,6 @@
 package com.salesmanager.catalog.integration;
 
+import com.salesmanager.catalog.api.event.product.ProductDeletedEvent;
 import com.salesmanager.catalog.model.product.Product;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.hibernate.event.spi.PostDeleteEventListener;
@@ -16,6 +17,10 @@ public class CatalogDeletedEventListener implements PostDeleteEventListener, App
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
+        if (event.getEntity() instanceof Product) {
+            Product product = (Product) event.getEntity();
+            applicationEventPublisher.publishEvent(new ProductDeletedEvent(product.toDTO()));
+        }
     }
 
     @Override
