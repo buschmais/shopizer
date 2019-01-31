@@ -6,6 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
+import com.salesmanager.catalog.integration.TransferableEntity;
 import com.salesmanager.catalog.model.common.Description;
 
 @Entity
@@ -16,7 +18,7 @@ import com.salesmanager.catalog.model.common.Description;
 		})
 	}
 )
-public class ProductOptionValueDescription extends Description {
+public class ProductOptionValueDescription extends Description implements TransferableEntity<ProductOptionValueDTO.ProductOptionValueDescriptionDTO> {
 	private static final long serialVersionUID = 7402155175956813576L;
 	
 	@ManyToOne(targetEntity = ProductOptionValue.class)
@@ -34,4 +36,8 @@ public class ProductOptionValueDescription extends Description {
 		this.productOptionValue = productOptionValue;
 	}
 
+	@Override
+	public ProductOptionValueDTO.ProductOptionValueDescriptionDTO toDTO() {
+		return new ProductOptionValueDTO.ProductOptionValueDescriptionDTO(getId(), getName(), getLanguage().getId());
+	}
 }

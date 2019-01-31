@@ -12,5 +12,7 @@ public class ProductAttributeDTO extends AbstractCatalogDTO {
     private final Double price;
     private final Boolean free;
     private final Double weight;
+    private final Long productOptionId;
+    private final Long productOptionValueId;
 
 }

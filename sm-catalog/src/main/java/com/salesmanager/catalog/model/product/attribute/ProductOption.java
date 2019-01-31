@@ -23,6 +23,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
 
+import com.salesmanager.catalog.api.dto.product.ProductOptionDTO;
+import com.salesmanager.catalog.integration.TransferableEntity;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -32,7 +34,7 @@ import com.salesmanager.common.model.SalesManagerEntity;
 @Entity
 @Table(name="PRODUCT_OPTION", indexes = { @Index(name="PRD_OPTION_CODE_IDX", columnList = "PRODUCT_OPTION_CODE")}, uniqueConstraints=
 	@UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_OPTION_CODE"}))
-public class ProductOption extends SalesManagerEntity<Long, ProductOption> {
+public class ProductOption extends SalesManagerEntity<Long, ProductOption> implements TransferableEntity<ProductOptionDTO> {
 	private static final long serialVersionUID = -2019269055342226086L;
 	
 	@Id
@@ -145,5 +147,16 @@ public class ProductOption extends SalesManagerEntity<Long, ProductOption> {
 
 	public boolean isReadOnly() {
 		return readOnly;
+	}
+
+	@Override
+	public ProductOptionDTO toDTO() {
+		List<ProductOptionDTO.ProductOptionDescriptionDTO> descriptionDTOS = new ArrayList<>();
+		if (this.descriptions != null) {
+			for (ProductOptionDescription description : this.descriptions) {
+				descriptionDTOS.add(description.toDTO());
+			}
+		}
+		return new ProductOptionDTO(id, descriptionDTOS);
 	}
 }

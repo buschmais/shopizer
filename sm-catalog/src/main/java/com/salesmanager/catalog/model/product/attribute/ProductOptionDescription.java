@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.salesmanager.catalog.integration.TransferableEntity;
+import com.salesmanager.catalog.api.dto.product.ProductOptionDTO;
 import com.salesmanager.catalog.model.common.Description;
 import org.hibernate.annotations.Type;
 
@@ -19,7 +21,7 @@ import org.hibernate.annotations.Type;
 		})
 	}
 )
-public class ProductOptionDescription extends Description {
+public class ProductOptionDescription extends Description implements TransferableEntity<ProductOptionDTO.ProductOptionDescriptionDTO> {
 	private static final long serialVersionUID = -3158504904707188465L;
 	
 	@ManyToOne(targetEntity = ProductOption.class)
@@ -46,5 +48,10 @@ public class ProductOptionDescription extends Description {
 
 	public void setProductOption(ProductOption productOption) {
 		this.productOption = productOption;
+	}
+
+	@Override
+	public ProductOptionDTO.ProductOptionDescriptionDTO toDTO() {
+		return new ProductOptionDTO.ProductOptionDescriptionDTO(getId(), getName(), getLanguage().getId());
 	}
 }

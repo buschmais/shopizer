@@ -22,6 +22,8 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
+import com.salesmanager.catalog.integration.TransferableEntity;
+import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +35,7 @@ import com.salesmanager.common.model.SalesManagerEntity;
 @Entity
 @Table(name="PRODUCT_OPTION_VALUE", indexes = { @Index(name="PRD_OPTION_VAL_CODE_IDX", columnList = "PRODUCT_OPTION_VAL_CODE")}, uniqueConstraints=
 	@UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_OPTION_VAL_CODE"}))
-public class ProductOptionValue extends SalesManagerEntity<Long, ProductOptionValue> {
+public class ProductOptionValue extends SalesManagerEntity<Long, ProductOptionValue> implements TransferableEntity<ProductOptionValueDTO> {
 	private static final long serialVersionUID = 3736085877929910891L;
 
 	@Id
@@ -154,6 +156,14 @@ public class ProductOptionValue extends SalesManagerEntity<Long, ProductOptionVa
 	}
 
 
-
-
+	@Override
+	public ProductOptionValueDTO toDTO() {
+		List<ProductOptionValueDTO.ProductOptionValueDescriptionDTO> descriptionDTOs = new ArrayList<>();
+		if (this.descriptions != null) {
+			for (ProductOptionValueDescription description : descriptions) {
+				descriptionDTOs.add(description.toDTO());
+			}
+		}
+		return new ProductOptionValueDTO(id, descriptionDTOs);
+	}
 }

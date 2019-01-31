@@ -5,10 +5,14 @@ import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.business.repositories.catalog.ProductOptionInfoRepository;
+import com.salesmanager.core.business.repositories.catalog.ProductOptionValueInfoRepository;
 import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
 import com.salesmanager.core.business.repositories.tax.TaxClassRepository;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
+import com.salesmanager.core.model.catalog.ProductOptionInfo;
+import com.salesmanager.core.model.catalog.ProductOptionValueInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +31,18 @@ public class ProductInfoService {
 
     private final MerchantRepository merchantRepository;
     private final TaxClassRepository taxClassRepository;
+    private final ProductOptionInfoRepository productOptionInfoRepository;
+    private final ProductOptionValueInfoRepository productOptionValueInfoRepository;
 
 
     @Autowired
-    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository) {
+    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository, ProductOptionInfoRepository productOptionInfoRepository, ProductOptionValueInfoRepository productOptionValueInfoRepository) {
         this.productApi = productApi;
         this.productInfoRepository = productInfoRepository;
         this.merchantRepository = merchantRepository;
         this.taxClassRepository = taxClassRepository;
+        this.productOptionInfoRepository = productOptionInfoRepository;
+        this.productOptionValueInfoRepository = productOptionValueInfoRepository;
     }
 
     public ProductInfo save(ProductInfo productInfo) {
@@ -82,7 +90,9 @@ public class ProductInfoService {
         Set<ProductAttributeInfo> productAttributeInfos = new HashSet<>();
         if (productAttributeDTOs != null) {
             for (ProductAttributeDTO dto : productAttributeDTOs) {
-                productAttributeInfos.add(new ProductAttributeInfo(dto.getId(), dto.getPrice(), dto.getFree(), dto.getWeight()));
+                ProductOptionInfo optionInfo = productOptionInfoRepository.findOne(dto.getProductOptionId());
+                ProductOptionValueInfo valueInfo = productOptionValueInfoRepository.findOne(dto.getProductOptionValueId());
+                productAttributeInfos.add(new ProductAttributeInfo(dto.getId(), dto.getPrice(), dto.getFree(), dto.getWeight(), optionInfo, valueInfo));
             }
         }
         return productAttributeInfos;

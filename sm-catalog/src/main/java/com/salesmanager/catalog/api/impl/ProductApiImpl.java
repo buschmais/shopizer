@@ -118,7 +118,9 @@ public class ProductApiImpl implements ProductApi {
                         productAttribute.getId(),
                         productAttribute.getProductAttributePrice() != null ? productAttribute.getProductAttributePrice().doubleValue() : null,
                         productAttribute.getProductAttributeIsFree(),
-                        productAttribute.getProductAttributeWeight() != null ? productAttribute.getProductAttributeWeight().doubleValue() : null));
+                        productAttribute.getProductAttributeWeight() != null ? productAttribute.getProductAttributeWeight().doubleValue() : null,
+                        productAttribute.getProductOption().getId(),
+                        productAttribute.getProductOptionValue().getId()));
             }
         }
         return attributes;

@@ -2,10 +2,7 @@ package com.salesmanager.core.model.catalog;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "PRODUCT_ATTRIBUTE_INFO")
@@ -26,5 +23,13 @@ public class ProductAttributeInfo {
 
     @Column(name="PRODUCT_ATTRIBUTE_WEIGHT")
     private Double weight;
+
+    @ManyToOne
+    @JoinColumn(name="OPTION_ID", nullable=false)
+    private ProductOptionInfo productOption;
+
+    @ManyToOne
+    @JoinColumn(name="OPTION_VALUE_ID", nullable=false)
+    private ProductOptionValueInfo productOptionValue;
 
 }
