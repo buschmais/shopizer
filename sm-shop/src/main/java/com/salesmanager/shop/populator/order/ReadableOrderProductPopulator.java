@@ -65,13 +65,6 @@ public class ReadableOrderProductPopulator extends
 			List<ReadableOrderProductAttribute> attributes = new ArrayList<ReadableOrderProductAttribute>();
 			for(OrderProductAttribute attr : source.getOrderAttributes()) {
 				ReadableOrderProductAttribute readableAttribute = new ReadableOrderProductAttribute();
-				try {
-					String price = productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), attr.getProductAttributePrice());
-					readableAttribute.setAttributePrice(price);
-				} catch (Exception e) {
-					throw new ConversionException("Cannot format price",e);
-				}
-				
 				readableAttribute.setAttributeName(attr.getProductAttributeName());
 				readableAttribute.setAttributeValue(attr.getProductAttributeValueName());
 				attributes.add(readableAttribute);
