@@ -2,7 +2,7 @@ package com.salesmanager.core.modules.order.total;
 
 
 
-import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderSummary;
@@ -29,6 +29,6 @@ public interface OrderTotalPostProcessorModule extends Module {
 	    * @return OrderTotal OrderTotal
 	    * @throws Exception Exception
 	    */
-	   OrderTotal caculateProductPiceVariation(final OrderSummary summary, final ShoppingCartItem shoppingCartItem, final Product product, final Customer customer, final MerchantStore store) throws Exception;
+	   OrderTotal caculateProductPiceVariation(final OrderSummary summary, final ShoppingCartItem shoppingCartItem, final ProductInfo product, final Customer customer, final MerchantStore store) throws Exception;
 
 }

@@ -10,8 +10,8 @@ import javax.inject.Inject;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.services.shipping.ShippingService;
 import com.salesmanager.core.business.services.system.MerchantLogService;
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.shipping.PackageDetails;
 import com.salesmanager.core.model.shipping.ShippingConfiguration;
@@ -72,41 +72,41 @@ public class DefaultPackagingImpl implements Packaging {
 		int maxBox = 100;
 		int iterCount = 0;
 
-		List<Product> individualProducts = new ArrayList<Product>();
+		List<ProductInfo> individualProducts = new ArrayList<>();
 
 		// need to put items individually
 		for(ShippingProduct shippingProduct : products){
 
-			Product product = shippingProduct.getProduct();
-			if (product.isProductVirtual()) {
+			ProductInfo product = shippingProduct.getProduct();
+			if (product.getAvailabilityInformation().getVirtual()) {
 				continue;
 			}
 
 			int qty = shippingProduct.getQuantity();
 
-			Set<ProductAttribute> attrs = shippingProduct.getProduct().getAttributes();
+			Set<ProductAttributeInfo> attrs = shippingProduct.getProduct().getAttributes();
 
 			// set attributes values
-			BigDecimal w = product.getProductWeight();
-			BigDecimal h = product.getProductHeight();
-			BigDecimal l = product.getProductLength();
-			BigDecimal wd = product.getProductWidth();
+			Double w = product.getDimension() != null ? product.getDimension().getWeight() : null;
+			Double h = product.getDimension() != null ? product.getDimension().getHeight() : null;
+			Double l = product.getDimension() != null ? product.getDimension().getLength() : null;
+			Double wd = product.getDimension() != null ? product.getDimension().getWidth() : null;
 			if(w==null) {
-				w = new BigDecimal(defaultWeight);
+				w = defaultWeight;
 			}
 			if(h==null) {
-				h = new BigDecimal(defaultHeight);
+				h = defaultHeight;
 			}
 			if(l==null) {
-				l = new BigDecimal(defaultLength);
+				l = defaultLength;
 			}
 			if(wd==null) {
-				wd = new BigDecimal(defaultWidth);
+				wd = defaultWidth;
 			}
 			if (attrs != null && attrs.size() > 0) {
-				for(ProductAttribute attribute : attrs) {
-					if(attribute.getProductAttributeWeight()!=null) {
-						w = w.add(attribute.getProductAttributeWeight());
+				for(ProductAttributeInfo attribute : attrs) {
+					if(attribute.getWeight() != null) {
+						w += attribute.getWeight();
 					}
 				}
 			}
@@ -116,21 +116,17 @@ public class DefaultPackagingImpl implements Packaging {
 			if (qty > 1) {
 
 				for (int i = 1; i <= qty; i++) {
-					Product temp = new Product();
-					temp.setProductHeight(h);
-					temp.setProductLength(l);
-					temp.setProductWidth(wd);
-					temp.setProductWeight(w);
+					ProductInfo temp = new ProductInfo();
+					ProductInfo.Dimension dimension = new ProductInfo.Dimension(wd, l, h, w);
+					temp.setDimension(dimension);
 					temp.setAttributes(product.getAttributes());
 					temp.setDescriptions(product.getDescriptions());
 					individualProducts.add(temp);
 				}
 			} else {
-				Product temp = new Product();
-				temp.setProductHeight(h);
-				temp.setProductLength(l);
-				temp.setProductWidth(wd);
-				temp.setProductWeight(w);
+				ProductInfo temp = new ProductInfo();
+				ProductInfo.Dimension dimension = new ProductInfo.Dimension(wd, l, h, w);
+				temp.setDimension(dimension);
 				temp.setAttributes(product.getAttributes());
 				temp.setDescriptions(product.getDescriptions());
 				individualProducts.add(temp);
@@ -170,28 +166,28 @@ public class DefaultPackagingImpl implements Packaging {
 		boxesList.add(box);//assign first box
 
 		//int boxCount = 1;
-		List<Product> assignedProducts = new ArrayList<Product>();
+		List<ProductInfo> assignedProducts = new ArrayList<>();
 
 		// calculate the volume for the next object
 		if (assignedProducts.size() > 0) {
 			individualProducts.removeAll(assignedProducts);
-			assignedProducts = new ArrayList<Product>();
+			assignedProducts = new ArrayList<>();
 		}
 
 		boolean productAssigned = false;
 
-		for(Product p : individualProducts) {
+		for(ProductInfo p : individualProducts) {
 
 			//Set<ProductAttribute> attributes = p.getAttributes();
 			productAssigned = false;
 
-			double productWeight = p.getProductWeight().doubleValue();
+			double productWeight = p.getDimension().getWeight();
 
 
 			// validate if product fits in the box
-			if (p.getProductWidth().doubleValue() > width
-					|| p.getProductHeight().doubleValue() > height
-					|| p.getProductLength().doubleValue() > length) {
+			if (p.getDimension().getWidth() > width
+					|| p.getDimension().getHeight() > height
+					|| p.getDimension().getLength() > length) {
 				// log message to customer
 				merchantLogService.save(new MerchantLog(store,"shipping","Product "
 						+ p.getSku()
@@ -209,9 +205,7 @@ public class DefaultPackagingImpl implements Packaging {
 
 			}
 
-			double productVolume = (p.getProductWidth().doubleValue()
-					* p.getProductHeight().doubleValue() * p
-					.getProductLength().doubleValue());
+			double productVolume = (p.getDimension().getWidth() * p.getDimension().getHeight() * p.getDimension().getLength());
 
 			if (productVolume == 0) {
 				
@@ -317,35 +311,35 @@ public class DefaultPackagingImpl implements Packaging {
 		
 		List<PackageDetails> packages = new ArrayList<PackageDetails>();
 		for(ShippingProduct shippingProduct : products) {
-			Product product = shippingProduct.getProduct();
+			ProductInfo product = shippingProduct.getProduct();
 
-			if (product.isProductVirtual()) {
+			if (product.getAvailabilityInformation().getVirtual()) {
 				continue;
 			}
 
 			//BigDecimal weight = product.getProductWeight();
-			Set<ProductAttribute> attributes = product.getAttributes();
+			Set<ProductAttributeInfo> attributes = product.getAttributes();
 			// set attributes values
-			BigDecimal w = product.getProductWeight();
-			BigDecimal h = product.getProductHeight();
-			BigDecimal l = product.getProductLength();
-			BigDecimal wd = product.getProductWidth();
+			Double w = product.getDimension() != null ? product.getDimension().getWeight() : null;
+			Double h = product.getDimension() != null ? product.getDimension().getHeight() : null;
+			Double l = product.getDimension() != null ? product.getDimension().getLength() : null;
+			Double wd = product.getDimension() != null ? product.getDimension().getWidth() : null;
 			if(w==null) {
-				w = new BigDecimal(defaultWeight);
+				w = defaultWeight;
 			}
 			if(h==null) {
-				h = new BigDecimal(defaultHeight);
+				h = defaultHeight;
 			}
 			if(l==null) {
-				l = new BigDecimal(defaultLength);
+				l = defaultLength;
 			}
 			if(wd==null) {
-				wd = new BigDecimal(defaultWidth);
+				wd = defaultWidth;
 			}
 			if (attributes != null && attributes.size() > 0) {
-				for(ProductAttribute attribute : attributes) {
-					if(attribute.getAttributeAdditionalWeight()!=null) {
-						w = w.add(attribute.getProductAttributeWeight());
+				for(ProductAttributeInfo attribute : attributes) {
+					if(attribute.getWeight() != null) {
+						w += attribute.getWeight();
 					}
 				}
 			}

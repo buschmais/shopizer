@@ -82,4 +82,11 @@ public class ProductInfo {
 
     }
 
+    public ProductDescriptionInfo getProductDescription() {
+        if (this.descriptions != null && !this.descriptions.isEmpty()) {
+            return this.descriptions.iterator().next();
+        }
+        return null;
+    }
+
 }

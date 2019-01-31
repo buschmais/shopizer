@@ -11,7 +11,6 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -177,8 +176,7 @@ public class TaxServiceImpl
 		for(ShoppingCartItem item : items) {
 				
 				BigDecimal itemPrice = item.getItemPrice();
-			TaxClassInfo taxClassInfo = item.getProduct().getTaxClass();
-				TaxClass taxClass = taxClassService.getByCode(taxClassInfo.getCode());
+				TaxClass taxClass = item.getProduct().getTaxClass();
 				int quantity = item.getQuantity();
 				itemPrice = itemPrice.multiply(new BigDecimal(quantity));
 				if(taxClass==null) {

@@ -1,8 +1,7 @@
 package com.salesmanager.core.business.services.order.ordertotal;
 
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderSummary;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +26,7 @@ public class OrderTotalServiceImpl implements OrderTotalService {
 	List<OrderTotalPostProcessorModule> orderTotalPostProcessors;
 
 	@Autowired
-	private ProductApi productApi;
-	
-	@Inject
-	private LanguageService languageService;
+	private ProductInfoService productInfoService;
 
 	@Override
 	public OrderTotalVariation findOrderTotalVariation(OrderSummary summary, Customer customer, MerchantStore store, Language language)
@@ -47,9 +42,7 @@ public class OrderTotalServiceImpl implements OrderTotalService {
 				
 				List<ShoppingCartItem> items = summary.getProducts();
 				for(ShoppingCartItem item : items) {
-					
-					Long productId = item.getProductId();
-					Product product = productApi.getProductForLocale(productId, language.toDTO(), languageService.toLocale(language, store));
+					ProductInfo product = productInfoService.getProductForLocale(item.getProduct(), language);
 					
 					OrderTotal orderTotal = module.caculateProductPiceVariation(summary, item, product, customer, store);
 					if(orderTotal==null) {

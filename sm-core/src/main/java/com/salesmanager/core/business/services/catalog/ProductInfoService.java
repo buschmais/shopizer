@@ -12,6 +12,7 @@ import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
 import com.salesmanager.core.business.repositories.tax.TaxClassRepository;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -110,5 +111,28 @@ public class ProductInfoService {
             }
         }
         return productDescriptionInfos;
+    }
+
+    public ProductInfo getProductForLocale(ProductInfo productInfo, Language language) {
+        ProductDescriptionInfo productDescription = null;
+        for (ProductDescriptionInfo description : productInfo.getDescriptions()) {
+            if (description.getLanguageId() == language.getId().longValue()) {
+                productDescription = description;
+            }
+        }
+        ProductInfo product = new ProductInfo(
+                productInfo.getId(),
+                productInfo.getSku(),
+                productDescription.getName(),
+                productInfo.getManufacturerCode()
+        );
+        product.setMerchantStore(productInfo.getMerchantStore());
+        product.setTaxClass(productInfo.getTaxClass());
+        product.setDimension(productInfo.getDimension());
+        product.setAvailabilityInformation(productInfo.getAvailabilityInformation());
+        product.getDescriptions().add(productDescription);
+        product.getAttributes().addAll(productInfo.getAttributes());
+
+        return product;
     }
 }

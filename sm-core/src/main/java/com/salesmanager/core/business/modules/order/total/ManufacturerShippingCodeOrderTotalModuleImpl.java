@@ -3,6 +3,7 @@ package com.salesmanager.core.business.modules.order.total;
 import java.math.BigDecimal;
 
 import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.Validate;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.salesmanager.common.business.constants.Constants;
-import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -47,12 +47,12 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 	ProductPriceApi productPriceApi;
 
 	@Override
-	public OrderTotal caculateProductPiceVariation(final OrderSummary summary, ShoppingCartItem shoppingCartItem, Product product, Customer customer, MerchantStore store)
+	public OrderTotal caculateProductPiceVariation(final OrderSummary summary, ShoppingCartItem shoppingCartItem, ProductInfo product, Customer customer, MerchantStore store)
 			throws Exception {
 
 		
 		Validate.notNull(product,"product must not be null");
-		Validate.notNull(product.getManufacturer(),"product manufacturer must not be null");
+		Validate.notNull(product.getManufacturerCode(),"product manufacturer must not be null");
 		
 		//requires shipping summary, otherwise return null
 		if(summary.getShippingSummary()==null) {
@@ -60,7 +60,7 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 		}
 
 		OrderTotalInputParameters inputParameters = new OrderTotalInputParameters();
-		inputParameters.setItemManufacturerCode(product.getManufacturer().getCode());
+		inputParameters.setItemManufacturerCode(product.getManufacturerCode());
 		
 		
 		inputParameters.setShippingMethod(summary.getShippingSummary().getShippingOptionCode());

@@ -4,13 +4,14 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartAttributeRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartItemRepository;
 import com.salesmanager.core.business.repositories.shoppingcart.ShoppingCartRepository;
 import com.salesmanager.common.business.service.SalesManagerEntityServiceImpl;
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.shipping.ShippingProduct;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service("shoppingCartService")
@@ -54,6 +54,9 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 
 	@Autowired
 	private ProductAttributeApi productAttributeApi;
+
+	@Autowired
+	private ProductInfoRepository productInfoRepository;
 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
@@ -278,7 +281,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 	}
 
 	@Override
-	public ShoppingCartItem populateShoppingCartItem(final Product product) throws ServiceException {
+	public ShoppingCartItem populateShoppingCartItem(final ProductInfo product) throws ServiceException {
 		Validate.notNull(product, "Product should not be null");
 		Validate.notNull(product.getMerchantStore(), "Product.merchantStore should not be null");
 
@@ -302,7 +305,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		// item.setAttributes(attributesList);
 		// }
 
-		item.setProductVirtual(product.isProductVirtual());
+		item.setProductVirtual(product.getAvailabilityInformation().getVirtual());
 
 		// set item price
 		FinalPrice price = productPriceApi.calculateProductPrice(product.getId());
@@ -314,10 +317,10 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 	@Transactional
 	private void getPopulatedItem(final ShoppingCartItem item) throws Exception {
 
-		Product product = null;
+		ProductInfo product = null;
 
 		Long productId = item.getProductId();
-		product = productApi.getById(productId);
+		product = productInfoRepository.findOne(productId);
 
 		if (product == null) {
 			item.setObsolete(true);
@@ -326,20 +329,20 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 
 		item.setProduct(product);
 
-		if (product.isProductVirtual()) {
+		if (product.getAvailabilityInformation().getVirtual()) {
 			item.setProductVirtual(true);
 		}
 
 		Set<ShoppingCartAttributeItem> cartAttributes = item.getAttributes();
-		Set<ProductAttribute> productAttributes = product.getAttributes();
-		List<ProductAttribute> attributesList = new ArrayList<ProductAttribute>();//attributes maintained
+		Set<ProductAttributeInfo> productAttributes = product.getAttributes();
+		List<ProductAttributeInfo> attributesList = new ArrayList<>();//attributes maintained
 		List<ShoppingCartAttributeItem> removeAttributesList = new ArrayList<ShoppingCartAttributeItem>();//attributes to remove
 		//DELETE ORPHEANS MANUALLY
 		if ( (productAttributes != null && productAttributes.size() > 0) || (cartAttributes != null && cartAttributes.size() > 0)) {
 			for (ShoppingCartAttributeItem attribute : cartAttributes) {
 				long attributeId = attribute.getProductAttributeId().longValue();
 				boolean existingAttribute = false;
-				for (ProductAttribute productAttribute : productAttributes) {
+				for (ProductAttributeInfo productAttribute : productAttributes) {
 
 					if (productAttribute.getId().longValue() == attributeId) {
 						attribute.setProductAttribute(productAttribute);
@@ -371,7 +374,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		
 
 		// set item price
-		FinalPrice price = productPriceApi.getFinalProductPrice(product.getId(), attributesList.stream().map(ProductAttribute::getId).collect(Collectors.toList()));
+		FinalPrice price = productPriceApi.getFinalProductPrice(product.getId(), attributesList.stream().map(ProductAttributeInfo::getId).collect(Collectors.toList()));
 		item.setItemPrice(price.getFinalPrice());
 		item.setFinalPrice(price);
 
@@ -388,8 +391,8 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		Set<ShoppingCartItem> items = cart.getLineItems();
 		List<ShippingProduct> shippingProducts = null;
 		for (ShoppingCartItem item : items) {
-			Product product = item.getProduct();
-			if (!product.isProductVirtual() && product.isProductShipeable()) {
+			ProductInfo product = item.getProduct();
+			if (!product.getAvailabilityInformation().getVirtual() && product.getAvailabilityInformation().getShippable()) {
 				if (shippingProducts == null) {
 					shippingProducts = new ArrayList<ShippingProduct>();
 				}
@@ -411,7 +414,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		 */
 		Set<ShoppingCartItem> items = cart.getLineItems();
 		for (ShoppingCartItem item : items) {
-			Product product = item.getProduct();
+			ProductInfo product = item.getProduct();
 			FinalPrice finalPrice = productPriceApi.calculateProductPrice(product.getId());
 			if (finalPrice.getFinalPrice().longValue() > 0) {
 				return false;
@@ -429,8 +432,8 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		Validate.notNull(cart.getLineItems(), "ShoppingCart items cannot be null");
 		boolean requiresShipping = false;
 		for (ShoppingCartItem item : cart.getLineItems()) {
-			Product product = item.getProduct();
-			if (product.isProductShipeable()) {
+			ProductInfo product = item.getProduct();
+			if (product.getAvailabilityInformation().getShippable()) {
 				requiresShipping = true;
 				break;
 			}
@@ -499,9 +502,9 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 
 		Set<ShoppingCartItem> shoppingCartItemsSet = null;
 		if (CollectionUtils.isNotEmpty(sessionCart.getLineItems())) {
-			shoppingCartItemsSet = new HashSet<ShoppingCartItem>();
+			shoppingCartItemsSet = new HashSet<>();
 			for (ShoppingCartItem shoppingCartItem : sessionCart.getLineItems()) {
-				Product product = productApi.getById(shoppingCartItem.getProductId());
+				ProductInfo product = productInfoRepository.findOne(shoppingCartItem.getProductId());
 				if (product == null) {
 					throw new Exception("Item with id " + shoppingCartItem.getProductId() + " does not exist");
 				}
@@ -519,18 +522,15 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 						shoppingCartItem.getAttributes());
 				if (CollectionUtils.isNotEmpty(cartAttributes)) {
 					for (ShoppingCartAttributeItem shoppingCartAttributeItem : cartAttributes) {
-						ProductAttribute productAttribute = productAttributeApi
-								.getById(shoppingCartAttributeItem.getId());
-						if (productAttribute != null
-								&& productAttribute.getProduct().getId().longValue() == product.getId().longValue()) {
-
-							ShoppingCartAttributeItem attributeItem = new ShoppingCartAttributeItem(item,
-									productAttribute);
-							if (shoppingCartAttributeItem.getId() > 0) {
-								attributeItem.setId(shoppingCartAttributeItem.getId());
+						for (ProductAttributeInfo productAttribute : product.getAttributes()) {
+							if (productAttribute.getId().equals(shoppingCartAttributeItem.getId())) {
+								ShoppingCartAttributeItem attributeItem = new ShoppingCartAttributeItem(item,
+										productAttribute);
+								if (shoppingCartAttributeItem.getId() > 0) {
+									attributeItem.setId(shoppingCartAttributeItem.getId());
+								}
+								item.addAttributes(attributeItem);
 							}
-							item.addAttributes(attributeItem);
-
 						}
 					}
 				}
