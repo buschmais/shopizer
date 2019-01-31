@@ -3,6 +3,8 @@ package com.salesmanager.catalog.api.impl;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.PricingService;
+import com.salesmanager.catalog.business.service.product.ProductService;
+import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.catalog.business.util.ProductPriceUtils;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
@@ -25,11 +27,17 @@ public class ProductPriceApiImpl implements ProductPriceApi {
 
     private PricingService pricingService;
 
+    private ProductService productService;
+
+    private ProductAttributeService productAttributeService;
+
     @Autowired
-    public ProductPriceApiImpl(ProductPriceUtils productPriceUtils, MerchantStoreInfoService merchantStoreInfoService, PricingService pricingService) {
+    public ProductPriceApiImpl(ProductPriceUtils productPriceUtils, MerchantStoreInfoService merchantStoreInfoService, PricingService pricingService, ProductService productService, ProductAttributeService productAttributeService) {
         this.productPriceUtils = productPriceUtils;
         this.merchantStoreInfoService = merchantStoreInfoService;
         this.pricingService = pricingService;
+        this.productService = productService;
+        this.productAttributeService = productAttributeService;
     }
 
     @Override
@@ -56,12 +64,15 @@ public class ProductPriceApiImpl implements ProductPriceApi {
     }
 
     @Override
-    public FinalPrice getFinalProductPrice(Product product, List<ProductAttribute> attributes) {
+    public FinalPrice getFinalProductPrice(Long productId, List<Long> productAttributeIds) throws ServiceException {
+        Product product = this.productService.getById(productId);
+        List<ProductAttribute> attributes = this.productAttributeService.getByAttributeIds(product.getMerchantStore(), product, productAttributeIds);
         return this.productPriceUtils.getFinalProductPrice(product, attributes);
     }
 
     @Override
-    public FinalPrice calculateProductPrice(Product product) throws ServiceException {
+    public FinalPrice calculateProductPrice(Long productId) throws ServiceException {
+        Product product = this.productService.getById(productId);
         return pricingService.calculateProductPrice(product);
     }
 

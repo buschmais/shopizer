@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -482,7 +483,7 @@ public class ShoppingCartFacadeImpl
                 List<ProductAttribute> productAttributes = new ArrayList<ProductAttribute>();
                 productAttributes.addAll( entryToUpdate.getProduct().getAttributes() );
                 final FinalPrice finalPrice =
-                    productPriceApi.getFinalProductPrice( entryToUpdate.getProduct(), productAttributes );
+                    productPriceApi.getFinalProductPrice( entryToUpdate.getProduct().getId(), productAttributes.stream().map(ProductAttribute::getId).collect(Collectors.toList()));
                 entryToUpdate.setItemPrice( finalPrice.getFinalPrice() );
                 shoppingCartService.saveOrUpdate( cartModel );
 
@@ -532,7 +533,7 @@ public class ShoppingCartFacadeImpl
                 productAttributes.addAll( entryToUpdate.getProduct().getAttributes() );
                 
                 final FinalPrice finalPrice =
-                        productPriceApi.getFinalProductPrice( entryToUpdate.getProduct(), productAttributes );
+                        productPriceApi.getFinalProductPrice( entryToUpdate.getProduct().getId(), productAttributes.stream().map(ProductAttribute::getId).collect(Collectors.toList()));
                 entryToUpdate.setItemPrice( finalPrice.getFinalPrice() );
                     
 

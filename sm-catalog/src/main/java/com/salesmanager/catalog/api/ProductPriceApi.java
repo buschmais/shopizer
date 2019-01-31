@@ -1,14 +1,11 @@
 package com.salesmanager.catalog.api;
 
-import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale;
 
 public interface ProductPriceApi {
 
@@ -20,7 +17,7 @@ public interface ProductPriceApi {
 
     BigDecimal getAmount(String formattedAmount) throws Exception;
 
-    FinalPrice getFinalProductPrice(Product product, List<ProductAttribute> attributes);
+    FinalPrice getFinalProductPrice(Long productId, List<Long> productAttributeIds) throws ServiceException;
 
-    FinalPrice calculateProductPrice(Product product) throws ServiceException;
+    FinalPrice calculateProductPrice(Long productId) throws ServiceException;
 }

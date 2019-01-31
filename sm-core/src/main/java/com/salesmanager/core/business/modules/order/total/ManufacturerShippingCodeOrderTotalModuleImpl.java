@@ -79,7 +79,7 @@ public class ManufacturerShippingCodeOrderTotalModuleImpl implements OrderTotalP
 				orderTotal.setTitle(Constants.OT_SUBTOTAL_MODULE_CODE);
 				
 				//calculate discount that will be added as a negative value
-				FinalPrice productPrice = productPriceApi.calculateProductPrice(product);
+				FinalPrice productPrice = productPriceApi.calculateProductPrice(product.getId());
 				
 				Double discount = inputParameters.getDiscount();
 				BigDecimal reduction = productPrice.getFinalPrice().multiply(new BigDecimal(discount));

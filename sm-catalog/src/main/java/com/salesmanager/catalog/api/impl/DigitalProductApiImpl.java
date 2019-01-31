@@ -2,6 +2,7 @@ package com.salesmanager.catalog.api.impl;
 
 import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
+import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.file.DigitalProductService;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
@@ -18,15 +19,19 @@ public class DigitalProductApiImpl implements DigitalProductApi {
 
     private MerchantStoreInfoService merchantStoreInfoService;
 
+    private ProductService productService;
+
     @Autowired
-    public DigitalProductApiImpl(DigitalProductService digitalProductService, MerchantStoreInfoService merchantStoreInfoService) {
+    public DigitalProductApiImpl(DigitalProductService digitalProductService, MerchantStoreInfoService merchantStoreInfoService, ProductService productService) {
         this.digitalProductService = digitalProductService;
         this.merchantStoreInfoService = merchantStoreInfoService;
+        this.productService = productService;
     }
 
     @Override
-    public String getFileNameByProduct(MerchantStoreDTO store, Product product) throws ServiceException {
+    public String getFileNameByProduct(MerchantStoreDTO store, Long productId) throws ServiceException {
         MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(store.getCode());
+        Product product = this.productService.getById(productId);
         DigitalProduct digitalProduct = digitalProductService.getByProduct(storeInfo, product);
         return digitalProduct != null ? digitalProduct.getProductFileName() : null;
     }

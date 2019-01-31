@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service("shoppingCartService")
 public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long, ShoppingCart>
@@ -303,7 +305,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		item.setProductVirtual(product.isProductVirtual());
 
 		// set item price
-		FinalPrice price = productPriceApi.calculateProductPrice(product);
+		FinalPrice price = productPriceApi.calculateProductPrice(product.getId());
 		item.setItemPrice(price.getFinalPrice());
 		return item;
 
@@ -369,7 +371,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		
 
 		// set item price
-		FinalPrice price = productPriceApi.getFinalProductPrice(product, attributesList);
+		FinalPrice price = productPriceApi.getFinalProductPrice(product.getId(), attributesList.stream().map(ProductAttribute::getId).collect(Collectors.toList()));
 		item.setItemPrice(price.getFinalPrice());
 		item.setFinalPrice(price);
 
@@ -410,7 +412,7 @@ public class ShoppingCartServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		Set<ShoppingCartItem> items = cart.getLineItems();
 		for (ShoppingCartItem item : items) {
 			Product product = item.getProduct();
-			FinalPrice finalPrice = productPriceApi.calculateProductPrice(product);
+			FinalPrice finalPrice = productPriceApi.calculateProductPrice(product.getId());
 			if (finalPrice.getFinalPrice().longValue() > 0) {
 				return false;
 			}

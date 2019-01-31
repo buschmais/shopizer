@@ -6,7 +6,6 @@ import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.file.DigitalProduct;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 import com.salesmanager.core.model.order.orderproduct.OrderProductAttribute;
@@ -69,7 +68,7 @@ public class PersistableOrderProductPopulator extends
 				throw new ConversionException("Invalid product id " + source.getProduct().getId());
 			}
 
-			String digitalProductFileName = digitalProductApi.getFileNameByProduct(store.toDTO(), modelProduct);
+			String digitalProductFileName = digitalProductApi.getFileNameByProduct(store.toDTO(), modelProduct.getId());
 
 			if(digitalProductFileName != null) {
 				OrderProductDownload orderProductDownload = new OrderProductDownload();
