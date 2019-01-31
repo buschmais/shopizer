@@ -6,26 +6,22 @@ import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
-import com.salesmanager.catalog.business.integration.core.service.TaxClassInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
+import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.common.presentation.util.DateUtil;
 import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
-import com.salesmanager.core.integration.tax.TaxClassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class ProductApiImpl implements ProductApi {
@@ -115,5 +111,29 @@ public class ProductApiImpl implements ProductApi {
             }
         }
         return attributes;
+    }
+
+    @Override
+    public boolean isAvailable(Long productId) {
+        Product product = this.productService.getById(productId);
+        Set<ProductAvailability> availabilities = product.getAvailabilities();
+        if(availabilities == null) {
+            return false;
+        }
+
+        for(ProductAvailability availability : availabilities) {
+            if(availability.getProductQuantity() == null || availability.getProductQuantity().intValue() ==0) {
+                return false;
+            }
+        }
+
+        if(!product.isAvailable()) {
+            return false;
+        }
+
+        if(!DateUtil.dateBeforeEqualsDate(product.getDateAvailable(), new Date())) {
+            return false;
+        }
+        return true;
     }
 }

@@ -4,7 +4,6 @@
 package com.salesmanager.shop.store.controller.shoppingCart.facade;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +32,6 @@ import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculat
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
-import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -48,7 +46,6 @@ import com.salesmanager.shop.model.shoppingcart.ShoppingCartData;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartItem;
 import com.salesmanager.shop.populator.shoppingCart.ReadableShoppingCartPopulator;
 import com.salesmanager.shop.populator.shoppingCart.ShoppingCartDataPopulator;
-import com.salesmanager.common.presentation.util.DateUtil;
 
 /**
  * @author Umesh Awasthi
@@ -196,34 +193,10 @@ public class ShoppingCartFacadeImpl
             throw new Exception( "Item with id " + shoppingCartItem.getProductId() + " does not belong to merchant "
                 + store.getId() );
         }
-        
-		/**
-		 * Check if product quantity is 0
-		 * Check if product is available
-		 * Check if date available <= now
-		 */
-        
-        Set<ProductAvailability> availabilities = product.getAvailabilities();
-        if(availabilities == null) {
-        	
-        	throw new Exception( "Item with id " + product.getId() + " is not properly configured" );
-        	
-        }
-        	
-        for(ProductAvailability availability : availabilities) {
-        	if(availability.getProductQuantity() == null || availability.getProductQuantity().intValue() ==0) {
-                throw new Exception( "Item with id " + product.getId() + " is not available");
-        	}
-        }
-        
-        if(!product.isAvailable()) {
-        	throw new Exception( "Item with id " + product.getId() + " is not available");
-        }
-        
-        if(!DateUtil.dateBeforeEqualsDate(product.getDateAvailable(), new Date())) {
-        	throw new Exception( "Item with id " + product.getId() + " is not available");
-        }
 
+		if (!this.productApi.isAvailable(product.getId())) {
+            throw new Exception( "Item with id " + product.getId() + " is not available");
+        }
 
         com.salesmanager.core.model.shoppingcart.ShoppingCartItem item =
             shoppingCartService.populateShoppingCartItem( product );
@@ -268,34 +241,10 @@ public class ShoppingCartFacadeImpl
 			throw new Exception("Item with id " + shoppingCartItem.getProduct() + " does not belong to merchant "
 					+ store.getId());
 		}
-		
-		/**
-		 * Check if product quantity is 0
-		 * Check if product is available
-		 * Check if date available <= now
-		 */
-        
-        Set<ProductAvailability> availabilities = product.getAvailabilities();
-        if(availabilities == null) {
-        	
-        	throw new Exception( "Item with id " + product.getId() + " is not properly configured" );
-        	
+
+        if (!this.productApi.isAvailable(product.getId())) {
+            throw new Exception( "Item with id " + product.getId() + " is not available");
         }
-        	
-        for(ProductAvailability availability : availabilities) {
-        	if(availability.getProductQuantity() == null || availability.getProductQuantity().intValue() ==0) {
-                throw new Exception( "Item with id " + product.getId() + " is not available");
-        	}
-        }
-        
-        if(!product.isAvailable()) {
-        	throw new Exception( "Item with id " + product.getId() + " is not available");
-        }
-        
-        if(!DateUtil.dateBeforeEqualsDate(product.getDateAvailable(), new Date())) {
-        	throw new Exception( "Item with id " + product.getId() + " is not available");
-        }
-		
 
 		com.salesmanager.core.model.shoppingcart.ShoppingCartItem item = shoppingCartService
 				.populateShoppingCartItem(product);

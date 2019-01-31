@@ -35,4 +35,6 @@ public interface ProductApi {
     Integer getProductMerchantStoreId(Long productId);
 
     Set<ProductAttributeDTO> getProductAttributes(Long productId);
+
+    boolean isAvailable(Long productId);
 }
