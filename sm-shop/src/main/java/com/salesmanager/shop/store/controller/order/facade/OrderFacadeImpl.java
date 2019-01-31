@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import com.salesmanager.catalog.api.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
@@ -166,10 +167,10 @@ public class OrderFacadeImpl implements OrderFacade {
 	private LabelUtils messages;
 
 	@Autowired
-	private CatalogImageFilePathApi imageFilePathApi;
+	private ProductInfoRepository productInfoRepository;
 
 	@Autowired
-	private ProductInfoRepository productInfoRepository;
+	private ProductInfoService productInfoService;
 
 
 	@Override
@@ -958,7 +959,7 @@ public class OrderFacadeImpl implements OrderFacade {
             orderProductPopulator.setLocale(locale);
             orderProductPopulator.setProductApi(productApi);
             orderProductPopulator.setProductPriceApi(productPriceApi);
-            orderProductPopulator.setImageFilePathApi(imageFilePathApi);
+            orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setCustomerService(customerService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
             orderProductPopulator.populate(p, orderProduct, store, language);
@@ -1052,7 +1053,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			ReadableOrderProductPopulator orderProductPopulator = new ReadableOrderProductPopulator();
 			orderProductPopulator.setProductApi(productApi);
 			orderProductPopulator.setProductPriceApi(productPriceApi);
-			orderProductPopulator.setImageFilePathApi(imageFilePathApi);
+			orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setCustomerService(customerService);
 			ReadableOrderProduct orderProduct = new ReadableOrderProduct();
 			orderProductPopulator.populate(p, orderProduct, store, language);

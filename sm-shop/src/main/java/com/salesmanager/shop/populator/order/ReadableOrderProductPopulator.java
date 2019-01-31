@@ -1,11 +1,10 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
+import com.salesmanager.core.model.catalog.ProductImageInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
 import com.salesmanager.common.business.exception.ConversionException;
@@ -32,7 +31,6 @@ public class ReadableOrderProductPopulator extends
 	
 	private ProductApi productApi;
 	private ProductPriceApi productPriceApi;
-	private CatalogImageFilePathApi imageFilePathApi;
 	private CustomerService customerService;
 
 	@Getter @Setter
@@ -48,7 +46,6 @@ public class ReadableOrderProductPopulator extends
 		
 		Validate.notNull(productApi,"Requires ProductAPI");
 		Validate.notNull(productPriceApi,"Requires productPriceApi");
-		Validate.notNull(imageFilePathApi,"Requires imageFilePathApi");
 		target.setId(source.getId());
 		target.setOrderedQuantity(source.getProductQuantity());
 		try {
@@ -88,17 +85,17 @@ public class ReadableOrderProductPopulator extends
 				if(product!=null) {
 
 					ReadableProductPopulator populator = new ReadableProductPopulator();
-					populator.setImageFilePathApi(imageFilePathApi);
 					populator.setProductPriceApi(productPriceApi);
 					populator.setLanguageService(languageService);
 					populator.setProductApi(productApi);
+					populator.setProductInfoService(productInfoService);
 					
 					ReadableProduct productProxy = populator.populate(product, new ReadableProduct(), store, language);
 					target.setProduct(productProxy);
 					
-					ProductImage defaultImage = this.productApi.getDefaultImage(product.getId());
+					ProductImageInfo defaultImage = this.productInfoService.getDefaultImage(product.getId());
 					if(defaultImage!=null) {
-						target.setImage(defaultImage.getProductImage());
+						target.setImage(defaultImage.getImageName());
 					}
 				}
 			}
@@ -119,14 +116,6 @@ public class ReadableOrderProductPopulator extends
 
 	public void setProductPriceApi(ProductPriceApi productPriceApi) {
 		this.productPriceApi = productPriceApi;
-	}
-
-	public CatalogImageFilePathApi getImageFilePathApi() {
-		return imageFilePathApi;
-	}
-
-	public void setImageFilePathApi(CatalogImageFilePathApi imageFilePathApi) {
-		this.imageFilePathApi = imageFilePathApi;
 	}
 
 	public ProductApi getProductApi() {

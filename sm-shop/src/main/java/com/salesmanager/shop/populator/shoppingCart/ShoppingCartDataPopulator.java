@@ -3,12 +3,12 @@
  */
 package com.salesmanager.shop.populator.shoppingCart;
 
-import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
-import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.core.model.catalog.ProductDescriptionInfo;
+import com.salesmanager.core.model.catalog.ProductImageInfo;
 import com.salesmanager.core.model.catalog.ProductOptionDescriptionInfo;
 import com.salesmanager.core.model.catalog.ProductOptionValueDescriptionInfo;
 import com.salesmanager.core.model.merchant.MerchantStore;
@@ -20,6 +20,8 @@ import com.salesmanager.shop.model.order.total.OrderTotal;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartAttribute;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartData;
 import com.salesmanager.shop.model.shoppingcart.ShoppingCartItem;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.configuration.ConversionException;
 import org.apache.commons.lang3.Validate;
@@ -47,15 +49,8 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
 
     private  ShoppingCartCalculationService shoppingCartCalculationService;
     
-    private CatalogImageFilePathApi imageFilePathApi;
-
-    public CatalogImageFilePathApi getImageFilePathApi() {
-        return imageFilePathApi;
-    }
-
-    public void setImageFilePathApi(CatalogImageFilePathApi imageFilePathApi) {
-        this.imageFilePathApi = imageFilePathApi;
-    }
+    @Getter @Setter
+    private ProductInfoService productInfoService;
 
     @Override
     public ShoppingCartData createTarget()
@@ -120,10 +115,9 @@ public class ShoppingCartDataPopulator extends AbstractDataPopulator<ShoppingCar
                     
                     shoppingCartItem.setProductPrice(item.getItemPrice());
                     shoppingCartItem.setSubTotal(productPriceApi.getStoreFormattedAmountWithCurrency(store.toDTO(), item.getSubTotal()));
-                    ProductImage image = item.getProduct().getProductImage();
-                    if(image!=null && imageFilePathApi!=null) {
-                        String imagePath = imageFilePathApi.buildProductImageUtils(store.toDTO(), item.getProduct().getSku(), image.getProductImage());
-                        shoppingCartItem.setImage(imagePath);
+                    ProductImageInfo image = productInfoService.getDefaultImage(item.getProduct().getId());
+                    if(image != null) {
+                        shoppingCartItem.setImage(image.getImageUrl());
                     }
                     Set<com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem> attributes = item.getAttributes();
                     if(attributes!=null) {

@@ -1,20 +1,14 @@
 package com.salesmanager.catalog.api;
 
-import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
-import com.salesmanager.catalog.api.dto.product.DimensionDTO;
-import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
-import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
+import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
-import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
-import com.salesmanager.core.integration.tax.TaxClassDTO;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -45,7 +39,7 @@ public interface ProductApi {
 
     Set<ProductDescriptionDTO> getProductDescriptions(Long productId);
 
-    ProductImage getDefaultImage(Long productId);
+    ProductImageDTO getDefaultImage(Long productId);
 
     Integer getAvailabilityForRegion(Long productId, String region);
 

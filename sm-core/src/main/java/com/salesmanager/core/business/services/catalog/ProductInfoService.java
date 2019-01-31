@@ -1,10 +1,7 @@
 package com.salesmanager.core.business.services.catalog;
 
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
-import com.salesmanager.catalog.api.dto.product.DimensionDTO;
-import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
-import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
+import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductOptionInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductOptionValueInfoRepository;
@@ -139,5 +136,13 @@ public class ProductInfoService {
         product.getAttributes().addAll(productInfo.getAttributes());
 
         return product;
+    }
+
+    public ProductImageInfo getDefaultImage(Long productId) {
+        ProductImageDTO productImageDTO = productApi.getDefaultImage(productId);
+        if (productImageDTO != null) {
+            return new ProductImageInfo(productImageDTO.getId(), productImageDTO.getImageName(), productImageDTO.isDefaultImage(), productImageDTO.getImageUrl());
+        }
+        return null;
     }
 }

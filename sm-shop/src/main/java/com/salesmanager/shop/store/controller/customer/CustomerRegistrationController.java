@@ -3,6 +3,7 @@ package com.salesmanager.shop.store.controller.customer;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.business.services.reference.zone.ZoneService;
@@ -32,6 +33,7 @@ import com.salesmanager.common.presentation.util.LabelUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -114,6 +116,9 @@ public class CustomerRegistrationController extends AbstractController {
     
     @Inject
     private ProductPriceApi productPriceApi;
+
+    @Autowired
+    private ProductInfoService productInfoService;
 	
 
 
@@ -336,6 +341,7 @@ public class CustomerRegistrationController extends AbstractController {
     private ShoppingCartData populateShoppingCartData(final ShoppingCart cartModel , final MerchantStore store, final Language language){
 
         ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
+        shoppingCartDataPopulator.setProductInfoService(productInfoService);
         shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
         shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
         

@@ -34,7 +34,7 @@ public class ProductInfo {
     @JoinColumn(name="TAX_CLASS_ID", nullable=true)
     private TaxClass taxClass;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="MERCHANT_ID", nullable=false)
     private MerchantStore merchantStore;
 

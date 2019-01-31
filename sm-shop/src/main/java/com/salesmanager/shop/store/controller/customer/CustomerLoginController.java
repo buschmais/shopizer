@@ -2,6 +2,7 @@ package com.salesmanager.shop.store.controller.customer;
 
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.common.business.exception.ConversionException;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartCalculationService;
 import com.salesmanager.core.business.services.shoppingcart.ShoppingCartService;
 import com.salesmanager.common.business.ajax.AjaxResponse;
@@ -19,6 +20,7 @@ import com.salesmanager.shop.utils.ImageFilePath;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.AuthenticationException;
@@ -54,6 +56,9 @@ public class CustomerLoginController extends AbstractController {
     
     @Inject
     private ProductPriceApi productPriceApi;
+
+    @Autowired
+	private ProductInfoService productInfoService;
 
     
 	 @Inject
@@ -193,6 +198,7 @@ public class CustomerLoginController extends AbstractController {
     private ShoppingCartData populateShoppingCartData(final ShoppingCart cartModel , final MerchantStore store, final Language language){
 
         ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
+        shoppingCartDataPopulator.setProductInfoService(productInfoService);
         shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
         shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
         

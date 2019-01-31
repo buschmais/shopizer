@@ -1,12 +1,12 @@
 package com.salesmanager.shop.populator.catalog;
 
-import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.ProductDescriptionInfo;
+import com.salesmanager.core.model.catalog.ProductImageInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.shop.model.catalog.product.ReadableImage;
 import com.salesmanager.shop.model.catalog.product.ReadableProduct;
@@ -26,21 +26,14 @@ public class ReadableProductPopulator extends
 	
 	private ProductPriceApi productPriceApi;
 
-	private CatalogImageFilePathApi imageFilePathApi;
-
-	public CatalogImageFilePathApi getImageFilePathApi() {
-		return imageFilePathApi;
-	}
-
 	@Getter @Setter
 	private ProductApi productApi;
 
 	@Getter @Setter
 	private LanguageService languageService;
 
-	public void setImageFilePathApi(CatalogImageFilePathApi imageFilePathApi) {
-		this.imageFilePathApi = imageFilePathApi;
-	}
+	@Getter @Setter
+	private ProductInfoService productInfoService;
 
 	public ProductPriceApi getProductPriceApi() {
 		return productPriceApi;
@@ -85,26 +78,14 @@ public class ReadableProductPopulator extends
 				target.setDescription(tragetDescription);
 			}
 
-			ProductImage defaultImage = productApi.getDefaultImage(source.getId());
+			ProductImageInfo defaultImage = productInfoService.getDefaultImage(source.getId());
 			if (defaultImage != null) {
-				String contextPath = imageFilePathApi.getContextPath();
-
 				ReadableImage prdImage = new ReadableImage();
-				prdImage.setImageName(defaultImage.getProductImage());
+				prdImage.setImageName(defaultImage.getImageName());
 				prdImage.setDefaultImage(defaultImage.isDefaultImage());
 
-				StringBuilder imgPath = new StringBuilder();
-				imgPath.append(contextPath != null ? contextPath : "").append(imageFilePathApi.buildProductImageUtils(store.toDTO(), source.getSku(), defaultImage.getProductImage()));
-
-				prdImage.setImageUrl(imgPath.toString());
+				prdImage.setImageUrl(defaultImage.getImageUrl());
 				prdImage.setId(defaultImage.getId());
-				prdImage.setImageType(defaultImage.getImageType());
-				if(defaultImage.getProductImageUrl()!=null){
-					prdImage.setExternalUrl(defaultImage.getProductImageUrl());
-				}
-				if(defaultImage.getImageType()==1 && defaultImage.getProductImageUrl()!=null) {//video
-					prdImage.setVideoUrl(defaultImage.getProductImageUrl());
-				}
 				target.setImage(prdImage);
 			}
 

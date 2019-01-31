@@ -15,9 +15,9 @@ import javax.persistence.NoResultException;
 
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
-import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.core.business.repositories.catalog.ProductAttributeInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
@@ -76,9 +76,6 @@ public class ShoppingCartFacadeImpl
     private ProductApi productApi;
     
 	@Autowired
-	private CatalogImageFilePathApi imageFilePathApi;
-
-	@Autowired
     private CustomerService customerService;
 
 	@Autowired
@@ -89,6 +86,9 @@ public class ShoppingCartFacadeImpl
 
 	@Autowired
     private ProductAttributeInfoRepository productAttributeInfoRepository;
+
+	@Autowired
+    private ProductInfoService productInfoService;
 
     public void deleteShoppingCart(final Long id, final MerchantStore store) throws Exception {
     	ShoppingCart cart = shoppingCartService.getById(id, store);
@@ -179,7 +179,7 @@ public class ShoppingCartFacadeImpl
         ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
         shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
         shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
-        shoppingCartDataPopulator.setImageFilePathApi(imageFilePathApi);
+        shoppingCartDataPopulator.setProductInfoService(productInfoService);
 
         return shoppingCartDataPopulator.populate( cartModel, store, language );
     }
@@ -378,7 +378,7 @@ public class ShoppingCartFacadeImpl
         ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
         shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
         shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
-        shoppingCartDataPopulator.setImageFilePathApi(imageFilePathApi);
+        shoppingCartDataPopulator.setProductInfoService(productInfoService);
 
         //Language language = (Language) getKeyValue( Constants.LANGUAGE );
         MerchantStore merchantStore = (MerchantStore) getKeyValue( Constants.MERCHANT_STORE );
@@ -414,7 +414,7 @@ public class ShoppingCartFacadeImpl
         ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
         shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
         shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
-        shoppingCartDataPopulator.setImageFilePathApi(imageFilePathApi);
+        shoppingCartDataPopulator.setProductInfoService(productInfoService);
         //Language language = (Language) getKeyValue( Constants.LANGUAGE );
         MerchantStore merchantStore = (MerchantStore) getKeyValue( Constants.MERCHANT_STORE );
         return shoppingCartDataPopulator.populate( shoppingCartModel, merchantStore, language );
@@ -452,7 +452,7 @@ public class ShoppingCartFacadeImpl
                     ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
                     shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
                     shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
-                    shoppingCartDataPopulator.setImageFilePathApi(imageFilePathApi);
+                    shoppingCartDataPopulator.setProductInfoService(productInfoService);
                     return shoppingCartDataPopulator.populate( cartModel, store, language );
                 }
             }
@@ -496,7 +496,7 @@ public class ShoppingCartFacadeImpl
                 ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
                 shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
                 shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
-                shoppingCartDataPopulator.setImageFilePathApi(imageFilePathApi);
+                shoppingCartDataPopulator.setProductInfoService(productInfoService);
                 return shoppingCartDataPopulator.populate( cartModel, store, language );
 
             }
@@ -555,7 +555,7 @@ public class ShoppingCartFacadeImpl
             ShoppingCartDataPopulator shoppingCartDataPopulator = new ShoppingCartDataPopulator();
             shoppingCartDataPopulator.setShoppingCartCalculationService( shoppingCartCalculationService );
             shoppingCartDataPopulator.setProductPriceApi(productPriceApi);
-            shoppingCartDataPopulator.setImageFilePathApi(imageFilePathApi);
+            shoppingCartDataPopulator.setProductInfoService(productInfoService);
             return shoppingCartDataPopulator.populate( cartModel, store, language );
 
         }
@@ -637,13 +637,13 @@ public class ShoppingCartFacadeImpl
         
         ReadableShoppingCartPopulator readableShoppingCart = new ReadableShoppingCartPopulator();
         
-        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
         readableShoppingCart.setProductPriceApi(productPriceApi);
         readableShoppingCart.setProductAttributeInfoRepository(productAttributeInfoRepository);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
         readableShoppingCart.setLanguageService(languageService);
         readableShoppingCart.setProductApi(productApi);
+        readableShoppingCart.setProductInfoService(productInfoService);
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
         
         readableShoppingCart.populate(cartModel, readableCart,  store, language);
@@ -705,15 +705,16 @@ public class ShoppingCartFacadeImpl
         shoppingCartCalculationService.calculate( cartModel, store, language );
         
         ReadableShoppingCartPopulator readableShoppingCart = new ReadableShoppingCartPopulator();
-        
-        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
+
         readableShoppingCart.setProductPriceApi(productPriceApi);
         readableShoppingCart.setProductAttributeInfoRepository(productAttributeInfoRepository);
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
         readableShoppingCart.setLanguageService(languageService);
         readableShoppingCart.setProductApi(productApi);
-  
+        readableShoppingCart.setProductInfoService(productInfoService);
+
+
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
         
         readableShoppingCart.populate(cartModel, readableCart,  store, language);
@@ -740,16 +741,16 @@ public class ShoppingCartFacadeImpl
 		if(cart != null) {
 			
 	        ReadableShoppingCartPopulator readableShoppingCart = new ReadableShoppingCartPopulator();
-	        
-	        readableShoppingCart.setImageFilePathApi(imageFilePathApi);
+
 	        readableShoppingCart.setProductPriceApi(productPriceApi);
             readableShoppingCart.setProductAttributeInfoRepository(productAttributeInfoRepository);
             readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
             readableShoppingCart.setCustomerService(customerService);
             readableShoppingCart.setLanguageService(languageService);
             readableShoppingCart.setProductApi(productApi);
+            readableShoppingCart.setProductInfoService(productInfoService);
 
-	        readableShoppingCart.populate(cart, readableCart,  store, language);
+            readableShoppingCart.populate(cart, readableCart,  store, language);
 			
 			
 		}

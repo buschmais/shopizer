@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.salesmanager.catalog.api.CatalogImageFilePathApi;
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductAttributeApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.repositories.catalog.ProductAttributeInfoRepository;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.*;
@@ -45,9 +44,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
     private CustomerService customerService;
 
-    @Getter  @Setter
-	private CatalogImageFilePathApi imageFilePathApi;
-
     @Getter @Setter
 	private LanguageService languageService;
 
@@ -56,6 +52,9 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
     @Getter @Setter
 	private ProductAttributeInfoRepository productAttributeInfoRepository;
+
+    @Getter @Setter
+	private ProductInfoService productInfoService;
 	
 	@Override
 	public ReadableShoppingCart populate(ShoppingCart source, ReadableShoppingCart target, MerchantStore store,
@@ -65,7 +64,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
     	Validate.notNull(store, "Requires MerchantStore not null");
     	Validate.notNull(productPriceApi, "Requires to set priceApi");
     	Validate.notNull(shoppingCartCalculationService, "Requires to set shoppingCartCalculationService");
-    	Validate.notNull(imageFilePathApi, "Requires to set imageFilePathApi");
     	Validate.notNull(customerService, "Requires CustomerService not null");
     	
     	if(target == null) {
@@ -89,9 +87,9 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
                 	ReadableProductPopulator readableProductPopulator = new ReadableProductPopulator();
                 	readableProductPopulator.setProductPriceApi(productPriceApi);
-                	readableProductPopulator.setImageFilePathApi(imageFilePathApi);
 					readableProductPopulator.setLanguageService(languageService);
 					readableProductPopulator.setProductApi(productApi);
+					readableProductPopulator.setProductInfoService(productInfoService);
 
 					readableProductPopulator.populate(item.getProduct(), shoppingCartItem,  store, language);
 
