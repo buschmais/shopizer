@@ -39,7 +39,7 @@ import java.util.Map;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"com.salesmanager.catalog.business.service", "com.salesmanager.catalog.business.util", "com.salesmanager.catalog.business.integration", "com.salesmanager.catalog.api", "com.salesmanager.catalog.init", "com.salesmanager.catalog.integration", "com.salesmanager.catalog.presentation.util"})
+@ComponentScan(basePackages = {"com.salesmanager.catalog.business.service", "com.salesmanager.catalog.business.util", "com.salesmanager.catalog.business.integration", "com.salesmanager.catalog.api", "com.salesmanager.catalog.init", "com.salesmanager.catalog.integration", "com.salesmanager.catalog.presentation.util", "com.salesmanager.catalog.configuration"})
 @EnableJpaRepositories(
         basePackages = {"com.salesmanager.catalog.business.repository","com.salesmanager.catalog.business.integration.core.repository"},
         entityManagerFactoryRef = "catalogEntityManagerFactory",
