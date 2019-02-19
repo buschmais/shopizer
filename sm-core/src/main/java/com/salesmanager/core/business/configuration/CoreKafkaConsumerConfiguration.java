@@ -2,6 +2,7 @@ package com.salesmanager.core.business.configuration;
 
 import com.salesmanager.catalog.api.dto.product.ProductDTO;
 import com.salesmanager.catalog.api.dto.product.ProductOptionDTO;
+import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,12 @@ public class CoreKafkaConsumerConfiguration {
     }
 
     @Bean
+    public ConsumerFactory<String, ProductOptionValueDTO> productOptionValueConsumerFactory() {
+        Map<String, Object> props = consumerConfiguration();
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(ProductOptionValueDTO.class));
+    }
+
+    @Bean
     public ConcurrentKafkaListenerContainerFactory<String, ProductDTO> productKafkaListenerContainerFactory() {
 
         ConcurrentKafkaListenerContainerFactory<String, ProductDTO> factory
@@ -65,6 +72,15 @@ public class CoreKafkaConsumerConfiguration {
         ConcurrentKafkaListenerContainerFactory<String, ProductOptionDTO> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(productOptionConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, ProductOptionValueDTO> productOptionValueKafkaListenerContainerFactory() {
+
+        ConcurrentKafkaListenerContainerFactory<String, ProductOptionValueDTO> factory
+                = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(productOptionValueConsumerFactory());
         return factory;
     }
 }

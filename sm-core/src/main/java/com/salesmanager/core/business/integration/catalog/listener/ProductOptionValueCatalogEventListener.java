@@ -1,20 +1,16 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
 import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
-import com.salesmanager.common.business.exception.ServiceException;
-import com.salesmanager.common.model.integration.CreatedEvent;
-import com.salesmanager.common.model.integration.DeletedEvent;
-import com.salesmanager.common.model.integration.UpdatedEvent;
 import com.salesmanager.core.business.services.catalog.ProductOptionValueInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.ProductOptionValueDescriptionInfo;
 import com.salesmanager.core.model.catalog.ProductOptionValueInfo;
 import com.salesmanager.core.model.reference.language.Language;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,32 +28,21 @@ public class ProductOptionValueCatalogEventListener {
         this.productOptionValueInfoService = productOptionValueInfoService;
     }
 
-    @TransactionalEventListener
+    @KafkaListener(topics = "product_option_value", containerFactory = "productOptionValueKafkaListenerContainerFactory")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductOptionValueCreateEvent(CreatedEvent<ProductOptionValueDTO> event) throws ServiceException {
-        ProductOptionValueDTO productOptionValueDTO = event.getDto();
+    public void handleProductOptionValueEvent(ProductOptionValueDTO productOptionValueDTO) {
         if (productOptionValueDTO != null) {
-            ProductOptionValueInfo productOptionValueInfo = createProductOptionValueInfo(productOptionValueDTO);
-            this.productOptionValueInfoService.save(productOptionValueInfo);
-        }
-    }
+            switch (productOptionValueDTO.getEventType()) {
+                case CREATED:
+                case UPDATED:
+                    ProductOptionValueInfo productOptionValueInfo = createProductOptionValueInfo(productOptionValueDTO);
+                    this.productOptionValueInfoService.save(productOptionValueInfo);
+                    break;
+                case DELETED:
+                    this.productOptionValueInfoService.delete(productOptionValueDTO.getId());
+                    break;
+            }
 
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductOptionValueDeleteEvent(DeletedEvent<ProductOptionValueDTO> event) {
-        ProductOptionValueDTO productOptionValueDTO = event.getDto();
-        if (productOptionValueDTO != null) {
-            this.productOptionValueInfoService.delete(productOptionValueDTO.getId());
-        }
-    }
-
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductOptionValueUpdateEvent(UpdatedEvent<ProductOptionValueDTO> event) throws ServiceException {
-        ProductOptionValueDTO productOptionValueDTO = event.getDto();
-        if (productOptionValueDTO != null) {
-            ProductOptionValueInfo productOptionValueInfo = createProductOptionValueInfo(productOptionValueDTO);
-            this.productOptionValueInfoService.save(productOptionValueInfo);
         }
     }
 

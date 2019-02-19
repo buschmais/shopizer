@@ -1,7 +1,6 @@
 package com.salesmanager.catalog.integration;
 
 import com.salesmanager.catalog.api.dto.AbstractCatalogDTO;
-import com.salesmanager.catalog.api.event.product.ProductOptionValueCreatedEvent;
 import com.salesmanager.catalog.business.repository.product.ProductRepository;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
@@ -12,8 +11,6 @@ import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;
 import org.hibernate.persister.entity.EntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +18,7 @@ import static com.salesmanager.catalog.api.dto.AbstractCatalogCrudDTO.*;
 
 
 @Component
-public class CatalogCreatedEventListener implements PostInsertEventListener, ApplicationEventPublisherAware {
-
-    private ApplicationEventPublisher applicationEventPublisher;
+public class CatalogCreatedEventListener implements PostInsertEventListener {
 
     private final ProductRepository productRepository;
 
@@ -55,17 +50,12 @@ public class CatalogCreatedEventListener implements PostInsertEventListener, App
             kafkaTemplate.send("product_option", productOption.toDTO().setEventType(EventType.CREATED));
         } else if (event.getEntity() instanceof ProductOptionValue) {
             ProductOptionValue productOptionValue = (ProductOptionValue) event.getEntity();
-            applicationEventPublisher.publishEvent(new ProductOptionValueCreatedEvent(productOptionValue.toDTO()));
+            kafkaTemplate.send("product_option_value", productOptionValue.toDTO().setEventType(EventType.CREATED));
         }
     }
 
     @Override
     public boolean requiresPostCommitHanding(EntityPersister persister) {
         return false;
-    }
-
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
     }
 }

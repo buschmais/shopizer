@@ -22,7 +22,7 @@ public class ProductCatalogEventListener {
 
     @KafkaListener(topics = "product", containerFactory = "productKafkaListenerContainerFactory")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductEvent(ProductDTO productDTO) throws ServiceException {
+    public void handleProductEvent(ProductDTO productDTO) {
         if (productDTO != null) {
             switch (productDTO.getEventType()) {
                 case CREATED:
