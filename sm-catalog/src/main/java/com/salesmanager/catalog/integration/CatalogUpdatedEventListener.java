@@ -2,7 +2,6 @@ package com.salesmanager.catalog.integration;
 
 import com.salesmanager.catalog.api.dto.AbstractCatalogCrudDTO;
 import com.salesmanager.catalog.api.dto.AbstractCatalogDTO;
-import com.salesmanager.catalog.api.event.product.ProductOptionUpdatedEvent;
 import com.salesmanager.catalog.api.event.product.ProductOptionValueUpdatedEvent;
 import com.salesmanager.catalog.business.repository.product.ProductRepository;
 import com.salesmanager.catalog.model.product.Product;
@@ -54,7 +53,7 @@ public class CatalogUpdatedEventListener implements PostUpdateEventListener, App
             kafkaTemplate.send("product", product.toDTO().setEventType(AbstractCatalogCrudDTO.EventType.UPDATED));
         } else if (event.getEntity() instanceof ProductOption) {
             ProductOption productOption = (ProductOption) event.getEntity();
-            applicationEventPublisher.publishEvent(new ProductOptionUpdatedEvent(productOption.toDTO()));
+            kafkaTemplate.send("product_option", productOption.toDTO().setEventType(AbstractCatalogCrudDTO.EventType.UPDATED));
         } else if (event.getEntity() instanceof ProductOptionValue) {
             ProductOptionValue productOptionValue = (ProductOptionValue) event.getEntity();
             applicationEventPublisher.publishEvent(new ProductOptionValueUpdatedEvent(productOptionValue.toDTO()));

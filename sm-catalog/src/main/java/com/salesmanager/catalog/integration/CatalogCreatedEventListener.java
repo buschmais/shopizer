@@ -1,7 +1,6 @@
 package com.salesmanager.catalog.integration;
 
 import com.salesmanager.catalog.api.dto.AbstractCatalogDTO;
-import com.salesmanager.catalog.api.event.product.ProductOptionCreatedEvent;
 import com.salesmanager.catalog.api.event.product.ProductOptionValueCreatedEvent;
 import com.salesmanager.catalog.business.repository.product.ProductRepository;
 import com.salesmanager.catalog.model.product.Product;
@@ -53,7 +52,7 @@ public class CatalogCreatedEventListener implements PostInsertEventListener, App
             kafkaTemplate.send("product", product.toDTO().setEventType(EventType.UPDATED));
         } else if (event.getEntity() instanceof ProductOption) {
             ProductOption productOption = (ProductOption) event.getEntity();
-            applicationEventPublisher.publishEvent(new ProductOptionCreatedEvent(productOption.toDTO()));
+            kafkaTemplate.send("product_option", productOption.toDTO().setEventType(EventType.CREATED));
         } else if (event.getEntity() instanceof ProductOptionValue) {
             ProductOptionValue productOptionValue = (ProductOptionValue) event.getEntity();
             applicationEventPublisher.publishEvent(new ProductOptionValueCreatedEvent(productOptionValue.toDTO()));

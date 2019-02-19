@@ -236,7 +236,7 @@ public class OptionsController {
 		try {
 			
 			
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE");
+			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 
 			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
