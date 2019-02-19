@@ -1,17 +1,14 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
 import com.salesmanager.catalog.api.dto.product.ProductDTO;
-import com.salesmanager.common.model.integration.CreatedEvent;
-import com.salesmanager.common.model.integration.DeletedEvent;
-import com.salesmanager.common.model.integration.UpdatedEvent;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class ProductCatalogEventListener {
@@ -23,34 +20,23 @@ public class ProductCatalogEventListener {
         this.productInfoService = productInfoService;
     }
 
-    @TransactionalEventListener
+    @KafkaListener(topics = "product", containerFactory = "productKafkaListenerContainerFactory")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductCreateEvent(CreatedEvent<ProductDTO> event) throws ServiceException {
-        ProductDTO productDTO = event.getDto();
+    public void handleProductEvent(ProductDTO productDTO) throws ServiceException {
         if (productDTO != null) {
-            createOrUpdateProductInfo(productDTO);
+            switch (productDTO.getEventType()) {
+                case CREATED:
+                case UPDATED:
+                    createOrUpdateProductInfo(productDTO);
+                    break;
+                case DELETED:
+                    this.productInfoService.delete(productDTO.getId());
+                    break;
+            }
         }
     }
 
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductDeleteEvent(DeletedEvent<ProductDTO> event) {
-        ProductDTO productDTO = event.getDto();
-        if (productDTO != null) {
-            this.productInfoService.delete(productDTO.getId());
-        }
-    }
-
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductUpdateEvent(UpdatedEvent<ProductDTO> event) throws ServiceException {
-        ProductDTO productDTO = event.getDto();
-        if (productDTO != null) {
-            createOrUpdateProductInfo(productDTO);
-        }
-    }
-
-    private void createOrUpdateProductInfo(ProductDTO productDTO) throws ServiceException {
+    private void createOrUpdateProductInfo(ProductDTO productDTO) {
         ProductInfo productInfo = new ProductInfo(
                 productDTO.getId(),
                 productDTO.getSku(),
