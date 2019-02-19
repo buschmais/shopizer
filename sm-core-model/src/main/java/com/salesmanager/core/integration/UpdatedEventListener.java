@@ -1,9 +1,5 @@
 package com.salesmanager.core.integration;
 
-import com.salesmanager.core.integration.customer.CustomerUpdatedEvent;
-import com.salesmanager.core.integration.language.LanguageUpdatedEvent;
-import com.salesmanager.core.integration.merchant.MerchantStoreUpdatedEvent;
-import com.salesmanager.core.integration.tax.TaxClassUpdatedEvent;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -11,30 +7,35 @@ import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.hibernate.event.spi.PostUpdateEvent;
 import org.hibernate.event.spi.PostUpdateEventListener;
 import org.hibernate.persister.entity.EntityPersister;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import static com.salesmanager.core.integration.AbstractCoreCrudDTO.*;
 
 
 @Component
-public class UpdatedEventListener implements PostUpdateEventListener, ApplicationEventPublisherAware {
+public class UpdatedEventListener implements PostUpdateEventListener {
 
-    private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    @Qualifier("coreKafkaTemplate")
+    private KafkaTemplate<String, AbstractCoreDTO> kafkaTemplate;
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
         if (event.getEntity() instanceof MerchantStore) {
             MerchantStore store = ((MerchantStore) event.getEntity());
-            applicationEventPublisher.publishEvent(new MerchantStoreUpdatedEvent(store.toDTO()));
+            kafkaTemplate.send("merchantStore", store.toDTO().setEventType(EventType.UPDATED));
         } else if (event.getEntity() instanceof Language) {
             Language language = ((Language) event.getEntity());
-            applicationEventPublisher.publishEvent(new LanguageUpdatedEvent(language.toDTO()));
+            kafkaTemplate.send("language", language.toDTO().setEventType(EventType.UPDATED));
         } else if (event.getEntity() instanceof Customer) {
             Customer customer = ((Customer) event.getEntity());
-            applicationEventPublisher.publishEvent(new CustomerUpdatedEvent(customer.toDTO()));
+            kafkaTemplate.send("customer", customer.toDTO().setEventType(EventType.UPDATED));
         } else if (event.getEntity() instanceof TaxClass) {
             TaxClass taxClass = ((TaxClass) event.getEntity());
-            applicationEventPublisher.publishEvent(new TaxClassUpdatedEvent(taxClass.toDTO()));
+            kafkaTemplate.send("taxCkass", taxClass.toDTO().setEventType(EventType.UPDATED));
         }
     }
 
@@ -43,8 +44,4 @@ public class UpdatedEventListener implements PostUpdateEventListener, Applicatio
         return false;
     }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
-    }
 }

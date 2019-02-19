@@ -1,16 +1,15 @@
 package com.salesmanager.core.integration.merchant;
 
-import com.salesmanager.core.integration.AbstractCoreDTO;
+import com.salesmanager.core.integration.AbstractCoreCrudDTO;
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class MerchantStoreDTO extends AbstractCoreDTO {
+public class MerchantStoreDTO extends AbstractCoreCrudDTO {
 
     private Integer id;
 

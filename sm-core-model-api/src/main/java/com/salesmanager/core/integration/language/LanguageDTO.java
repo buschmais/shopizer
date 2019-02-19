@@ -1,13 +1,18 @@
 package com.salesmanager.core.integration.language;
 
-import com.salesmanager.core.integration.AbstractCoreDTO;
-import lombok.Value;
+import com.salesmanager.core.integration.AbstractCoreCrudDTO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
-public class LanguageDTO extends AbstractCoreDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class LanguageDTO extends AbstractCoreCrudDTO {
 
     private Integer id;
 
     private String code;
 
 }
+

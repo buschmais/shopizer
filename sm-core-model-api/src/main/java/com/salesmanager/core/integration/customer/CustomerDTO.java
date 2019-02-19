@@ -1,10 +1,14 @@
 package com.salesmanager.core.integration.customer;
 
-import com.salesmanager.core.integration.AbstractCoreDTO;
-import lombok.Value;
+import com.salesmanager.core.integration.AbstractCoreCrudDTO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
-public class CustomerDTO extends AbstractCoreDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class CustomerDTO extends AbstractCoreCrudDTO {
 
     private Long id;
 

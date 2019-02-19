@@ -6,15 +6,12 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.CustomerInfo;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.common.model.integration.CreatedEvent;
-import com.salesmanager.common.model.integration.DeletedEvent;
-import com.salesmanager.common.model.integration.UpdatedEvent;
 import com.salesmanager.core.integration.customer.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class CustomerCoreEventListener {
@@ -33,50 +30,29 @@ public class CustomerCoreEventListener {
         this.languageInfoService = languageInfoService;
     }
 
-    @TransactionalEventListener
+    @KafkaListener(topics = "customer", containerFactory = "customerKafkaListenerContainerFactory")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleCustomerCreateEvent(CreatedEvent<CustomerDTO> event) {
-        CustomerDTO customerDTO = event.getDto();
+    public void handleCustomerEvent(CustomerDTO customerDTO) {
         if (customerDTO != null) {
-            MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(customerDTO.getMerchantStoreCode());
-            LanguageInfo languageInfo = this.languageInfoService.findbyCode(customerDTO.getDefaultLanguageCode());
-            CustomerInfo customer = new CustomerInfo(
-                    customerDTO.getId(),
-                    customerDTO.getNick(),
-                    customerDTO.getFirstName(),
-                    customerDTO.getLastName(),
-                    merchantStoreInfo,
-                    languageInfo
+            switch (customerDTO.getEventType()) {
+                case CREATED:
+                case UPDATED:
+                    MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(customerDTO.getMerchantStoreCode());
+                    LanguageInfo languageInfo = this.languageInfoService.findbyCode(customerDTO.getDefaultLanguageCode());
+                    CustomerInfo customer = new CustomerInfo(
+                            customerDTO.getId(),
+                            customerDTO.getNick(),
+                            customerDTO.getFirstName(),
+                            customerDTO.getLastName(),
+                            merchantStoreInfo,
+                            languageInfo
                     );
-            this.customerInfoRepository.save(customer);
-        }
-    }
-
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleCustomerDeleteEvent(DeletedEvent<CustomerDTO> event) {
-        CustomerDTO customerDTO = event.getDto();
-        if (customerDTO != null) {
-            this.customerInfoRepository.delete(customerDTO.getId());
-        }
-    }
-
-    @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleCustomerUpdateEvent(UpdatedEvent<CustomerDTO> event) {
-        CustomerDTO customerDTO = event.getDto();
-        if (customerDTO != null) {
-            MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(customerDTO.getMerchantStoreCode());
-            LanguageInfo languageInfo = this.languageInfoService.findbyCode(customerDTO.getDefaultLanguageCode());
-            CustomerInfo customer = new CustomerInfo(
-                    customerDTO.getId(),
-                    customerDTO.getNick(),
-                    customerDTO.getFirstName(),
-                    customerDTO.getLastName(),
-                    merchantStoreInfo,
-                    languageInfo
-                    );
-            this.customerInfoRepository.save(customer);
+                    this.customerInfoRepository.save(customer);
+                    break;
+                case DELETED:
+                    this.customerInfoRepository.delete(customerDTO.getId());
+                    break;
+            }
         }
     }
 

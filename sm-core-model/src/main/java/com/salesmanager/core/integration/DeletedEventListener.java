@@ -1,9 +1,5 @@
 package com.salesmanager.core.integration;
 
-import com.salesmanager.core.integration.customer.CustomerDeletedEvent;
-import com.salesmanager.core.integration.language.LanguageDeletedEvent;
-import com.salesmanager.core.integration.merchant.MerchantStoreDeletedEvent;
-import com.salesmanager.core.integration.tax.TaxClassDeletedEvent;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -11,30 +7,35 @@ import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.hibernate.event.spi.PostDeleteEventListener;
 import org.hibernate.persister.entity.EntityPersister;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import static com.salesmanager.core.integration.AbstractCoreCrudDTO.*;
 
 
 @Component
-public class DeletedEventListener implements PostDeleteEventListener, ApplicationEventPublisherAware {
+public class DeletedEventListener implements PostDeleteEventListener {
 
-    private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    @Qualifier("coreKafkaTemplate")
+    private KafkaTemplate<String, AbstractCoreDTO> kafkaTemplate;
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
         if (event.getEntity() instanceof MerchantStore) {
             MerchantStore store = ((MerchantStore) event.getEntity());
-            applicationEventPublisher.publishEvent(new MerchantStoreDeletedEvent(store.toDTO()));
+            kafkaTemplate.send("merchant_store", store.toDTO().setEventType(EventType.DELETED));
         } else if (event.getEntity() instanceof Language) {
             Language language = ((Language) event.getEntity());
-            applicationEventPublisher.publishEvent(new LanguageDeletedEvent(language.toDTO()));
+            kafkaTemplate.send("language", language.toDTO().setEventType(EventType.DELETED));
         } else if (event.getEntity() instanceof Customer) {
             Customer customer = ((Customer) event.getEntity());
-            applicationEventPublisher.publishEvent(new CustomerDeletedEvent(customer.toDTO()));
+            kafkaTemplate.send("customer", customer.toDTO().setEventType(EventType.DELETED));
         } else if (event.getEntity() instanceof TaxClass) {
             TaxClass taxClass = ((TaxClass) event.getEntity());
-            applicationEventPublisher.publishEvent(new TaxClassDeletedEvent(taxClass.toDTO()));
+            kafkaTemplate.send("tax_class", taxClass.toDTO().setEventType(EventType.DELETED));
         }
     }
 
@@ -43,8 +44,4 @@ public class DeletedEventListener implements PostDeleteEventListener, Applicatio
         return false;
     }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
-    }
 }
