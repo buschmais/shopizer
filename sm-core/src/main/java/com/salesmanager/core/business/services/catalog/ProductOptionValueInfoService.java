@@ -22,4 +22,8 @@ public class ProductOptionValueInfoService {
     public void delete(Long productOptionValueId) {
         this.productOptionValueInfoRepository.delete(productOptionValueId);
     }
+
+    public ProductOptionValueInfo findOne(Long productOptionValueId) {
+        return this.productOptionValueInfoRepository.findOne(productOptionValueId);
+    }
 }

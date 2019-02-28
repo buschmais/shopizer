@@ -1,30 +1,22 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
-import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
+import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;import com.salesmanager.core.business.integration.catalog.adapter.ProductOptionValueInfoAdapter;
 import com.salesmanager.core.business.services.catalog.ProductOptionValueInfoService;
-import com.salesmanager.core.business.services.reference.language.LanguageService;
-import com.salesmanager.core.model.catalog.ProductOptionValueDescriptionInfo;
-import com.salesmanager.core.model.catalog.ProductOptionValueInfo;
-import com.salesmanager.core.model.reference.language.Language;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Component
 public class ProductOptionValueCatalogEventListener {
 
-    private final LanguageService languageService;
-
+    private final ProductOptionValueInfoAdapter productOptionValueInfoAdapter;
     private final ProductOptionValueInfoService productOptionValueInfoService;
 
     @Autowired
-    public ProductOptionValueCatalogEventListener(LanguageService languageService, ProductOptionValueInfoService productOptionValueInfoService) {
-        this.languageService = languageService;
+    public ProductOptionValueCatalogEventListener(ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductOptionValueInfoService productOptionValueInfoService) {
+        this.productOptionValueInfoAdapter = productOptionValueInfoAdapter;
         this.productOptionValueInfoService = productOptionValueInfoService;
     }
 
@@ -35,8 +27,7 @@ public class ProductOptionValueCatalogEventListener {
             switch (productOptionValueDTO.getEventType()) {
                 case CREATED:
                 case UPDATED:
-                    ProductOptionValueInfo productOptionValueInfo = createProductOptionValueInfo(productOptionValueDTO);
-                    this.productOptionValueInfoService.save(productOptionValueInfo);
+                    this.productOptionValueInfoAdapter.createOrUpdateProductOptionValueInfo(productOptionValueDTO);
                     break;
                 case DELETED:
                     this.productOptionValueInfoService.delete(productOptionValueDTO.getId());
@@ -44,17 +35,6 @@ public class ProductOptionValueCatalogEventListener {
             }
 
         }
-    }
-
-    private ProductOptionValueInfo createProductOptionValueInfo(ProductOptionValueDTO productOptionValueDTO) {
-        Set<ProductOptionValueDescriptionInfo> descriptions = new HashSet<>();
-        if (productOptionValueDTO.getDescriptions() != null) {
-            for (ProductOptionValueDTO.ProductOptionValueDescriptionDTO productOptionValueDescriptionDTO : productOptionValueDTO.getDescriptions()) {
-                Language language = languageService.getById(productOptionValueDescriptionDTO.getLanguageId());
-                descriptions.add(new ProductOptionValueDescriptionInfo(productOptionValueDescriptionDTO.getId(), productOptionValueDescriptionDTO.getName(), language));
-            }
-        }
-        return new ProductOptionValueInfo(productOptionValueDTO.getId(), productOptionValueDTO.getCode(),  descriptions);
     }
 
 }
