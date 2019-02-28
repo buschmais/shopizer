@@ -1,7 +1,7 @@
 package com.salesmanager.catalog.business.integration.core.listener;
 
+import com.salesmanager.catalog.business.integration.core.adapter.MerchantStoreInfoAdapter;
 import com.salesmanager.catalog.business.integration.core.repository.TaxClassInfoRepository;
-import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
 import com.salesmanager.core.integration.tax.TaxClassDTO;
@@ -15,13 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class TaxClassCoreEventListener {
 
     private TaxClassInfoRepository taxClassInfoRepository;
-
-    private MerchantStoreInfoService merchantStoreInfoService;
+    private final MerchantStoreInfoAdapter merchantStoreInfoAdapter;
 
     @Autowired
-    public TaxClassCoreEventListener(TaxClassInfoRepository taxClassInfoRepository, MerchantStoreInfoService merchantStoreInfoService) {
+    public TaxClassCoreEventListener(TaxClassInfoRepository taxClassInfoRepository, MerchantStoreInfoAdapter merchantStoreInfoAdapter) {
         this.taxClassInfoRepository = taxClassInfoRepository;
-        this.merchantStoreInfoService = merchantStoreInfoService;
+        this.merchantStoreInfoAdapter = merchantStoreInfoAdapter;
     }
 
     @KafkaListener(topics = "tax_class", containerFactory = "taxClassKafkaListenerContainerFactory")
@@ -31,7 +30,7 @@ public class TaxClassCoreEventListener {
             switch (taxClassDTO.getEventType()) {
                 case CREATED:
                 case UPDATED:
-                    MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoService.findbyCode(taxClassDTO.getMerchantStoreCode());
+                    MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoAdapter.findOrRequest(taxClassDTO.getMerchantStoreCode());
                     TaxClassInfo taxClass = new TaxClassInfo(
                             taxClassDTO.getId(),
                             taxClassDTO.getCode(),

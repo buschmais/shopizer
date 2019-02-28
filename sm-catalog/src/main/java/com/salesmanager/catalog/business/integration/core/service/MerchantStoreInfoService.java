@@ -18,4 +18,8 @@ public class MerchantStoreInfoService {
     public MerchantStoreInfo findbyCode(String code) {
         return this.merchantStoreInfoRepository.findByCode(code);
     }
+
+    public MerchantStoreInfo save(MerchantStoreInfo merchantStoreInfo) {
+        return this.merchantStoreInfoRepository.save(merchantStoreInfo);
+    }
 }
