@@ -1,5 +1,6 @@
 package com.salesmanager.catalog.business.integration.core.listener;
 
+import com.salesmanager.catalog.business.integration.core.adapter.LanguageInfoAdapter;
 import com.salesmanager.catalog.business.integration.core.adapter.MerchantStoreInfoAdapter;
 import com.salesmanager.catalog.business.integration.core.repository.CustomerInfoRepository;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
@@ -18,12 +19,14 @@ public class CustomerCoreEventListener {
 
     private final CustomerInfoRepository customerInfoRepository;
     private final MerchantStoreInfoAdapter merchantStoreInfoAdapter;
+    private final LanguageInfoAdapter languageInfoAdapter;
     private final LanguageInfoService languageInfoService;
 
     @Autowired
-    public CustomerCoreEventListener(CustomerInfoRepository customerInfoRepository, MerchantStoreInfoAdapter merchantStoreInfoAdapter, LanguageInfoService languageInfoService) {
+    public CustomerCoreEventListener(CustomerInfoRepository customerInfoRepository, MerchantStoreInfoAdapter merchantStoreInfoAdapter, LanguageInfoAdapter languageInfoAdapter, LanguageInfoService languageInfoService) {
         this.customerInfoRepository = customerInfoRepository;
         this.merchantStoreInfoAdapter = merchantStoreInfoAdapter;
+        this.languageInfoAdapter = languageInfoAdapter;
         this.languageInfoService = languageInfoService;
     }
 
@@ -35,7 +38,7 @@ public class CustomerCoreEventListener {
                 case CREATED:
                 case UPDATED:
                     MerchantStoreInfo merchantStoreInfo = this.merchantStoreInfoAdapter.findOrRequest(customerDTO.getMerchantStoreCode());
-                    LanguageInfo languageInfo = this.languageInfoService.findbyCode(customerDTO.getDefaultLanguageCode());
+                    LanguageInfo languageInfo = this.languageInfoAdapter.findOrRequet(customerDTO.getDefaultLanguageCode());
                     CustomerInfo customer = new CustomerInfo(
                             customerDTO.getId(),
                             customerDTO.getNick(),

@@ -50,4 +50,8 @@ public class LanguageInfoService {
     public List<LanguageInfo> getLanguages() {
         return this.languageInfoRepository.findAll();
     }
+
+    public LanguageInfo save(LanguageInfo languageInfo) {
+        return this.languageInfoRepository.save(languageInfo);
+    }
 }

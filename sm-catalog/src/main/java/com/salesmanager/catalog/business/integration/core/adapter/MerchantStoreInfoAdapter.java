@@ -1,6 +1,5 @@
 package com.salesmanager.catalog.business.integration.core.adapter;
 
-import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
@@ -21,13 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class MerchantStoreInfoAdapter {
 
-    private final LanguageInfoService languageInfoService;
+    private final LanguageInfoAdapter languageInfoAdapter;
     private final MerchantStoreInfoService merchantStoreInfoService;
     private final RestTemplate coreRestTemplate;
 
     @Autowired
-    public MerchantStoreInfoAdapter(LanguageInfoService languageInfoService, MerchantStoreInfoService merchantStoreInfoService, RestTemplate coreRestTemplate) {
-        this.languageInfoService = languageInfoService;
+    public MerchantStoreInfoAdapter(LanguageInfoAdapter languageInfoAdapter, MerchantStoreInfoService merchantStoreInfoService, RestTemplate coreRestTemplate) {
+        this.languageInfoAdapter = languageInfoAdapter;
         this.merchantStoreInfoService = merchantStoreInfoService;
         this.coreRestTemplate = coreRestTemplate;
     }
@@ -63,7 +62,7 @@ public class MerchantStoreInfoAdapter {
 
     private List<LanguageInfo> getLanguages(MerchantStoreDTO storeDTO) {
         return storeDTO.getLanguages().stream()
-                .map(languageInfoService::findbyCode)
+                .map(languageInfoAdapter::findOrRequet)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
