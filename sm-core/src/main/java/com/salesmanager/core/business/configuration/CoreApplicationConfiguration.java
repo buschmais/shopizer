@@ -15,6 +15,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         transactionManagerRef = "transactionManager")
 @ImportResource("classpath:/spring/shopizer-core-context.xml")
 @PropertySource("classpath:shopizer-core.properties")
-@Import(CoreKafkaConsumerConfiguration.class)
+@Import({CoreKafkaConsumerConfiguration.class, RestConfiguration.class})
 public class CoreApplicationConfiguration {
 }
