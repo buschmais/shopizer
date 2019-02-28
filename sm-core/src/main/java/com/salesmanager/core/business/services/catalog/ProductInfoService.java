@@ -4,8 +4,6 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
-import com.salesmanager.core.business.repositories.catalog.ProductOptionInfoRepository;
-import com.salesmanager.core.business.repositories.catalog.ProductOptionValueInfoRepository;
 import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
 import com.salesmanager.core.business.repositories.tax.TaxClassRepository;
 import com.salesmanager.core.model.catalog.*;
@@ -31,18 +29,14 @@ public class ProductInfoService {
 
     private final MerchantRepository merchantRepository;
     private final TaxClassRepository taxClassRepository;
-    private final ProductOptionInfoRepository productOptionInfoRepository;
-    private final ProductOptionValueInfoRepository productOptionValueInfoRepository;
     private final ProductPriceApi productPriceApi;
 
     @Autowired
-    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository, ProductOptionInfoRepository productOptionInfoRepository, ProductOptionValueInfoRepository productOptionValueInfoRepository, ProductPriceApi productPriceApi) {
+    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository, ProductPriceApi productPriceApi) {
         this.productApi = productApi;
         this.productInfoRepository = productInfoRepository;
         this.merchantRepository = merchantRepository;
         this.taxClassRepository = taxClassRepository;
-        this.productOptionInfoRepository = productOptionInfoRepository;
-        this.productOptionValueInfoRepository = productOptionValueInfoRepository;
         this.productPriceApi = productPriceApi;
     }
 
@@ -88,19 +82,6 @@ public class ProductInfoService {
             return this.merchantRepository.findOne(merchantStoreId);
         }
         return null;
-    }
-
-    public Set<ProductAttributeInfo> enrichProductAttributesForProduct(Long productId) {
-        Set<ProductAttributeDTO> productAttributeDTOs = productApi.getProductAttributes(productId);
-        Set<ProductAttributeInfo> productAttributeInfos = new HashSet<>();
-        if (productAttributeDTOs != null) {
-            for (ProductAttributeDTO dto : productAttributeDTOs) {
-                ProductOptionInfo optionInfo = productOptionInfoRepository.findOne(dto.getProductOptionId());
-                ProductOptionValueInfo valueInfo = productOptionValueInfoRepository.findOne(dto.getProductOptionValueId());
-                productAttributeInfos.add(new ProductAttributeInfo(dto.getId(), dto.getPrice(), dto.getFree(), dto.getWeight(), optionInfo, valueInfo));
-            }
-        }
-        return productAttributeInfos;
     }
 
     public Set<ProductDescriptionInfo> enrichProductDescriptionsForProduct(Long productId) {

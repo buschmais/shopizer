@@ -1,7 +1,7 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
 import com.salesmanager.catalog.api.dto.product.ProductDTO;
-import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.core.business.integration.catalog.adapter.ProductInfoAdapter;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.model.catalog.ProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class ProductCatalogEventListener {
 
+    private final ProductInfoAdapter productInfoAdapter;
     private final ProductInfoService productInfoService;
 
     @Autowired
-    public ProductCatalogEventListener(ProductInfoService productInfoService) {
+    public ProductCatalogEventListener(ProductInfoAdapter productInfoAdapter, ProductInfoService productInfoService) {
+        this.productInfoAdapter = productInfoAdapter;
         this.productInfoService = productInfoService;
     }
 
@@ -48,7 +50,7 @@ public class ProductCatalogEventListener {
         productInfo.setAvailabilityInformation(availability);
         productInfo.setTaxClass(this.productInfoService.enrichTaxClassForProduct(productDTO.getId()));
         productInfo.setMerchantStore(this.productInfoService.enrichMerchantForProduct(productDTO.getId()));
-        productInfo.setAttributes(this.productInfoService.enrichProductAttributesForProduct(productDTO.getId()));
+        productInfo.setAttributes(this.productInfoAdapter.enrichProductAttributesForProduct(productDTO.getId()));
         productInfo.setDescriptions(this.productInfoService.enrichProductDescriptionsForProduct(productDTO.getId()));
         this.productInfoService.save(productInfo);
     }
