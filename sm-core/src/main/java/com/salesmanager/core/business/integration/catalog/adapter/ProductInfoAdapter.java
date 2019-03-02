@@ -2,13 +2,21 @@ package com.salesmanager.core.business.integration.catalog.adapter;
 
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
+import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
+import com.salesmanager.core.model.catalog.ProductInfo;
 import com.salesmanager.core.model.catalog.ProductOptionInfo;
 import com.salesmanager.core.model.catalog.ProductOptionValueInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -17,12 +25,14 @@ public class ProductInfoAdapter {
     private final ProductOptionInfoAdapter productOptionInfoAdapter;
     private final ProductOptionValueInfoAdapter productOptionValueInfoAdapter;
     private final ProductApi productApi;
+    private final RestTemplate catalogRestTemplate;
 
     @Autowired
-    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi) {
+    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi, RestTemplate catalogRestTemplate) {
         this.productOptionInfoAdapter = productOptionInfoAdapter;
         this.productOptionValueInfoAdapter = productOptionValueInfoAdapter;
         this.productApi = productApi;
+        this.catalogRestTemplate = catalogRestTemplate;
     }
 
     public Set<ProductAttributeInfo> enrichProductAttributesForProduct(Long productId) {
@@ -36,6 +46,19 @@ public class ProductInfoAdapter {
             }
         }
         return productAttributeInfos;
+    }
+
+    public ProductInfo.Dimension requestDimensionsForProduct(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<DimensionDTO> response = catalogRestTemplate.exchange("/catalog/product/{productId}/dimension",
+                HttpMethod.GET, null, new ParameterizedTypeReference<DimensionDTO>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            DimensionDTO dimensionDTO = response.getBody();
+            return new ProductInfo.Dimension(dimensionDTO.getWidth(), dimensionDTO.getLength(), dimensionDTO.getHeight(), dimensionDTO.getWeight());
+        }
+        return null;
     }
 
 }

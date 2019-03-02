@@ -52,14 +52,6 @@ public class ProductInfoService {
         return this.productInfoRepository.listByTaxClass(taxClassId);
     }
 
-    public ProductInfo.Dimension enrichDimensionsForProduct(Long productId) {
-        DimensionDTO dimensionDTO = productApi.getProductDimension(productId);
-        if (dimensionDTO != null) {
-            return new ProductInfo.Dimension(dimensionDTO.getWidth(), dimensionDTO.getLength(), dimensionDTO.getHeight(), dimensionDTO.getWeight());
-        }
-        return null;
-    }
-
     public ProductInfo.AvailabilityInformation enrichAvailabilityInfoForProduct(Long productId) {
         AvailabilityInformationDTO availabilityDTO = productApi.getProductAvailabilityInformation(productId);
         if (availabilityDTO != null) {

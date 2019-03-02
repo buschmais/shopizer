@@ -56,17 +56,6 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public DimensionDTO getProductDimension(Long productId) {
-        Product product = this.productService.getById(productId);
-        return new DimensionDTO(
-                product != null && product.getProductWidth() != null ? product.getProductWidth().doubleValue() : null,
-                product != null && product.getProductLength() != null ? product.getProductLength().doubleValue() : null,
-                product != null && product.getProductHeight() != null ? product.getProductHeight().doubleValue() : null,
-                product != null && product.getProductWeight() != null ? product.getProductWeight().doubleValue() : null
-        );
-    }
-
-    @Override
     public AvailabilityInformationDTO getProductAvailabilityInformation(Long productId) {
         Product product = this.productService.getById(productId);
         return new AvailabilityInformationDTO(

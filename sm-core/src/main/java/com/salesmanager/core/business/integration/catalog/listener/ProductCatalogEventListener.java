@@ -44,7 +44,7 @@ public class ProductCatalogEventListener {
                 productDTO.getSku(),
                 productDTO.getName(),
                 productDTO.getManufacturerCode());
-        ProductInfo.Dimension dimension = this.productInfoService.enrichDimensionsForProduct(productDTO.getId());
+        ProductInfo.Dimension dimension = this.productInfoAdapter.requestDimensionsForProduct(productDTO.getId());
         productInfo.setDimension(dimension);
         ProductInfo.AvailabilityInformation availability = this.productInfoService.enrichAvailabilityInfoForProduct(productDTO.getId());
         productInfo.setAvailabilityInformation(availability);
