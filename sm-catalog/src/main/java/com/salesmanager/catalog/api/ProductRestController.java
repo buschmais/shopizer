@@ -1,5 +1,6 @@
 package com.salesmanager.catalog.api;
 
+import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.product.Product;
@@ -32,6 +33,19 @@ public class ProductRestController {
                     product.getProductWeight() != null ? product.getProductWeight().doubleValue() : null
             );
             return ResponseEntity.ok(dimensionDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/shipping", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductAvailabilityInformation(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            AvailabilityInformationDTO availabilityInformationDTO = new AvailabilityInformationDTO(
+                    product.isAvailable(),
+                    product.isProductShipeable(),
+                    product.isProductVirtual());
+            return ResponseEntity.ok(availabilityInformationDTO);
         }
         return ResponseEntity.notFound().build();
     }

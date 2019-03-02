@@ -2,6 +2,7 @@ package com.salesmanager.core.business.integration.catalog.adapter;
 
 import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
+import com.salesmanager.core.business.integration.catalog.dto.AvailabilityInformationDTO;
 import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
@@ -57,6 +58,19 @@ public class ProductInfoAdapter {
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             DimensionDTO dimensionDTO = response.getBody();
             return new ProductInfo.Dimension(dimensionDTO.getWidth(), dimensionDTO.getLength(), dimensionDTO.getHeight(), dimensionDTO.getWeight());
+        }
+        return null;
+    }
+
+    public ProductInfo.AvailabilityInformation requestAvailabilityInfoForProduct(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<AvailabilityInformationDTO> response = catalogRestTemplate.exchange("/catalog/product/{productId}/shipping",
+                HttpMethod.GET, null, new ParameterizedTypeReference<AvailabilityInformationDTO>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            AvailabilityInformationDTO availabilityInformationDTO = response.getBody();
+            return new ProductInfo.AvailabilityInformation(availabilityInformationDTO.isAvailable(), availabilityInformationDTO.isShippable(), availabilityInformationDTO.isVirtual());
         }
         return null;
     }

@@ -56,15 +56,6 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public AvailabilityInformationDTO getProductAvailabilityInformation(Long productId) {
-        Product product = this.productService.getById(productId);
-        return new AvailabilityInformationDTO(
-                product != null && product.isAvailable(),
-                product != null && product.isProductShipeable(),
-                product != null && product.isProductVirtual());
-    }
-
-    @Override
     public Long getProductTaxClassId(Long productId) {
         Product product = this.productService.getById(productId);
         return product != null && product.getTaxClass() != null ? product.getTaxClass().getId() : null;
