@@ -20,8 +20,6 @@ public interface ProductApi {
 
     boolean isAvailable(Long productId);
 
-    Set<ProductDescriptionDTO> getProductDescriptions(Long productId);
-
     ProductImageDTO getDefaultImage(Long productId);
 
     Integer getAvailabilityForRegion(Long productId, String region);

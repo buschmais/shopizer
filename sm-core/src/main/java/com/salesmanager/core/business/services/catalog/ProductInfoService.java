@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -66,17 +64,6 @@ public class ProductInfoService {
             return this.merchantRepository.findOne(merchantStoreId);
         }
         return null;
-    }
-
-    public Set<ProductDescriptionInfo> enrichProductDescriptionsForProduct(Long productId) {
-        Set<ProductDescriptionDTO> productDescriptionDTOs = productApi.getProductDescriptions(productId);
-        Set<ProductDescriptionInfo> productDescriptionInfos = new HashSet<>();
-        if (productDescriptionDTOs != null) {
-            for (ProductDescriptionDTO dto : productDescriptionDTOs) {
-                productDescriptionInfos.add(new ProductDescriptionInfo(dto.getId(), dto.getName(), dto.getSeUrl(), dto.getLanguageId()));
-            }
-        }
-        return productDescriptionInfos;
     }
 
     public ProductInfo getProductForLocale(String sku, Language language) {

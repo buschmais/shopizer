@@ -110,23 +110,6 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public Set<ProductDescriptionDTO> getProductDescriptions(Long productId) {
-        Product product = this.productService.getById(productId);
-        Set<ProductDescriptionDTO> descriptions= new HashSet<>();
-        if (product != null && product.getDescriptions() != null) {
-            for (ProductDescription productDescription : product.getDescriptions()) {
-                descriptions.add(new ProductDescriptionDTO(
-                        productDescription.getId(),
-                        productDescription.getName(),
-                        productDescription.getSeUrl(),
-                        productDescription.getLanguage() != null ? productDescription.getLanguage().getId().longValue() : null
-                ));
-            }
-        }
-        return descriptions;
-    }
-
-    @Override
     public ProductImageDTO getDefaultImage(Long productId) {
         Product product = this.productService.getById(productId);
         if (product != null && product.getProductImage() != null) {

@@ -2,14 +2,19 @@ package com.salesmanager.catalog.api;
 
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
+import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.catalog.model.product.description.ProductDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/catalog/product")
@@ -46,6 +51,26 @@ public class ProductRestController {
                     product.isProductShipeable(),
                     product.isProductVirtual());
             return ResponseEntity.ok(availabilityInformationDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/descriptions", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductDescriptions(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            Set<ProductDescriptionDTO> descriptions= new HashSet<>();
+            if (product.getDescriptions() != null) {
+                for (ProductDescription productDescription : product.getDescriptions()) {
+                    descriptions.add(new ProductDescriptionDTO(
+                            productDescription.getId(),
+                            productDescription.getName(),
+                            productDescription.getSeUrl(),
+                            productDescription.getLanguage() != null ? productDescription.getLanguage().getId().longValue() : null
+                    ));
+                }
+            }
+            return ResponseEntity.ok(descriptions);
         }
         return ResponseEntity.notFound().build();
     }

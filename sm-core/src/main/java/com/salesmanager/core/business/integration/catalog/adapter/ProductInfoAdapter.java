@@ -4,10 +4,8 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.core.business.integration.catalog.dto.AvailabilityInformationDTO;
 import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
-import com.salesmanager.core.model.catalog.ProductAttributeInfo;
-import com.salesmanager.core.model.catalog.ProductInfo;
-import com.salesmanager.core.model.catalog.ProductOptionInfo;
-import com.salesmanager.core.model.catalog.ProductOptionValueInfo;
+import com.salesmanager.core.business.integration.catalog.dto.ProductDescriptionDTO;
+import com.salesmanager.core.model.catalog.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -71,6 +69,23 @@ public class ProductInfoAdapter {
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             AvailabilityInformationDTO availabilityInformationDTO = response.getBody();
             return new ProductInfo.AvailabilityInformation(availabilityInformationDTO.isAvailable(), availabilityInformationDTO.isShippable(), availabilityInformationDTO.isVirtual());
+        }
+        return null;
+    }
+
+    public Set<ProductDescriptionInfo> requestProductDescriptionsForProduct(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<Set<ProductDescriptionDTO>> response = catalogRestTemplate.exchange("/catalog/product/{productId}/descriptions",
+                HttpMethod.GET, null, new ParameterizedTypeReference<Set<ProductDescriptionDTO>>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            Set<ProductDescriptionDTO> productDescriptionDTOs = response.getBody();
+            Set<ProductDescriptionInfo> productDescriptionInfos = new HashSet<>();
+            for (ProductDescriptionDTO dto : productDescriptionDTOs) {
+                productDescriptionInfos.add(new ProductDescriptionInfo(dto.getId(), dto.getName(), dto.getSeUrl(), dto.getLanguageId()));
+            }
+            return productDescriptionInfos;
         }
         return null;
     }
