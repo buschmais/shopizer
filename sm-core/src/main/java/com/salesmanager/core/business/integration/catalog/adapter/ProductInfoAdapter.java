@@ -1,9 +1,8 @@
 package com.salesmanager.core.business.integration.catalog.adapter;
 
-import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.core.business.integration.catalog.dto.AvailabilityInformationDTO;
 import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductAttributeDTO;
 import com.salesmanager.core.business.integration.catalog.dto.ProductDescriptionDTO;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.business.services.tax.TaxClassService;
@@ -27,32 +26,38 @@ public class ProductInfoAdapter {
 
     private final ProductOptionInfoAdapter productOptionInfoAdapter;
     private final ProductOptionValueInfoAdapter productOptionValueInfoAdapter;
-    private final ProductApi productApi;
     private final MerchantStoreService merchantStoreService;
     private final TaxClassService taxClassService;
     private final RestTemplate catalogRestTemplate;
 
     @Autowired
-    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi, MerchantStoreService merchantStoreService, TaxClassService taxClassService, RestTemplate catalogRestTemplate) {
+    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, MerchantStoreService merchantStoreService, TaxClassService taxClassService, RestTemplate catalogRestTemplate) {
         this.productOptionInfoAdapter = productOptionInfoAdapter;
         this.productOptionValueInfoAdapter = productOptionValueInfoAdapter;
-        this.productApi = productApi;
         this.merchantStoreService = merchantStoreService;
         this.taxClassService = taxClassService;
         this.catalogRestTemplate = catalogRestTemplate;
     }
 
-    public Set<ProductAttributeInfo> enrichProductAttributesForProduct(Long productId) {
-        Set<ProductAttributeDTO> productAttributeDTOs = productApi.getProductAttributes(productId);
-        Set<ProductAttributeInfo> productAttributeInfos = new HashSet<>();
-        if (productAttributeDTOs != null) {
-            for (ProductAttributeDTO dto : productAttributeDTOs) {
-                ProductOptionInfo optionInfo = productOptionInfoAdapter.findOrRequest(dto.getProductOptionId());
-                ProductOptionValueInfo valueInfo = productOptionValueInfoAdapter.findOrRequest(dto.getProductOptionValueId());
-                productAttributeInfos.add(new ProductAttributeInfo(dto.getId(), dto.getPrice(), dto.getFree(), dto.getWeight(), optionInfo, valueInfo));
+    public Set<ProductAttributeInfo> requestProductAttributesForProduct(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<Set<ProductAttributeDTO>> response = catalogRestTemplate.exchange("/catalog/product/{productId}/attributes",
+                HttpMethod.GET, null, new ParameterizedTypeReference<Set<ProductAttributeDTO>>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            Set<ProductAttributeDTO> productAttributeDTOs = response.getBody();
+            Set<ProductAttributeInfo> productAttributeInfos = new HashSet<>();
+            if (productAttributeDTOs != null) {
+                for (ProductAttributeDTO dto : productAttributeDTOs) {
+                    ProductOptionInfo optionInfo = productOptionInfoAdapter.findOrRequest(dto.getProductOptionId());
+                    ProductOptionValueInfo valueInfo = productOptionValueInfoAdapter.findOrRequest(dto.getProductOptionValueId());
+                    productAttributeInfos.add(new ProductAttributeInfo(dto.getId(), dto.getPrice(), dto.getFree(), dto.getWeight(), optionInfo, valueInfo));
+                }
+                return productAttributeInfos;
             }
         }
-        return productAttributeInfos;
+        return null;
     }
 
     public ProductInfo.Dimension requestDimensionsForProduct(Long productId) {

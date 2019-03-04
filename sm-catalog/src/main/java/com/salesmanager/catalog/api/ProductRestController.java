@@ -2,9 +2,11 @@ package com.salesmanager.catalog.api;
 
 import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
 import com.salesmanager.catalog.api.dto.product.DimensionDTO;
+import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.product.Product;
+import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +91,27 @@ public class ProductRestController {
         Product product = this.productService.getById(productId);
         if (product != null) {
             return ResponseEntity.ok(product.getTaxClass() != null ? product.getTaxClass().getId() : null);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/attributes", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductAttributes(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            if (product.getAttributes() != null) {
+                Set<ProductAttributeDTO> attributes = new HashSet<>();
+                for (ProductAttribute productAttribute : product.getAttributes()) {
+                    attributes.add(new ProductAttributeDTO(
+                            productAttribute.getId(),
+                            productAttribute.getProductAttributePrice() != null ? productAttribute.getProductAttributePrice().doubleValue() : null,
+                            productAttribute.getProductAttributeIsFree(),
+                            productAttribute.getProductAttributeWeight() != null ? productAttribute.getProductAttributeWeight().doubleValue() : null,
+                            productAttribute.getProductOption().getId(),
+                            productAttribute.getProductOptionValue().getId()));
+                }
+                return ResponseEntity.ok(attributes);
+            }
         }
         return ResponseEntity.notFound().build();
     }

@@ -6,13 +6,10 @@ import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.core.integration.language.LanguageDTO;
 
 import java.util.Locale;
-import java.util.Set;
 
 public interface ProductApi {
 
     BreadcrumbItem getBreadcrumbItemForLocale(long productId, LanguageDTO languageDTO, Locale locale) throws ServiceException;
-
-    Set<ProductAttributeDTO> getProductAttributes(Long productId);
 
     boolean isAvailable(Long productId);
 

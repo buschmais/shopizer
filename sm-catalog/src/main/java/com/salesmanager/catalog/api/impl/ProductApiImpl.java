@@ -6,9 +6,7 @@ import com.salesmanager.catalog.business.integration.core.service.LanguageInfoSe
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.product.Product;
-import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
-import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.common.business.exception.ServiceException;
@@ -20,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -53,24 +50,6 @@ public class ProductApiImpl implements ProductApi {
             return productItem;
         }
         return null;
-    }
-
-    @Override
-    public Set<ProductAttributeDTO> getProductAttributes(Long productId) {
-        Product product = this.productService.getById(productId);
-        Set<ProductAttributeDTO> attributes = new HashSet<>();
-        if (product != null && product.getAttributes() != null) {
-            for (ProductAttribute productAttribute : product.getAttributes()) {
-                attributes.add(new ProductAttributeDTO(
-                        productAttribute.getId(),
-                        productAttribute.getProductAttributePrice() != null ? productAttribute.getProductAttributePrice().doubleValue() : null,
-                        productAttribute.getProductAttributeIsFree(),
-                        productAttribute.getProductAttributeWeight() != null ? productAttribute.getProductAttributeWeight().doubleValue() : null,
-                        productAttribute.getProductOption().getId(),
-                        productAttribute.getProductOptionValue().getId()));
-            }
-        }
-        return attributes;
     }
 
     @Override
