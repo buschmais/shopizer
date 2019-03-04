@@ -48,7 +48,7 @@ public class ProductCatalogEventListener {
         productInfo.setDimension(dimension);
         ProductInfo.AvailabilityInformation availability = this.productInfoAdapter.requestAvailabilityInfoForProduct(productDTO.getId());
         productInfo.setAvailabilityInformation(availability);
-        productInfo.setTaxClass(this.productInfoService.enrichTaxClassForProduct(productDTO.getId()));
+        productInfo.setTaxClass(this.productInfoAdapter.requestTaxClassForProduct(productDTO.getId()));
         productInfo.setMerchantStore(this.productInfoAdapter.requestMerchantForProduct(productDTO.getId()));
         productInfo.setAttributes(this.productInfoAdapter.enrichProductAttributesForProduct(productDTO.getId()));
         productInfo.setDescriptions(this.productInfoAdapter.requestProductDescriptionsForProduct(productDTO.getId()));

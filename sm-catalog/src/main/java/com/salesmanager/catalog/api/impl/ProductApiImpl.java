@@ -56,12 +56,6 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public Long getProductTaxClassId(Long productId) {
-        Product product = this.productService.getById(productId);
-        return product != null && product.getTaxClass() != null ? product.getTaxClass().getId() : null;
-    }
-
-    @Override
     public Set<ProductAttributeDTO> getProductAttributes(Long productId) {
         Product product = this.productService.getById(productId);
         Set<ProductAttributeDTO> attributes = new HashSet<>();

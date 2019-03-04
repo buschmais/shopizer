@@ -12,8 +12,6 @@ public interface ProductApi {
 
     BreadcrumbItem getBreadcrumbItemForLocale(long productId, LanguageDTO languageDTO, Locale locale) throws ServiceException;
 
-    Long getProductTaxClassId(Long productId);
-
     Set<ProductAttributeDTO> getProductAttributes(Long productId);
 
     boolean isAvailable(Long productId);

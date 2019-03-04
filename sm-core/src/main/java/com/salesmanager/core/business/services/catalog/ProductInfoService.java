@@ -4,10 +4,8 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
-import com.salesmanager.core.business.repositories.tax.TaxClassRepository;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.reference.language.Language;
-import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +21,12 @@ public class ProductInfoService {
 
     private final ProductInfoRepository productInfoRepository;
 
-    private final TaxClassRepository taxClassRepository;
     private final ProductPriceApi productPriceApi;
 
     @Autowired
-    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, TaxClassRepository taxClassRepository, ProductPriceApi productPriceApi) {
+    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, ProductPriceApi productPriceApi) {
         this.productApi = productApi;
         this.productInfoRepository = productInfoRepository;
-        this.taxClassRepository = taxClassRepository;
         this.productPriceApi = productPriceApi;
     }
 
@@ -44,14 +40,6 @@ public class ProductInfoService {
 
     public List<ProductInfo> listByTaxClass(Long taxClassId) {
         return this.productInfoRepository.listByTaxClass(taxClassId);
-    }
-
-    public TaxClass enrichTaxClassForProduct(Long productId) {
-        Long taxClassId = productApi.getProductTaxClassId(productId);
-        if (taxClassId != null) {
-            return this.taxClassRepository.findOne(taxClassId);
-        }
-        return null;
     }
 
     public ProductInfo getProductForLocale(String sku, Language language) {

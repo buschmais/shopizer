@@ -6,8 +6,10 @@ import com.salesmanager.core.business.integration.catalog.dto.AvailabilityInform
 import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
 import com.salesmanager.core.business.integration.catalog.dto.ProductDescriptionDTO;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
+import com.salesmanager.core.business.services.tax.TaxClassService;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -27,14 +29,16 @@ public class ProductInfoAdapter {
     private final ProductOptionValueInfoAdapter productOptionValueInfoAdapter;
     private final ProductApi productApi;
     private final MerchantStoreService merchantStoreService;
+    private final TaxClassService taxClassService;
     private final RestTemplate catalogRestTemplate;
 
     @Autowired
-    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi, MerchantStoreService merchantStoreService, RestTemplate catalogRestTemplate) {
+    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi, MerchantStoreService merchantStoreService, TaxClassService taxClassService, RestTemplate catalogRestTemplate) {
         this.productOptionInfoAdapter = productOptionInfoAdapter;
         this.productOptionValueInfoAdapter = productOptionValueInfoAdapter;
         this.productApi = productApi;
         this.merchantStoreService = merchantStoreService;
+        this.taxClassService = taxClassService;
         this.catalogRestTemplate = catalogRestTemplate;
     }
 
@@ -104,6 +108,21 @@ public class ProductInfoAdapter {
             Integer merchantStoreId = response.getBody();
             if (merchantStoreId != null) {
                 return this.merchantStoreService.getById(merchantStoreId);
+            }
+        }
+        return null;
+    }
+
+    public TaxClass requestTaxClassForProduct(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<Long> response = catalogRestTemplate.exchange("/catalog/product/{productId}/tax-class",
+                HttpMethod.GET, null, new ParameterizedTypeReference<Long>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            Long taxClassId = response.getBody();
+            if (taxClassId != null) {
+                return this.taxClassService.getById(taxClassId);
             }
         }
         return null;

@@ -83,4 +83,13 @@ public class ProductRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @RequestMapping(path = "/{productId}/tax-class", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductTaxClass(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            return ResponseEntity.ok(product.getTaxClass() != null ? product.getTaxClass().getId() : null);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
