@@ -62,12 +62,6 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public Integer getProductMerchantStoreId(Long productId) {
-        Product product = this.productService.getById(productId);
-        return product != null && product.getMerchantStore() != null ? product.getMerchantStore().getId() : null;
-    }
-
-    @Override
     public Set<ProductAttributeDTO> getProductAttributes(Long productId) {
         Product product = this.productService.getById(productId);
         Set<ProductAttributeDTO> attributes = new HashSet<>();

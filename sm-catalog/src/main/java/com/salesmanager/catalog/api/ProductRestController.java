@@ -74,4 +74,13 @@ public class ProductRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @RequestMapping(path = "/{productId}/merchant", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductMerchant(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            return ResponseEntity.ok(product.getMerchantStore() != null ? product.getMerchantStore().getId() : null);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

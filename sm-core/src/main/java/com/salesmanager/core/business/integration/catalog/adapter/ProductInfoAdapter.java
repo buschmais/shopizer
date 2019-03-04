@@ -5,7 +5,9 @@ import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
 import com.salesmanager.core.business.integration.catalog.dto.AvailabilityInformationDTO;
 import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
 import com.salesmanager.core.business.integration.catalog.dto.ProductDescriptionDTO;
+import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.model.catalog.*;
+import com.salesmanager.core.model.merchant.MerchantStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -24,13 +26,15 @@ public class ProductInfoAdapter {
     private final ProductOptionInfoAdapter productOptionInfoAdapter;
     private final ProductOptionValueInfoAdapter productOptionValueInfoAdapter;
     private final ProductApi productApi;
+    private final MerchantStoreService merchantStoreService;
     private final RestTemplate catalogRestTemplate;
 
     @Autowired
-    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi, RestTemplate catalogRestTemplate) {
+    public ProductInfoAdapter(ProductOptionInfoAdapter productOptionInfoAdapter, ProductOptionValueInfoAdapter productOptionValueInfoAdapter, ProductApi productApi, MerchantStoreService merchantStoreService, RestTemplate catalogRestTemplate) {
         this.productOptionInfoAdapter = productOptionInfoAdapter;
         this.productOptionValueInfoAdapter = productOptionValueInfoAdapter;
         this.productApi = productApi;
+        this.merchantStoreService = merchantStoreService;
         this.catalogRestTemplate = catalogRestTemplate;
     }
 
@@ -86,6 +90,21 @@ public class ProductInfoAdapter {
                 productDescriptionInfos.add(new ProductDescriptionInfo(dto.getId(), dto.getName(), dto.getSeUrl(), dto.getLanguageId()));
             }
             return productDescriptionInfos;
+        }
+        return null;
+    }
+
+    public MerchantStore requestMerchantForProduct(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<Integer> response = catalogRestTemplate.exchange("/catalog/product/{productId}/merchant",
+                HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            Integer merchantStoreId = response.getBody();
+            if (merchantStoreId != null) {
+                return this.merchantStoreService.getById(merchantStoreId);
+            }
         }
         return null;
     }

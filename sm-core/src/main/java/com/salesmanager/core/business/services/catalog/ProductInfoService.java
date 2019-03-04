@@ -4,10 +4,8 @@ import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
-import com.salesmanager.core.business.repositories.merchant.MerchantRepository;
 import com.salesmanager.core.business.repositories.tax.TaxClassRepository;
 import com.salesmanager.core.model.catalog.*;
-import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +23,13 @@ public class ProductInfoService {
 
     private final ProductInfoRepository productInfoRepository;
 
-    private final MerchantRepository merchantRepository;
     private final TaxClassRepository taxClassRepository;
     private final ProductPriceApi productPriceApi;
 
     @Autowired
-    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, MerchantRepository merchantRepository, TaxClassRepository taxClassRepository, ProductPriceApi productPriceApi) {
+    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, TaxClassRepository taxClassRepository, ProductPriceApi productPriceApi) {
         this.productApi = productApi;
         this.productInfoRepository = productInfoRepository;
-        this.merchantRepository = merchantRepository;
         this.taxClassRepository = taxClassRepository;
         this.productPriceApi = productPriceApi;
     }
@@ -54,14 +50,6 @@ public class ProductInfoService {
         Long taxClassId = productApi.getProductTaxClassId(productId);
         if (taxClassId != null) {
             return this.taxClassRepository.findOne(taxClassId);
-        }
-        return null;
-    }
-
-    public MerchantStore enrichMerchantForProduct(Long productId) {
-        Integer merchantStoreId = productApi.getProductMerchantStoreId(productId);
-        if (merchantStoreId != null) {
-            return this.merchantRepository.findOne(merchantStoreId);
         }
         return null;
     }
