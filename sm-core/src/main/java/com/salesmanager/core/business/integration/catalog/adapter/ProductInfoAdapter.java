@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -177,5 +178,19 @@ public class ProductInfoAdapter {
             );
         }
         return new FinalPriceInfo(finalPriceDTO.getDiscounted(), finalPriceDTO.getFinalPrice(), finalPriceDTO.getDefaultPrice(), additionalPrices,productPriceInfo);
+    }
+
+    public Integer requestAvailbilityForRegion(Long productId, String region) throws ServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromPath("/catalog/product/{productId}/availability");
+        uriBuilder.queryParam("region", region);
+        uriBuilder.buildAndExpand(params);
+        ResponseEntity<Integer> availabilityResponse = catalogRestTemplate.exchange(uriBuilder.buildAndExpand(params).toString(), HttpMethod.GET, null, Integer.class);
+        if (availabilityResponse.getStatusCode().is2xxSuccessful()) {
+            return availabilityResponse.getBody();
+        } else {
+            throw new ServiceException("Product availability not accessible from service, status code: " + availabilityResponse.getStatusCode());
+        }
     }
 }

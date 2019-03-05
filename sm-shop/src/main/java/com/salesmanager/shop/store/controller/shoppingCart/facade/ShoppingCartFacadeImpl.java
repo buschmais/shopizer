@@ -641,7 +641,6 @@ public class ShoppingCartFacadeImpl
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
         readableShoppingCart.setLanguageService(languageService);
-        readableShoppingCart.setProductApi(productApi);
         readableShoppingCart.setProductInfoService(productInfoService);
         ReadableShoppingCart readableCart = new  ReadableShoppingCart();
         
@@ -709,7 +708,6 @@ public class ShoppingCartFacadeImpl
         readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
         readableShoppingCart.setCustomerService(customerService);
         readableShoppingCart.setLanguageService(languageService);
-        readableShoppingCart.setProductApi(productApi);
         readableShoppingCart.setProductInfoService(productInfoService);
 
 
@@ -744,7 +742,6 @@ public class ShoppingCartFacadeImpl
             readableShoppingCart.setShoppingCartCalculationService(shoppingCartCalculationService);
             readableShoppingCart.setCustomerService(customerService);
             readableShoppingCart.setLanguageService(languageService);
-            readableShoppingCart.setProductApi(productApi);
             readableShoppingCart.setProductInfoService(productInfoService);
 
             readableShoppingCart.populate(cart, readableCart,  store, language);

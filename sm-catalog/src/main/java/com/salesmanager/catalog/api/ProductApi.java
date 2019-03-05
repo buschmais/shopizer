@@ -12,6 +12,4 @@ public interface ProductApi {
 
     boolean isAvailable(Long productId);
 
-    Integer getAvailabilityForRegion(Long productId, String region);
-
 }

@@ -1,6 +1,5 @@
 package com.salesmanager.shop.populator.catalog;
 
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.FinalPriceInfo;
@@ -24,9 +23,6 @@ import java.util.Set;
 
 public class ReadableProductPopulator extends
 		AbstractDataPopulator<ProductInfo, ReadableProduct> {
-
-	@Getter @Setter
-	private ProductApi productApi;
 
 	@Getter @Setter
 	private LanguageService languageService;
@@ -103,7 +99,7 @@ public class ReadableProductPopulator extends
 
 			target.setPrice(BigDecimal.valueOf(price.getFinalPrice()));
 
-			target.setQuantity(productApi.getAvailabilityForRegion(source.getId(), Constants.ALL_REGIONS));
+			target.setQuantity(productInfoService.getAvailabilityForRegion(source.getId(), Constants.ALL_REGIONS));
 			
 			
 			return target;

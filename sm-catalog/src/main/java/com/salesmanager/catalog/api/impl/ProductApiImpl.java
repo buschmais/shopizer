@@ -69,17 +69,4 @@ public class ProductApiImpl implements ProductApi {
         }
         return true;
     }
-
-    @Override
-    public Integer getAvailabilityForRegion(Long productId, String region) {
-        Product product = this.productService.getById(productId);
-        if (product != null && product.getAvailabilities() != null) {
-            for (ProductAvailability productAvailability : product.getAvailabilities()) {
-                if (productAvailability.getRegion().equals(region)) {
-                    return productAvailability.getProductQuantity();
-                }
-            }
-        }
-        return 0;
-    }
 }

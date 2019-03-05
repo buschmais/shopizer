@@ -6,6 +6,7 @@ import com.salesmanager.catalog.business.service.product.attribute.ProductAttrib
 import com.salesmanager.catalog.business.util.ProductPriceUtils;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
+import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
@@ -187,5 +188,19 @@ public class ProductRestController {
             );
         }
         return null;
+    }
+
+    @RequestMapping(path = "/{productId}/availability", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductAvailabilityForRegion(@PathVariable("productId") Long productId, @RequestParam("region") String region) {
+        Product product = this.productService.getById(productId);
+        if (product != null && product.getAvailabilities() != null) {
+            for (ProductAvailability productAvailability : product.getAvailabilities()) {
+                if (productAvailability.getRegion().equals(region)) {
+                    return ResponseEntity.ok(productAvailability.getProductQuantity());
+                }
+            }
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

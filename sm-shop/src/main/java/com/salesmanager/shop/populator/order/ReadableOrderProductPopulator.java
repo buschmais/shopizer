@@ -1,6 +1,5 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.business.utils.PriceUtils;
@@ -29,8 +28,6 @@ import java.util.List;
 public class ReadableOrderProductPopulator extends
 		AbstractDataPopulator<OrderProduct, ReadableOrderProduct> {
 	
-	private ProductApi productApi;
-
 	@Getter @Setter
 	private PriceUtils priceUtils;
 
@@ -47,7 +44,6 @@ public class ReadableOrderProductPopulator extends
 			ReadableOrderProduct target, MerchantStore store, Language language)
 			throws ConversionException {
 		
-		Validate.notNull(productApi,"Requires ProductAPI");
 		Validate.notNull(priceUtils,"Requires priceUtils");
 		target.setId(source.getId());
 		target.setOrderedQuantity(source.getProductQuantity());
@@ -89,7 +85,6 @@ public class ReadableOrderProductPopulator extends
 
 					ReadableProductPopulator populator = new ReadableProductPopulator();
 					populator.setLanguageService(languageService);
-					populator.setProductApi(productApi);
 					populator.setProductInfoService(productInfoService);
 					
 					ReadableProduct productProxy = populator.populate(product, new ReadableProduct(), store, language);
@@ -110,15 +105,6 @@ public class ReadableOrderProductPopulator extends
 	protected ReadableOrderProduct createTarget() {
 
 		return null;
-	}
-
-	public ProductApi getProductApi() {
-		return productApi;
-	}
-
-
-	public void setProductApi(ProductApi productApi) {
-		this.productApi = productApi;
 	}
 
 	public CustomerService getCustomerService() {

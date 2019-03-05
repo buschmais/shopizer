@@ -112,9 +112,6 @@ public class OrderFacadeImpl implements OrderFacade {
 	@Inject
 	private OrderService orderService;
 
-	@Autowired
-	private ProductApi productApi;
-
 	@Inject
 	private ShoppingCartService shoppingCartService;
 	@Inject
@@ -959,7 +956,6 @@ public class OrderFacadeImpl implements OrderFacade {
         for(OrderProduct p : order.getOrderProducts()) {
             ReadableOrderProductPopulator orderProductPopulator = new ReadableOrderProductPopulator();
             orderProductPopulator.setLocale(locale);
-            orderProductPopulator.setProductApi(productApi);
             orderProductPopulator.setPriceUtils(priceUtils);
             orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setCustomerService(customerService);
@@ -1054,7 +1050,6 @@ public class OrderFacadeImpl implements OrderFacade {
 		List<ReadableOrderProduct> orderProducts = new ArrayList<ReadableOrderProduct>();
 		for(OrderProduct p : modelOrder.getOrderProducts()) {
 			ReadableOrderProductPopulator orderProductPopulator = new ReadableOrderProductPopulator();
-			orderProductPopulator.setProductApi(productApi);
 			orderProductPopulator.setPriceUtils(priceUtils);
 			orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setCustomerService(customerService);

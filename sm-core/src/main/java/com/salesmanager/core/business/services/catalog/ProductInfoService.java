@@ -73,4 +73,7 @@ public class ProductInfoService {
     }
 
 
+    public Integer getAvailabilityForRegion(Long productId, String region) throws ServiceException {
+        return this.productInfoAdapter.requestAvailbilityForRegion(productId, region);
+    }
 }

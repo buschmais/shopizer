@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.core.business.repositories.catalog.ProductAttributeInfoRepository;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -50,9 +49,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 	private LanguageService languageService;
 
     @Getter @Setter
-	private ProductApi productApi;
-
-    @Getter @Setter
 	private ProductAttributeInfoRepository productAttributeInfoRepository;
 
     @Getter @Setter
@@ -89,7 +85,6 @@ public class ReadableShoppingCartPopulator extends AbstractDataPopulator<Shoppin
 
                 	ReadableProductPopulator readableProductPopulator = new ReadableProductPopulator();
 					readableProductPopulator.setLanguageService(languageService);
-					readableProductPopulator.setProductApi(productApi);
 					readableProductPopulator.setProductInfoService(productInfoService);
 
 					readableProductPopulator.populate(item.getProduct(), shoppingCartItem,  store, language);
