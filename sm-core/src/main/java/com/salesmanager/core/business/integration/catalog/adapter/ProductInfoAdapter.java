@@ -204,4 +204,18 @@ public class ProductInfoAdapter {
             throw new ServiceException("Product availability not accessible from service, status code: " + availabilityResponse.getStatusCode());
         }
     }
+
+    public String requestFileNameByProduct(String storeCode, Long productId) throws ServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromPath("/catalog/product/{productId}/digital/file-name");
+        uriBuilder.queryParam("storeCode", storeCode);
+        uriBuilder.buildAndExpand(params);
+        ResponseEntity<String> digitalResponse = catalogRestTemplate.exchange(uriBuilder.buildAndExpand(params).toString(), HttpMethod.GET, null, String.class);
+        if (digitalResponse.getStatusCode().is2xxSuccessful()) {
+            return digitalResponse.getBody();
+        } else {
+            throw new ServiceException("Digital product name not accessible from service, status code: " + digitalResponse.getStatusCode());
+        }
+    }
 }

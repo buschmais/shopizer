@@ -15,7 +15,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import com.salesmanager.catalog.api.*;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.utils.PriceUtils;
@@ -114,8 +113,6 @@ public class OrderFacadeImpl implements OrderFacade {
 
 	@Inject
 	private ShoppingCartService shoppingCartService;
-	@Inject
-	private DigitalProductApi digitalProductApi;
 	@Inject
 	private CustomerService customerService;
 	@Inject
@@ -354,7 +351,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			}
 			
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
-			orderProductPopulator.setDigitalProductApi(digitalProductApi);
+			orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setProductInfoRepository(productInfoRepository);
 
 			for(ShoppingCartItem item : shoppingCartItems) {
@@ -1133,7 +1130,7 @@ public class OrderFacadeImpl implements OrderFacade {
 			Set<OrderProduct> orderProducts = new LinkedHashSet<OrderProduct>();
 			
 			OrderProductPopulator orderProductPopulator = new OrderProductPopulator();
-			orderProductPopulator.setDigitalProductApi(digitalProductApi);
+			orderProductPopulator.setProductInfoService(productInfoService);
 			orderProductPopulator.setProductInfoRepository(productInfoRepository);
 
 			for(ShoppingCartItem item : shoppingCartItems) {

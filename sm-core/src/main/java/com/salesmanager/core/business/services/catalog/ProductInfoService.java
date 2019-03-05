@@ -3,6 +3,7 @@ package com.salesmanager.core.business.services.catalog;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.integration.catalog.adapter.ProductInfoAdapter;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.reference.language.Language;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +80,9 @@ public class ProductInfoService {
 
     public boolean isAvailable(Long productId) throws ServiceException {
         return this.productInfoAdapter.isAvailable(productId);
+    }
+
+    public String getFileNameByProduct(MerchantStoreDTO merchantStoreDTO, Long productId) throws ServiceException {
+        return this.productInfoAdapter.requestFileNameByProduct(merchantStoreDTO.getCode(), productId);
     }
 }

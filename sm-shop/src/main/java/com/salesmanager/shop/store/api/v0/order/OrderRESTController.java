@@ -1,7 +1,7 @@
 package com.salesmanager.shop.store.api.v0.order;
 
-import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionService;
 import com.salesmanager.core.business.services.customer.attribute.CustomerOptionValueService;
@@ -46,9 +46,6 @@ public class OrderRESTController {
 	private MerchantStoreService merchantStoreService;
 	
 	@Inject
-	private DigitalProductApi digitalProductApi;
-	
-	@Inject
 	private OrderFacade orderFacade;
 	
 	@Inject
@@ -77,6 +74,9 @@ public class OrderRESTController {
 
 	@Autowired
 	private ProductInfoRepository productInfoRepository;
+
+	@Autowired
+	private ProductInfoService productInfoService;
 
 	/**
 	 * This method is for adding order to the system. Generally used for the purpose of migration only
@@ -128,8 +128,8 @@ public class OrderRESTController {
 		
 		Order modelOrder = new Order();
 		PersistableOrderPopulator populator = new PersistableOrderPopulator();
-		populator.setDigitalProductApi(digitalProductApi);
 		populator.setProductInfoRepository(productInfoRepository);
+		populator.setProductInfoService(productInfoService);
 
 		populator.populate(order, modelOrder, merchantStore, merchantStore.getDefaultLanguage());
 		

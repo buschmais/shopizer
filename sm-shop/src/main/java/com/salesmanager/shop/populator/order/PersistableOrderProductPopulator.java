@@ -1,8 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.utils.AbstractDataPopulator;
 import com.salesmanager.core.model.catalog.ProductAttributeInfo;
 import com.salesmanager.core.model.catalog.ProductInfo;
@@ -17,7 +17,6 @@ import com.salesmanager.shop.model.order.PersistableOrderProduct;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.Validate;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -27,18 +26,11 @@ import java.util.Set;
 public class PersistableOrderProductPopulator extends
 		AbstractDataPopulator<PersistableOrderProduct, OrderProduct> {
 	
-	private DigitalProductApi digitalProductApi;
-
 	@Getter @Setter
 	private ProductInfoRepository productInfoRepository;
 
-	public DigitalProductApi getDigitalProductApi() {
-		return digitalProductApi;
-	}
-
-	public void setDigitalProductApi(DigitalProductApi digitalProductApi) {
-		this.digitalProductApi = digitalProductApi;
-	}
+	@Getter @Setter
+	private ProductInfoService productInfoService;
 
 	/**
 	 * Converts a ShoppingCartItem carried in the ShoppingCart to an OrderProduct
@@ -47,8 +39,6 @@ public class PersistableOrderProductPopulator extends
 	@Override
 	public OrderProduct populate(PersistableOrderProduct source, OrderProduct target,
 			MerchantStore store, Language language) throws ConversionException {
-		
-		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
 
 		try {
 			ProductInfo modelProduct = productInfoRepository.findOne(source.getProduct().getId());
@@ -60,7 +50,7 @@ public class PersistableOrderProductPopulator extends
 				throw new ConversionException("Invalid product id " + source.getProduct().getId());
 			}
 
-			String digitalProductFileName = digitalProductApi.getFileNameByProduct(store.toDTO(), modelProduct.getId());
+			String digitalProductFileName = productInfoService.getFileNameByProduct(store.toDTO(), modelProduct.getId());
 
 			if(digitalProductFileName != null) {
 				OrderProductDownload orderProductDownload = new OrderProductDownload();

@@ -1,8 +1,8 @@
 package com.salesmanager.shop.populator.order;
 
-import com.salesmanager.catalog.api.DigitalProductApi;
 import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.currency.CurrencyService;
@@ -44,16 +44,17 @@ public class PersistableOrderPopulator extends
 
 
 	private ZoneService zoneService;
-	private DigitalProductApi digitalProductApi;
 
 	@Getter @Setter
 	private ProductInfoRepository productInfoRepository;
+
+	@Getter @Setter
+	private ProductInfoService productInfoService;
 
 	@Override
 	public Order populate(PersistableOrder source, Order target,
 			MerchantStore store, Language language) throws ConversionException {
 
-		Validate.notNull(digitalProductApi,"digitalProductApi must be set");
 		Validate.notNull(customerService,"customerService must be set");
 		Validate.notNull(countryService,"countryService must be set");
 		Validate.notNull(zoneService,"zoneService must be set");
@@ -138,10 +139,10 @@ public class PersistableOrderPopulator extends
 			if(CollectionUtils.isEmpty(products)) {
 				throw new ConversionException("Requires at least 1 PersistableOrderProduct");
 			}
-			com.salesmanager.shop.populator.order.PersistableOrderProductPopulator orderProductPopulator = new PersistableOrderProductPopulator();
+			PersistableOrderProductPopulator orderProductPopulator = new PersistableOrderProductPopulator();
 			orderProductPopulator.setProductInfoRepository(productInfoRepository);
-			orderProductPopulator.setDigitalProductApi(digitalProductApi);
-			
+			orderProductPopulator.setProductInfoService(productInfoService);
+
 			for(PersistableOrderProduct orderProduct : products) {
 				OrderProduct modelOrderProduct = new OrderProduct();
 				orderProductPopulator.populate(orderProduct, modelOrderProduct, store, language);
@@ -172,14 +173,6 @@ public class PersistableOrderPopulator extends
 	@Override
 	protected Order createTarget() {
 		return null;
-	}
-
-	public DigitalProductApi getDigitalProductApi() {
-		return digitalProductApi;
-	}
-
-	public void setDigitalProductApi(DigitalProductApi digitalProductApi) {
-		this.digitalProductApi = digitalProductApi;
 	}
 
 	public CustomerService getCustomerService() {

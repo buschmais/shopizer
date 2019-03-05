@@ -1,17 +1,22 @@
 package com.salesmanager.catalog.api;
 
 import com.salesmanager.catalog.api.dto.product.*;
+import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
+import com.salesmanager.catalog.business.service.product.file.DigitalProductService;
 import com.salesmanager.catalog.business.util.ProductPriceUtils;
+import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
+import com.salesmanager.catalog.model.product.file.DigitalProduct;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.catalog.model.product.price.ProductPrice;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
+import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +33,17 @@ public class ProductRestController {
     private final ProductPriceUtils productPriceUtils;
     private final ProductService productService;
     private final CatalogImageFilePathUtils catalogImageFilePathUtils;
+    private final MerchantStoreInfoService merchantStoreInfoService;
+    private final DigitalProductService digitalProductService;
 
     @Autowired
-    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils, ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
+    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils, ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils, MerchantStoreInfoService merchantStoreInfoService, DigitalProductService digitalProductService) {
         this.productAttributeService = productAttributeService;
         this.productPriceUtils = productPriceUtils;
         this.productService = productService;
         this.catalogImageFilePathUtils = catalogImageFilePathUtils;
+        this.merchantStoreInfoService = merchantStoreInfoService;
+        this.digitalProductService = digitalProductService;
     }
 
     @RequestMapping(path = "/{productId}/dimension", method = RequestMethod.GET)
@@ -222,6 +231,22 @@ public class ProductRestController {
                 }
             }
             return ResponseEntity.ok(available);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/digital/file-name", method = RequestMethod.GET)
+    public ResponseEntity<?> getDigitalProductNameByProduct(@PathVariable("productId") Long productId, @RequestParam("storeCode") String storeCode) {
+        MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(storeCode);
+        Product product = this.productService.getById(productId);
+        DigitalProduct digitalProduct = null;
+        try {
+            digitalProduct = digitalProductService.getByProduct(storeInfo, product);
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+        if (digitalProduct != null) {
+            return ResponseEntity.ok(digitalProduct.getProductFileName());
         }
         return ResponseEntity.notFound().build();
     }
