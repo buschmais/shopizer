@@ -13,7 +13,6 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.core.business.repositories.catalog.ProductAttributeInfoRepository;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
@@ -72,9 +71,6 @@ public class ShoppingCartFacadeImpl
     @Inject
     private PriceUtils priceUtils;
 
-    @Inject
-    private ProductApi productApi;
-    
 	@Autowired
     private CustomerService customerService;
 
@@ -203,7 +199,7 @@ public class ShoppingCartFacadeImpl
                 + store.getId() );
         }
 
-		if (!this.productApi.isAvailable(product.getId())) {
+		if (!this.productInfoService.isAvailable(product.getId())) {
             throw new Exception( "Item with id " + product.getId() + " is not available");
         }
 
@@ -250,7 +246,7 @@ public class ShoppingCartFacadeImpl
 					+ store.getId());
 		}
 
-        if (!this.productApi.isAvailable(product.getId())) {
+        if (!this.productInfoService.isAvailable(product.getId())) {
             throw new Exception( "Item with id " + product.getId() + " is not available");
         }
 

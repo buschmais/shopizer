@@ -10,6 +10,4 @@ public interface ProductApi {
 
     BreadcrumbItem getBreadcrumbItemForLocale(long productId, LanguageDTO languageDTO, Locale locale) throws ServiceException;
 
-    boolean isAvailable(Long productId);
-
 }

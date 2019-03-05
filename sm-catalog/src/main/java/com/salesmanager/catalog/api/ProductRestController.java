@@ -12,14 +12,12 @@ import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.catalog.model.product.price.ProductPrice;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
+import com.salesmanager.common.presentation.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -200,6 +198,30 @@ public class ProductRestController {
                 }
             }
             return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/available", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductAvailability(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            boolean available = true;
+            Set<ProductAvailability> availabilities = product.getAvailabilities();
+            if (availabilities == null) {
+                available = false;
+            } else if (!product.isAvailable()) {
+                available = false;
+            } else if (!DateUtil.dateBeforeEqualsDate(product.getDateAvailable(), new Date())) {
+                available = false;
+            } else {
+                for (ProductAvailability availability : availabilities) {
+                    if (availability.getProductQuantity() == null || availability.getProductQuantity() == 0) {
+                        available = false;
+                    }
+                }
+            }
+            return ResponseEntity.ok(available);
         }
         return ResponseEntity.notFound().build();
     }

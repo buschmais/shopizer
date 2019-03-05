@@ -193,4 +193,15 @@ public class ProductInfoAdapter {
             throw new ServiceException("Product availability not accessible from service, status code: " + availabilityResponse.getStatusCode());
         }
     }
+
+    public boolean isAvailable(Long productId) throws ServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<Boolean> availabilityResponse = catalogRestTemplate.exchange("/catalog/product/{productId}/available", HttpMethod.GET, null, new ParameterizedTypeReference<Boolean>() {}, params);
+        if (availabilityResponse.getStatusCode().is2xxSuccessful()) {
+            return availabilityResponse.getBody();
+        } else {
+            throw new ServiceException("Product availability not accessible from service, status code: " + availabilityResponse.getStatusCode());
+        }
+    }
 }

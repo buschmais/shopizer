@@ -45,28 +45,4 @@ public class ProductApiImpl implements ProductApi {
         }
         return null;
     }
-
-    @Override
-    public boolean isAvailable(Long productId) {
-        Product product = this.productService.getById(productId);
-        Set<ProductAvailability> availabilities = product.getAvailabilities();
-        if(availabilities == null) {
-            return false;
-        }
-
-        for(ProductAvailability availability : availabilities) {
-            if(availability.getProductQuantity() == null || availability.getProductQuantity().intValue() ==0) {
-                return false;
-            }
-        }
-
-        if(!product.isAvailable()) {
-            return false;
-        }
-
-        if(!DateUtil.dateBeforeEqualsDate(product.getDateAvailable(), new Date())) {
-            return false;
-        }
-        return true;
-    }
 }
