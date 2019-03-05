@@ -218,4 +218,15 @@ public class ProductInfoAdapter {
             throw new ServiceException("Digital product name not accessible from service, status code: " + digitalResponse.getStatusCode());
         }
     }
+
+    public List<String> requestProductGroups(String storeCode) throws ServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("storeCode", storeCode);
+        ResponseEntity<List<String>> relationResponse = catalogRestTemplate.exchange("/catalog/product/store/{storeCode}/groups", HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {}, params);
+        if (relationResponse.getStatusCode().is2xxSuccessful()) {
+            return relationResponse.getBody();
+        } else {
+            throw new ServiceException("Product groups not send and not accessible from service, status code: " + relationResponse.getStatusCode());
+        }
+    }
 }

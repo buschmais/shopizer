@@ -1,6 +1,6 @@
 package com.salesmanager.shop.admin.controller.content;
 
-import com.salesmanager.catalog.api.ProductRelationshipApi;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.content.ContentService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.common.business.ajax.AjaxResponse;
@@ -17,6 +17,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,9 +44,9 @@ public class ContentPagesController {
 	
 	@Inject
 	LanguageService languageService;
-	
-	@Inject
-	ProductRelationshipApi productRelationshipApi;
+
+	@Autowired
+	private ProductInfoService productInfoService;
 	
 	
 	@PreAuthorize("hasRole('CONTENT')")
@@ -80,7 +81,7 @@ public class ContentPagesController {
 			content.getDescriptions().add(description);
 		}
 		
-		List<String> relationships = productRelationshipApi.getGroups(store.toDTO());
+		List<String> relationships = productInfoService.getGroups(store.toDTO());
 		if(!CollectionUtils.isEmpty(relationships)) {
 			model.addAttribute("productGroups", relationships);
 		}
@@ -133,7 +134,7 @@ public class ContentPagesController {
 		content.setDescriptions(descriptions);
 		model.addAttribute("content",content);
 		
-		List<String> relationships = productRelationshipApi.getGroups(store.toDTO());
+		List<String> relationships = productInfoService.getGroups(store.toDTO());
 		if(!CollectionUtils.isEmpty(relationships)) {
 			model.addAttribute("productGroups", relationships);
 		}
@@ -283,7 +284,7 @@ public class ContentPagesController {
 
 		contentService.saveOrUpdate(content);
 		
-		List<String> relationships = productRelationshipApi.getGroups(store.toDTO());
+		List<String> relationships = productInfoService.getGroups(store.toDTO());
 		if(!CollectionUtils.isEmpty(relationships)) {
 			model.addAttribute("productGroups", relationships);
 		}

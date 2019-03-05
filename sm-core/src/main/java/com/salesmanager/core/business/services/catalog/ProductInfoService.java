@@ -85,4 +85,8 @@ public class ProductInfoService {
     public String getFileNameByProduct(MerchantStoreDTO merchantStoreDTO, Long productId) throws ServiceException {
         return this.productInfoAdapter.requestFileNameByProduct(merchantStoreDTO.getCode(), productId);
     }
+
+    public List<String> getGroups(MerchantStoreDTO merchantStoreDTO) throws ServiceException {
+        return this.productInfoAdapter.requestProductGroups(merchantStoreDTO.getCode());
+    }
 }

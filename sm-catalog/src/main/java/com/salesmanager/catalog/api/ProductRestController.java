@@ -5,6 +5,7 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.catalog.business.service.product.file.DigitalProductService;
+import com.salesmanager.catalog.business.service.product.relationship.ProductRelationshipService;
 import com.salesmanager.catalog.business.util.ProductPriceUtils;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
@@ -15,6 +16,7 @@ import com.salesmanager.catalog.model.product.file.DigitalProduct;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.model.product.price.FinalPrice;
 import com.salesmanager.catalog.model.product.price.ProductPrice;
+import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.util.DateUtil;
@@ -35,15 +37,17 @@ public class ProductRestController {
     private final CatalogImageFilePathUtils catalogImageFilePathUtils;
     private final MerchantStoreInfoService merchantStoreInfoService;
     private final DigitalProductService digitalProductService;
+    private final ProductRelationshipService productRelationshipService;
 
     @Autowired
-    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils, ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils, MerchantStoreInfoService merchantStoreInfoService, DigitalProductService digitalProductService) {
+    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils, ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils, MerchantStoreInfoService merchantStoreInfoService, DigitalProductService digitalProductService, ProductRelationshipService productRelationshipService) {
         this.productAttributeService = productAttributeService;
         this.productPriceUtils = productPriceUtils;
         this.productService = productService;
         this.catalogImageFilePathUtils = catalogImageFilePathUtils;
         this.merchantStoreInfoService = merchantStoreInfoService;
         this.digitalProductService = digitalProductService;
+        this.productRelationshipService = productRelationshipService;
     }
 
     @RequestMapping(path = "/{productId}/dimension", method = RequestMethod.GET)
@@ -247,6 +251,16 @@ public class ProductRestController {
         }
         if (digitalProduct != null) {
             return ResponseEntity.ok(digitalProduct.getProductFileName());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/store/{storeCode}/groups", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductGroups(@PathVariable("storeCode") String storeCode) {
+        MerchantStoreInfo storeInfo = this.merchantStoreInfoService.findbyCode(storeCode);
+        List<ProductRelationship> groups = productRelationshipService.getGroups(storeInfo);
+        if (groups != null) {
+            return ResponseEntity.ok(groups.stream().map(ProductRelationship::getCode).collect(Collectors.toList()));
         }
         return ResponseEntity.notFound().build();
     }
