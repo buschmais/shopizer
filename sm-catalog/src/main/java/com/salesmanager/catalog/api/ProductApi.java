@@ -1,6 +1,5 @@
 package com.salesmanager.catalog.api;
 
-import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.core.integration.language.LanguageDTO;
@@ -12,8 +11,6 @@ public interface ProductApi {
     BreadcrumbItem getBreadcrumbItemForLocale(long productId, LanguageDTO languageDTO, Locale locale) throws ServiceException;
 
     boolean isAvailable(Long productId);
-
-    ProductImageDTO getDefaultImage(Long productId);
 
     Integer getAvailabilityForRegion(Long productId, String region);
 

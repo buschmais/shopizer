@@ -1,13 +1,12 @@
 package com.salesmanager.catalog.api;
 
-import com.salesmanager.catalog.api.dto.product.AvailabilityInformationDTO;
-import com.salesmanager.catalog.api.dto.product.DimensionDTO;
-import com.salesmanager.catalog.api.dto.product.ProductAttributeDTO;
-import com.salesmanager.catalog.api.dto.product.ProductDescriptionDTO;
+import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
+import com.salesmanager.catalog.model.product.image.ProductImage;
+import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +22,12 @@ import java.util.Set;
 public class ProductRestController {
 
     private final ProductService productService;
+    private final CatalogImageFilePathUtils catalogImageFilePathUtils;
 
     @Autowired
-    public ProductRestController(ProductService productService) {
+    public ProductRestController(ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
         this.productService = productService;
+        this.catalogImageFilePathUtils = catalogImageFilePathUtils;
     }
 
     @RequestMapping(path = "/{productId}/dimension", method = RequestMethod.GET)
@@ -112,6 +113,28 @@ public class ProductRestController {
                 }
                 return ResponseEntity.ok(attributes);
             }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/default-image", method = RequestMethod.GET)
+    public ResponseEntity<?> getProductDefaultImage(@PathVariable("productId") Long productId) {
+        Product product = this.productService.getById(productId);
+        if (product != null) {
+            ProductImageDTO productImageDTO = null;
+            if (product.getProductImage() != null) {
+                ProductImage image = product.getProductImage();
+                String imageUrl = catalogImageFilePathUtils.buildProductImageUtils(product.getMerchantStore(), product.getSku(), image.getProductImage());
+                String contextPath = catalogImageFilePathUtils.getContextPath();
+                if (contextPath != null) {
+                    imageUrl = contextPath + imageUrl;
+                }
+                productImageDTO = new ProductImageDTO(image.getId(),
+                        image.getProductImage(),
+                        image.isDefaultImage(),
+                        imageUrl);
+            }
+            return ResponseEntity.ok(productImageDTO);
         }
         return ResponseEntity.notFound().build();
     }

@@ -1,14 +1,11 @@
 package com.salesmanager.catalog.api.impl;
 
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.availability.ProductAvailability;
-import com.salesmanager.catalog.model.product.image.ProductImage;
-import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
@@ -28,13 +25,10 @@ public class ProductApiImpl implements ProductApi {
 
     private LanguageInfoService languageInfoService;
 
-    private CatalogImageFilePathUtils catalogImageFilePathUtils;
-
     @Autowired
-    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
+    public ProductApiImpl(ProductService productService, LanguageInfoService languageInfoService) {
         this.productService = productService;
         this.languageInfoService = languageInfoService;
-        this.catalogImageFilePathUtils = catalogImageFilePathUtils;
     }
 
     @Override
@@ -74,24 +68,6 @@ public class ProductApiImpl implements ProductApi {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public ProductImageDTO getDefaultImage(Long productId) {
-        Product product = this.productService.getById(productId);
-        if (product != null && product.getProductImage() != null) {
-            ProductImage image = product.getProductImage();
-            String imageUrl = catalogImageFilePathUtils.buildProductImageUtils(product.getMerchantStore(), product.getSku(), image.getProductImage());
-            String contextPath = catalogImageFilePathUtils.getContextPath();
-            if (contextPath != null) {
-                imageUrl = contextPath + imageUrl;
-            }
-            return new ProductImageDTO(image.getId(),
-                    image.getProductImage(),
-                    image.isDefaultImage(),
-                    imageUrl);
-        }
-        return null;
     }
 
     @Override

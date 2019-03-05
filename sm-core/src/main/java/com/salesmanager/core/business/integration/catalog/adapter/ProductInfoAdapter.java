@@ -1,9 +1,6 @@
 package com.salesmanager.core.business.integration.catalog.adapter;
 
-import com.salesmanager.core.business.integration.catalog.dto.AvailabilityInformationDTO;
-import com.salesmanager.core.business.integration.catalog.dto.DimensionDTO;
-import com.salesmanager.core.business.integration.catalog.dto.ProductAttributeDTO;
-import com.salesmanager.core.business.integration.catalog.dto.ProductDescriptionDTO;
+import com.salesmanager.core.business.integration.catalog.dto.*;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.business.services.tax.TaxClassService;
 import com.salesmanager.core.model.catalog.*;
@@ -129,6 +126,19 @@ public class ProductInfoAdapter {
             if (taxClassId != null) {
                 return this.taxClassService.getById(taxClassId);
             }
+        }
+        return null;
+    }
+
+    public ProductImageInfo requestProductImage(Long productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        ResponseEntity<ProductImageDTO> response = catalogRestTemplate.exchange("/catalog/product/{productId}/default-image",
+                HttpMethod.GET, null, new ParameterizedTypeReference<ProductImageDTO>() {}, params);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            ProductImageDTO productImageDTO = response.getBody();
+            return new ProductImageInfo(productImageDTO.getId(), productImageDTO.getImageName(), productImageDTO.isDefaultImage(), productImageDTO.getImageUrl());
         }
         return null;
     }

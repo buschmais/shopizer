@@ -1,8 +1,8 @@
 package com.salesmanager.core.business.services.catalog;
 
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.catalog.api.dto.product.*;
+import com.salesmanager.core.business.integration.catalog.adapter.ProductInfoAdapter;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.reference.language.Language;
@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 @Component
 public class ProductInfoService {
 
-    private final ProductApi productApi;
+    private final ProductInfoAdapter productInfoAdapter;
 
     private final ProductInfoRepository productInfoRepository;
 
     private final ProductPriceApi productPriceApi;
 
     @Autowired
-    public ProductInfoService(ProductApi productApi, ProductInfoRepository productInfoRepository, ProductPriceApi productPriceApi) {
-        this.productApi = productApi;
+    public ProductInfoService(ProductInfoAdapter productInfoAdapter, ProductInfoRepository productInfoRepository, ProductPriceApi productPriceApi) {
+        this.productInfoAdapter = productInfoAdapter;
         this.productInfoRepository = productInfoRepository;
         this.productPriceApi = productPriceApi;
     }
@@ -71,11 +71,7 @@ public class ProductInfoService {
     }
 
     public ProductImageInfo getDefaultImage(Long productId) {
-        ProductImageDTO productImageDTO = productApi.getDefaultImage(productId);
-        if (productImageDTO != null) {
-            return new ProductImageInfo(productImageDTO.getId(), productImageDTO.getImageName(), productImageDTO.isDefaultImage(), productImageDTO.getImageUrl());
-        }
-        return null;
+        return productInfoAdapter.requestProductImage(productId);
     }
 
     public FinalPriceInfo getProductFinalPrice(Long productId, List<ProductAttributeInfo> productAttributes) {
@@ -107,4 +103,6 @@ public class ProductInfoService {
                 productPriceInfo
         );
     }
+
+
 }
