@@ -1,12 +1,14 @@
 package com.salesmanager.catalog.api;
 
 import com.salesmanager.catalog.api.dto.product.*;
+import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
 import com.salesmanager.catalog.business.service.product.file.DigitalProductService;
 import com.salesmanager.catalog.business.service.product.relationship.ProductRelationshipService;
 import com.salesmanager.catalog.business.util.ProductPriceUtils;
+import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
@@ -19,6 +21,8 @@ import com.salesmanager.catalog.model.product.price.ProductPrice;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.common.presentation.model.BreadcrumbItem;
+import com.salesmanager.common.presentation.model.BreadcrumbItemType;
 import com.salesmanager.common.presentation.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +42,13 @@ public class ProductRestController {
     private final MerchantStoreInfoService merchantStoreInfoService;
     private final DigitalProductService digitalProductService;
     private final ProductRelationshipService productRelationshipService;
+    private final LanguageInfoService languageInfoService;
 
     @Autowired
-    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils, ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils, MerchantStoreInfoService merchantStoreInfoService, DigitalProductService digitalProductService, ProductRelationshipService productRelationshipService) {
+    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils,
+                                 ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils,
+                                 MerchantStoreInfoService merchantStoreInfoService, DigitalProductService digitalProductService,
+                                 ProductRelationshipService productRelationshipService, LanguageInfoService languageInfoService) {
         this.productAttributeService = productAttributeService;
         this.productPriceUtils = productPriceUtils;
         this.productService = productService;
@@ -48,13 +56,14 @@ public class ProductRestController {
         this.merchantStoreInfoService = merchantStoreInfoService;
         this.digitalProductService = digitalProductService;
         this.productRelationshipService = productRelationshipService;
+        this.languageInfoService = languageInfoService;
     }
 
     @RequestMapping(path = "/{productId}/dimension", method = RequestMethod.GET)
     public ResponseEntity<?> getDimensionForProduct(@PathVariable("productId") Long productId) {
         Product product = this.productService.getById(productId);
         if (product != null) {
-            DimensionDTO dimensionDTO =  new DimensionDTO(
+            DimensionDTO dimensionDTO = new DimensionDTO(
                     product.getProductWidth() != null ? product.getProductWidth().doubleValue() : null,
                     product.getProductLength() != null ? product.getProductLength().doubleValue() : null,
                     product.getProductHeight() != null ? product.getProductHeight().doubleValue() : null,
@@ -82,7 +91,7 @@ public class ProductRestController {
     public ResponseEntity<?> getProductDescriptions(@PathVariable("productId") Long productId) {
         Product product = this.productService.getById(productId);
         if (product != null) {
-            Set<ProductDescriptionDTO> descriptions= new HashSet<>();
+            Set<ProductDescriptionDTO> descriptions = new HashSet<>();
             if (product.getDescriptions() != null) {
                 for (ProductDescription productDescription : product.getDescriptions()) {
                     descriptions.add(new ProductDescriptionDTO(
@@ -261,6 +270,21 @@ public class ProductRestController {
         List<ProductRelationship> groups = productRelationshipService.getGroups(storeInfo);
         if (groups != null) {
             return ResponseEntity.ok(groups.stream().map(ProductRelationship::getCode).collect(Collectors.toList()));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/breadcrumb", method = RequestMethod.GET)
+    public ResponseEntity<?> getBreadcrumbItemForLocale(@PathVariable("productId") long productId, @RequestParam("languageCode") String languageCode, @RequestParam("locale") Locale locale) throws ServiceException {
+        LanguageInfo languageInfo = this.languageInfoService.findbyCode(languageCode);
+        Product product = this.productService.getProductForLocale(productId, languageInfo, locale);
+        if (product != null) {
+            BreadcrumbItem productItem = new BreadcrumbItem();
+            productItem.setId(product.getId());
+            productItem.setItemType(BreadcrumbItemType.PRODUCT);
+            productItem.setLabel(product.getProductDescription().getName());
+            productItem.setUrl(product.getProductDescription().getSeUrl());
+            ResponseEntity.ok(productItem);
         }
         return ResponseEntity.notFound().build();
     }

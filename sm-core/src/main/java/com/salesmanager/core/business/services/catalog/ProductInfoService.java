@@ -1,8 +1,10 @@
 package com.salesmanager.core.business.services.catalog;
 
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.core.business.integration.catalog.adapter.ProductInfoAdapter;
 import com.salesmanager.core.business.repositories.catalog.ProductInfoRepository;
+import com.salesmanager.core.integration.language.LanguageDTO;
 import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.reference.language.Language;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Locale;
 
 
 @Component
@@ -89,4 +92,9 @@ public class ProductInfoService {
     public List<String> getGroups(MerchantStoreDTO merchantStoreDTO) throws ServiceException {
         return this.productInfoAdapter.requestProductGroups(merchantStoreDTO.getCode());
     }
+
+    public BreadcrumbItem getBreadcrumbItemForLocale(Long productId, Language language, Locale locale) throws ServiceException {
+        return this.productInfoAdapter.requestBreadcrumbItemForLocale(productId, language, locale);
+    }
+
 }

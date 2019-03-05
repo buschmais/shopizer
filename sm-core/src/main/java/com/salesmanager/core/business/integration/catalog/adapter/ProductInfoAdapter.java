@@ -1,11 +1,13 @@
 package com.salesmanager.core.business.integration.catalog.adapter;
 
 import com.salesmanager.common.business.exception.ServiceException;
+import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.core.business.integration.catalog.dto.*;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.business.services.tax.TaxClassService;
 import com.salesmanager.core.model.catalog.*;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -227,6 +229,21 @@ public class ProductInfoAdapter {
             return relationResponse.getBody();
         } else {
             throw new ServiceException("Product groups not send and not accessible from service, status code: " + relationResponse.getStatusCode());
+        }
+    }
+
+    public BreadcrumbItem requestBreadcrumbItemForLocale(Long productId, Language language, Locale locale) throws ServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromPath("/catalog/product/{productId}/breadcrumb");
+        uriBuilder.queryParam("languageCode", language.getCode());
+        uriBuilder.queryParam("locale", locale);
+        uriBuilder.buildAndExpand(params);
+        ResponseEntity<BreadcrumbItem> breadcrumbResponse = catalogRestTemplate.exchange(uriBuilder.buildAndExpand(params).toString(), HttpMethod.GET, null, BreadcrumbItem.class);
+        if (breadcrumbResponse.getStatusCode().is2xxSuccessful()) {
+            return breadcrumbResponse.getBody();
+        } else {
+            throw new ServiceException("Product breadcrumb item not accessible from service, status code: " + breadcrumbResponse.getStatusCode());
         }
     }
 }

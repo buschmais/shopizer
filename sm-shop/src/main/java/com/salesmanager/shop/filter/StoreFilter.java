@@ -2,12 +2,12 @@ package com.salesmanager.shop.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salesmanager.catalog.api.CategoryApi;
-import com.salesmanager.catalog.api.ProductApi;
 import com.salesmanager.common.presentation.model.Breadcrumb;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
 import com.salesmanager.common.presentation.model.PageInformation;
 import com.salesmanager.common.presentation.util.LabelUtils;
+import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.content.ContentService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
@@ -34,6 +34,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,9 +64,6 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 	private CategoryApi categoryApi;
 
 	@Inject
-	protected ProductApi productApi;
-
-	@Inject
 	private MerchantStoreService merchantService;
 	
 	@Inject
@@ -88,6 +86,9 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 	
 	@Inject
 	private CoreConfiguration coreConfiguration;
+
+	@Autowired
+	private ProductInfoService productInfoService;
 	
 	private final static String SERVICES_URL_PATTERN = "/services";
 	private final static String REFERENCE_URL_PATTERN = "/reference";
@@ -736,7 +737,7 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 								homeItem.setUrl(Constants.HOME_URL);
 								items.add(homeItem);
 							} else if(item.getItemType().name().equals(BreadcrumbItemType.PRODUCT)) {
-								BreadcrumbItem productItem = productApi.getBreadcrumbItemForLocale(item.getId(), language.toDTO(), locale);
+								BreadcrumbItem productItem = productInfoService.getBreadcrumbItemForLocale(item.getId(), language, locale);
 								if (productItem != null) {
 									items.add(productItem);
 								}
