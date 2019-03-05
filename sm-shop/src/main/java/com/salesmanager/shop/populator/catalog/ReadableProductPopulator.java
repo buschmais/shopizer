@@ -1,7 +1,6 @@
 package com.salesmanager.shop.populator.catalog;
 
 import com.salesmanager.catalog.api.ProductApi;
-import com.salesmanager.catalog.api.ProductPriceApi;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.FinalPriceInfo;
@@ -25,8 +24,6 @@ import java.util.Set;
 
 public class ReadableProductPopulator extends
 		AbstractDataPopulator<ProductInfo, ReadableProduct> {
-	
-	private ProductPriceApi productPriceApi;
 
 	@Getter @Setter
 	private ProductApi productApi;
@@ -37,19 +34,10 @@ public class ReadableProductPopulator extends
 	@Getter @Setter
 	private ProductInfoService productInfoService;
 
-	public ProductPriceApi getProductPriceApi() {
-		return productPriceApi;
-	}
-
-	public void setProductPriceApi(ProductPriceApi productPriceApi) {
-		this.productPriceApi = productPriceApi;
-	}
-
 	@Override
 	public ReadableProduct populate(ProductInfo source,
 			ReadableProduct target, MerchantStore store, Language language)
 			throws ConversionException {
-		Validate.notNull(productPriceApi, "Requires to set ProductPriceApi");
 		Validate.notNull(language, "Language cannot be null");
 		
 		try {

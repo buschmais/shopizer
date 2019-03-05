@@ -2,30 +2,38 @@ package com.salesmanager.catalog.api;
 
 import com.salesmanager.catalog.api.dto.product.*;
 import com.salesmanager.catalog.business.service.product.ProductService;
+import com.salesmanager.catalog.business.service.product.attribute.ProductAttributeService;
+import com.salesmanager.catalog.business.util.ProductPriceUtils;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.ProductAttribute;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.image.ProductImage;
+import com.salesmanager.catalog.model.product.price.FinalPrice;
+import com.salesmanager.catalog.model.product.price.ProductPrice;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/catalog/product")
 public class ProductRestController {
 
+    private final ProductAttributeService productAttributeService;
+    private final ProductPriceUtils productPriceUtils;
     private final ProductService productService;
     private final CatalogImageFilePathUtils catalogImageFilePathUtils;
 
     @Autowired
-    public ProductRestController(ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
+    public ProductRestController(ProductAttributeService productAttributeService, ProductPriceUtils productPriceUtils, ProductService productService, CatalogImageFilePathUtils catalogImageFilePathUtils) {
+        this.productAttributeService = productAttributeService;
+        this.productPriceUtils = productPriceUtils;
         this.productService = productService;
         this.catalogImageFilePathUtils = catalogImageFilePathUtils;
     }
@@ -137,5 +145,47 @@ public class ProductRestController {
             return ResponseEntity.ok(productImageDTO);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(path = "/{productId}/final-price", method = RequestMethod.GET)
+    public FinalPriceDTO getProductFinalPrice(@PathVariable("productId") Long productId, @RequestParam(value = "attributeIds", required = false) List<Long> attributeIds) {
+        Product product = this.productService.getById(productId);
+        FinalPrice finalPrice = null;
+        if (attributeIds != null && !attributeIds.isEmpty()) {
+            List<ProductAttribute> productAttributes = new ArrayList<>();
+            for (Long attributeId : attributeIds) {
+                productAttributes.add(this.productAttributeService.getById(attributeId));
+            }
+            finalPrice = this.productPriceUtils.getFinalProductPrice(product, productAttributes);
+        } else {
+            finalPrice = this.productPriceUtils.getFinalPrice(product);
+        }
+        return toDTO(finalPrice);
+    }
+
+    private FinalPriceDTO toDTO(FinalPrice finalPrice) {
+        if (finalPrice != null) {
+            ProductPrice productPrice = finalPrice.getProductPrice();
+            ProductPriceDTO productPriceDTO = null;
+            if (productPrice != null) {
+                productPriceDTO = new ProductPriceDTO(
+                        productPrice.getCode(),
+                        productPrice.getProductPriceType().name(),
+                        productPrice.isDefaultPrice(),
+                        productPrice.getDescriptions() != null && productPrice.getDescriptions().size() > 0 ? productPrice.getDescriptions().iterator().next().getName() : null,
+                        productPrice.getProductPriceSpecialAmount() != null ? productPrice.getProductPriceSpecialAmount().doubleValue() : null,
+                        productPrice.getProductPriceSpecialStartDate(),
+                        productPrice.getProductPriceSpecialEndDate()
+                );
+            }
+            return new FinalPriceDTO(
+                    finalPrice.isDiscounted(),
+                    finalPrice.getFinalPrice().doubleValue(),
+                    finalPrice.isDefaultPrice(),
+                    finalPrice.getAdditionalPrices() != null ? finalPrice.getAdditionalPrices().stream().map(this::toDTO).collect(Collectors.toList()) : null,
+                    productPriceDTO
+            );
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.salesmanager.core.business.integration.catalog.adapter;
 
+import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.integration.catalog.dto.*;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import com.salesmanager.core.business.services.tax.TaxClassService;
@@ -13,10 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductInfoAdapter {
@@ -143,4 +142,40 @@ public class ProductInfoAdapter {
         return null;
     }
 
+    public FinalPriceInfo requestProductFinalPrice(Long productId, List<ProductAttributeInfo> productAttributes) throws ServiceException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        if (productAttributes != null && !productAttributes.isEmpty()) {
+            params.put("attributeIds", productAttributes.stream().map(ProductAttributeInfo::getId).collect(Collectors.toList()));
+        }
+        ResponseEntity<FinalPriceDTO> priceResponse = catalogRestTemplate.exchange("/catalog/product/{productId}/final-price",
+                HttpMethod.GET, null, new ParameterizedTypeReference<FinalPriceDTO>() {}, params);
+        if (priceResponse.getStatusCode().is2xxSuccessful() && priceResponse.getBody() != null) {
+            FinalPriceDTO finalPriceDTO = priceResponse.getBody();
+            return toInfo(finalPriceDTO);
+        } else {
+            throw new ServiceException("Product final price not accessible from service, status code: " + priceResponse.getStatusCode());
+        }
+    }
+
+    private FinalPriceInfo toInfo(FinalPriceDTO finalPriceDTO) {
+        List<FinalPriceInfo> additionalPrices = new ArrayList<>();
+        if (finalPriceDTO.getAdditionalPrices() != null) {
+            finalPriceDTO.getAdditionalPrices().stream().map(this::toInfo).collect(Collectors.toCollection(() -> additionalPrices));
+        }
+        ProductPriceInfo productPriceInfo = null;
+        if (finalPriceDTO.getProductPrice() != null) {
+            ProductPriceDTO productPriceDTO = finalPriceDTO.getProductPrice();
+            productPriceInfo = new ProductPriceInfo(
+                    productPriceDTO.getCode(),
+                    productPriceDTO.getProductPriceType(),
+                    productPriceDTO.getDefaultPrice(),
+                    productPriceDTO.getName(),
+                    productPriceDTO.getProductPriceSpecialAmount(),
+                    productPriceDTO.getProductPriceSpecialStartDate(),
+                    productPriceDTO.getProductPriceSpecialEndDate()
+            );
+        }
+        return new FinalPriceInfo(finalPriceDTO.getDiscounted(), finalPriceDTO.getFinalPrice(), finalPriceDTO.getDefaultPrice(), additionalPrices,productPriceInfo);
+    }
 }
