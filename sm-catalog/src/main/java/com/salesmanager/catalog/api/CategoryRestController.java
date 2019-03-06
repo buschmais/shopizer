@@ -1,32 +1,32 @@
-package com.salesmanager.catalog.api.impl;
+package com.salesmanager.catalog.api;
 
-import com.salesmanager.catalog.api.CategoryApi;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.business.service.category.CategoryService;
 import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
-import com.salesmanager.core.integration.language.LanguageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
-@Service
-public class CategoryApiImpl implements CategoryApi {
+@RestController
+@RequestMapping(path = "/catalog/category")
+public class CategoryRestController {
 
-    private CategoryService categoryService;
-
-    private LanguageInfoService languageInfoService;
+    private final CategoryService categoryService;
+    private final LanguageInfoService languageInfoService;
 
     @Autowired
-    public CategoryApiImpl(CategoryService categoryService, LanguageInfoService languageInfoService) {
+    public CategoryRestController(CategoryService categoryService, LanguageInfoService languageInfoService) {
         this.categoryService = categoryService;
         this.languageInfoService = languageInfoService;
     }
 
-    @Override
-    public BreadcrumbItem getBreadcrumbItemForLocale(Long categoryId, LanguageDTO languageDTO) {
-        LanguageInfo languageInfo = this.languageInfoService.findbyCode(languageDTO.getCode());
+
+    @RequestMapping(path = "/{categoryId}/breadcrumb", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BreadcrumbItem getBreadcrumbItemForLocale(@PathVariable("categoryId") Long categoryId, @RequestParam("languageCode") String languageCode) {
+        LanguageInfo languageInfo = this.languageInfoService.findbyCode(languageCode);
         Category category = this.categoryService.getByLanguage(categoryId, languageInfo);
         if(category!=null) {
             BreadcrumbItem categoryItem = new  BreadcrumbItem();
@@ -38,5 +38,4 @@ public class CategoryApiImpl implements CategoryApi {
         }
         return null;
     }
-
 }

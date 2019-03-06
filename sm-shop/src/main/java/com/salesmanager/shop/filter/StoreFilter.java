@@ -1,12 +1,12 @@
 package com.salesmanager.shop.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salesmanager.catalog.api.CategoryApi;
 import com.salesmanager.common.presentation.model.Breadcrumb;
 import com.salesmanager.common.presentation.model.BreadcrumbItem;
 import com.salesmanager.common.presentation.model.BreadcrumbItemType;
 import com.salesmanager.common.presentation.model.PageInformation;
 import com.salesmanager.common.presentation.util.LabelUtils;
+import com.salesmanager.core.business.services.catalog.CategoryInfoService;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.business.services.content.ContentService;
 import com.salesmanager.core.business.services.customer.CustomerService;
@@ -59,9 +59,6 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 	
 	@Inject
 	private ContentService contentService;
-	
-	@Inject
-	private CategoryApi categoryApi;
 
 	@Inject
 	private MerchantStoreService merchantService;
@@ -89,6 +86,9 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 
 	@Autowired
 	private ProductInfoService productInfoService;
+
+	@Autowired
+	private CategoryInfoService categoryInfoService;
 	
 	private final static String SERVICES_URL_PATTERN = "/services";
 	private final static String REFERENCE_URL_PATTERN = "/reference";
@@ -742,7 +742,7 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 									items.add(productItem);
 								}
 							}else if(item.getItemType().name().equals(BreadcrumbItemType.CATEGORY)) {
-								BreadcrumbItem categoryItem = categoryApi.getBreadcrumbItemForLocale(item.getId(), language.toDTO());
+								BreadcrumbItem categoryItem = categoryInfoService.getBreadcrumbItemForLocale(item.getId(), language);
 								if (categoryItem != null) {
 									items.add(categoryItem);
 								}
