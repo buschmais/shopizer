@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ProductImageDTO extends AbstractCatalogDTO {
+public class ProductImageDTO implements AbstractCatalogDTO {
 
     private final Long id;
     private final String imageName;

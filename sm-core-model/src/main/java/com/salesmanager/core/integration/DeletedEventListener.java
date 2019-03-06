@@ -20,22 +20,22 @@ public class DeletedEventListener implements PostDeleteEventListener {
 
     @Autowired
     @Qualifier("coreKafkaTemplate")
-    private KafkaTemplate<String, AbstractCoreDTO> kafkaTemplate;
+    private KafkaTemplate<String, AbstractCoreCrudDTO> kafkaTemplate;
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
         if (event.getEntity() instanceof MerchantStore) {
             MerchantStore store = ((MerchantStore) event.getEntity());
-            kafkaTemplate.send("merchant_store", store.toDTO().setEventType(EventType.DELETED));
+            kafkaTemplate.send("merchant_store", (AbstractCoreCrudDTO) store.toDTO().setEventType(EventType.DELETED));
         } else if (event.getEntity() instanceof Language) {
             Language language = ((Language) event.getEntity());
-            kafkaTemplate.send("language", language.toDTO().setEventType(EventType.DELETED));
+            kafkaTemplate.send("language", (AbstractCoreCrudDTO) language.toDTO().setEventType(EventType.DELETED));
         } else if (event.getEntity() instanceof Customer) {
             Customer customer = ((Customer) event.getEntity());
-            kafkaTemplate.send("customer", customer.toDTO().setEventType(EventType.DELETED));
+            kafkaTemplate.send("customer", (AbstractCoreCrudDTO) customer.toDTO().setEventType(EventType.DELETED));
         } else if (event.getEntity() instanceof TaxClass) {
             TaxClass taxClass = ((TaxClass) event.getEntity());
-            kafkaTemplate.send("tax_class", taxClass.toDTO().setEventType(EventType.DELETED));
+            kafkaTemplate.send("tax_class", (AbstractCoreCrudDTO) taxClass.toDTO().setEventType(EventType.DELETED));
         }
     }
 

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ProductDescriptionDTO extends AbstractCatalogDTO {
+public class ProductDescriptionDTO implements AbstractCatalogDTO {
 
     private final Long id;
     private final String name;

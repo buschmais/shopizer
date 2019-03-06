@@ -1,6 +1,6 @@
 package com.salesmanager.core.business.integration.catalog.adapter;
 
-import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductOptionValueDTO;
 import com.salesmanager.core.business.services.catalog.ProductOptionValueInfoService;
 import com.salesmanager.core.business.services.reference.language.LanguageService;
 import com.salesmanager.core.model.catalog.ProductOptionValueDescriptionInfo;

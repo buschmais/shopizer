@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AvailabilityInformationDTO extends AbstractCatalogDTO {
+public class AvailabilityInformationDTO implements AbstractCatalogDTO {
 
     private boolean available;
     private boolean shippable;

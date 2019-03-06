@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FinalPriceDTO extends AbstractCatalogDTO {
+public class FinalPriceDTO implements AbstractCatalogDTO {
 
     private Boolean discounted;
     private Double finalPrice;

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DimensionDTO extends AbstractCatalogDTO {
+public class DimensionDTO implements AbstractCatalogDTO {
 
     private final Double width;
     private final Double length;

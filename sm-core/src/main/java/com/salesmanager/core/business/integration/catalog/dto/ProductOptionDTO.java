@@ -1,14 +1,12 @@
-package com.salesmanager.catalog.api.dto.product;
+package com.salesmanager.core.business.integration.catalog.dto;
 
-import com.salesmanager.catalog.api.dto.AbstractCatalogCrudDTO;
-import com.salesmanager.catalog.api.dto.AbstractCatalogDTO;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
+@Setter
 public class ProductOptionDTO extends AbstractCatalogCrudDTO {
 
     private Long id;
@@ -17,8 +15,8 @@ public class ProductOptionDTO extends AbstractCatalogCrudDTO {
 
     private List<ProductOptionDescriptionDTO> descriptions;
 
-    @AllArgsConstructor
     @Getter
+    @Setter
     public static class ProductOptionDescriptionDTO implements AbstractCatalogDTO {
 
         private Long id;

@@ -8,7 +8,7 @@ import java.util.Date;
 
 @AllArgsConstructor
 @Getter
-public class ProductPriceDTO extends AbstractCatalogDTO {
+public class ProductPriceDTO implements AbstractCatalogDTO {
 
     private String code;
     private String productPriceType;

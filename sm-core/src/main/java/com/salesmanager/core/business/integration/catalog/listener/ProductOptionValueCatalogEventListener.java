@@ -1,6 +1,6 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
-import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;import com.salesmanager.core.business.integration.catalog.adapter.ProductOptionValueInfoAdapter;
+import com.salesmanager.core.business.integration.catalog.dto.ProductOptionValueDTO;import com.salesmanager.core.business.integration.catalog.adapter.ProductOptionValueInfoAdapter;
 import com.salesmanager.core.business.services.catalog.ProductOptionValueInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

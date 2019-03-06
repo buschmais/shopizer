@@ -35,7 +35,7 @@ MATCH
 WHERE
   abstractDTO <> dto AND
   dto.fqn ENDS WITH "DTO" AND
-  NOT EXISTS((dto)-[:EXTENDS*]->(abstractDTO))
+  NOT EXISTS((dto)-[:EXTENDS|IMPLEMENTS*]->(abstractDTO))
 RETURN
   dto.fqn AS INVALID_DTO
 ----

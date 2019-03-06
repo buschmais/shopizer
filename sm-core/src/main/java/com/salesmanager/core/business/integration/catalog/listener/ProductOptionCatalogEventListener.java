@@ -1,6 +1,6 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
-import com.salesmanager.catalog.api.dto.product.ProductOptionDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductOptionDTO;
 import com.salesmanager.core.business.integration.catalog.adapter.ProductOptionInfoAdapter;
 import com.salesmanager.core.business.services.catalog.ProductOptionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;

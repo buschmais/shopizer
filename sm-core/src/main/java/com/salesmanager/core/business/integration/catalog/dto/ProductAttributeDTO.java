@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductAttributeDTO extends AbstractCatalogDTO {
+public class ProductAttributeDTO implements AbstractCatalogDTO {
 
     private Long id;
     private Double price;

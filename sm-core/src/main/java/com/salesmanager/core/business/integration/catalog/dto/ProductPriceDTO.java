@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ProductPriceDTO extends AbstractCatalogDTO {
+public class ProductPriceDTO implements AbstractCatalogDTO {
 
     private String code;
     private String productPriceType;

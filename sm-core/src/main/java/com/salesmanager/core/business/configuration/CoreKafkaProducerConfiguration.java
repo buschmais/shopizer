@@ -1,6 +1,6 @@
 package com.salesmanager.core.business.configuration;
 
-import com.salesmanager.core.integration.AbstractCoreDTO;
+import com.salesmanager.core.integration.AbstractCoreCrudDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class CoreKafkaProducerConfiguration {
     private Environment environment;
 
     @Bean
-    public ProducerFactory<String, AbstractCoreDTO> producerFactory() {
+    public ProducerFactory<String, AbstractCoreCrudDTO> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -39,7 +39,7 @@ public class CoreKafkaProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, AbstractCoreDTO> coreKafkaTemplate() {
+    public KafkaTemplate<String, AbstractCoreCrudDTO> coreKafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

@@ -1,13 +1,6 @@
-package com.salesmanager.catalog.api.dto;
+package com.salesmanager.core.business.integration.catalog.dto;
 
 import com.salesmanager.common.model.integration.AbstractCrudDTO;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
-@Getter
-@Setter
-@Accessors(chain = true)
 public abstract class AbstractCatalogCrudDTO extends AbstractCrudDTO implements AbstractCatalogDTO {
-
 }

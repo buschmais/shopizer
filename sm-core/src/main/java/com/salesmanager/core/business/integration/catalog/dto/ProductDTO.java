@@ -1,13 +1,10 @@
-package com.salesmanager.catalog.api.dto.product;
+package com.salesmanager.core.business.integration.catalog.dto;
 
-import com.salesmanager.catalog.api.dto.AbstractCatalogCrudDTO;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
+@Setter
 public class ProductDTO extends AbstractCatalogCrudDTO {
 
     private Long id;

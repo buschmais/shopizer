@@ -1,6 +1,6 @@
 package com.salesmanager.catalog.configuration;
 
-import com.salesmanager.catalog.api.dto.AbstractCatalogDTO;
+import com.salesmanager.catalog.api.dto.AbstractCatalogCrudDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class KafkaProducerConfiguration {
     private Environment environment;
 
     @Bean
-    public ProducerFactory<String, AbstractCatalogDTO> producerFactory() {
+    public ProducerFactory<String, AbstractCatalogCrudDTO> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -37,7 +37,7 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, AbstractCatalogDTO> kafkaTemplate() {
+    public KafkaTemplate<String, AbstractCatalogCrudDTO> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

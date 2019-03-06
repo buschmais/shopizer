@@ -1,8 +1,8 @@
 package com.salesmanager.core.business.configuration;
 
-import com.salesmanager.catalog.api.dto.product.ProductDTO;
-import com.salesmanager.catalog.api.dto.product.ProductOptionDTO;
-import com.salesmanager.catalog.api.dto.product.ProductOptionValueDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductOptionDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductOptionValueDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;

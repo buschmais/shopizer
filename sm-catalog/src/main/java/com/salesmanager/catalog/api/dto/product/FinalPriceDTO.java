@@ -8,7 +8,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class FinalPriceDTO extends AbstractCatalogDTO {
+public class FinalPriceDTO implements AbstractCatalogDTO {
 
     private Boolean discounted;
     private Double finalPrice;

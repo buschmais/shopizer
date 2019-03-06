@@ -1,6 +1,6 @@
 package com.salesmanager.core.business.integration.catalog.listener;
 
-import com.salesmanager.catalog.api.dto.product.ProductDTO;
+import com.salesmanager.core.business.integration.catalog.dto.ProductDTO;
 import com.salesmanager.core.business.integration.catalog.adapter.ProductInfoAdapter;
 import com.salesmanager.core.business.services.catalog.ProductInfoService;
 import com.salesmanager.core.model.catalog.ProductInfo;
