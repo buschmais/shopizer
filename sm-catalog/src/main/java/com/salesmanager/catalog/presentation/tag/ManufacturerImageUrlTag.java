@@ -4,7 +4,7 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.model.manufacturer.Manufacturer;
 import com.salesmanager.catalog.presentation.util.UriUtils;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
+import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -18,7 +18,7 @@ import javax.persistence.TableGenerator;
 
 import com.salesmanager.core.constants.SchemaConstant;
 import com.salesmanager.core.integration.TransferableEntity;
-import com.salesmanager.core.integration.language.LanguageDTO;
+import com.salesmanager.core.integration.dto.LanguageDTO;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;

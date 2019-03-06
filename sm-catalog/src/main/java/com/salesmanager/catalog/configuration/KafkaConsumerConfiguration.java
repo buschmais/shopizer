@@ -1,9 +1,9 @@
 package com.salesmanager.catalog.configuration;
 
-import com.salesmanager.core.integration.customer.CustomerDTO;
-import com.salesmanager.core.integration.language.LanguageDTO;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
-import com.salesmanager.core.integration.tax.TaxClassDTO;
+import com.salesmanager.catalog.business.integration.core.dto.CustomerDTO;
+import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
+import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
+import com.salesmanager.catalog.business.integration.core.dto.TaxClassDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;

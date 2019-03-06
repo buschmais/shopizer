@@ -2,7 +2,7 @@ package com.salesmanager.catalog.business.integration.core.adapter;
 
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
-import com.salesmanager.core.integration.language.LanguageDTO;
+import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;

@@ -23,7 +23,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Pattern;
 
 import com.salesmanager.core.integration.TransferableEntity;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
+import com.salesmanager.core.integration.dto.MerchantStoreDTO;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 

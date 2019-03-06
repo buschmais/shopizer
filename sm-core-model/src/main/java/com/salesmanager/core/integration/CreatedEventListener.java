@@ -1,5 +1,7 @@
 package com.salesmanager.core.integration;
 
+import com.salesmanager.common.model.integration.AbstractCrudDTO;
+import com.salesmanager.core.integration.dto.AbstractCoreCrudDTO;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
@@ -12,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import static com.salesmanager.core.integration.AbstractCoreCrudDTO.*;
+import static com.salesmanager.common.model.integration.AbstractCrudDTO.*;
 
 
 @Component

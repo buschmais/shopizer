@@ -2,7 +2,7 @@ package com.salesmanager.catalog.business.integration.core.listener;
 
 import com.salesmanager.catalog.business.integration.core.adapter.MerchantStoreInfoAdapter;
 import com.salesmanager.catalog.business.integration.core.repository.MerchantStoreInfoRepository;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
+import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

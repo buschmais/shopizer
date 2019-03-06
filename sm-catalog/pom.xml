@@ -23,11 +23,6 @@
         </dependency>
         <dependency>
             <groupId>com.shopizer</groupId>
-            <artifactId>sm-core-model-api</artifactId>
-            <version>${shopizer.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.shopizer</groupId>
             <artifactId>sm-search</artifactId>
             <version>${shopizer.search.version}</version>
         </dependency>

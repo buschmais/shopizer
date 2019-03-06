@@ -16,8 +16,8 @@ import com.salesmanager.catalog.presentation.populator.catalog.ReadableProductRe
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.review.ProductReview;
-import com.salesmanager.core.integration.language.LanguageDTO;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
+import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
+import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.product.PersistableProductReview;
 import com.salesmanager.catalog.presentation.model.product.ReadableProduct;

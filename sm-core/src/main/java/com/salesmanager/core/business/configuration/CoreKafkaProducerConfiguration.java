@@ -1,6 +1,6 @@
 package com.salesmanager.core.business.configuration;
 
-import com.salesmanager.core.integration.AbstractCoreCrudDTO;
+import com.salesmanager.core.integration.dto.AbstractCoreCrudDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;

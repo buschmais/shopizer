@@ -17,7 +17,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 
 import com.salesmanager.core.integration.TransferableEntity;
-import com.salesmanager.core.integration.tax.TaxClassDTO;
+import com.salesmanager.core.integration.dto.TaxClassDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.salesmanager.core.constants.SchemaConstant;

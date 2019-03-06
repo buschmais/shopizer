@@ -4,7 +4,7 @@ import com.salesmanager.catalog.business.integration.core.adapter.MerchantStoreI
 import com.salesmanager.catalog.business.integration.core.repository.TaxClassInfoRepository;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.model.integration.core.TaxClassInfo;
-import com.salesmanager.core.integration.tax.TaxClassDTO;
+import com.salesmanager.catalog.business.integration.core.dto.TaxClassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

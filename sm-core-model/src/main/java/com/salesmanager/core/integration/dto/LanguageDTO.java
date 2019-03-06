@@ -1,6 +1,5 @@
-package com.salesmanager.core.integration.language;
+package com.salesmanager.core.integration.dto;
 
-import com.salesmanager.core.integration.AbstractCoreCrudDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

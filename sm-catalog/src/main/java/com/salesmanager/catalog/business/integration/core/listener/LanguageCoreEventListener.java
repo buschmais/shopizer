@@ -2,7 +2,8 @@ package com.salesmanager.catalog.business.integration.core.listener;
 
 import com.salesmanager.catalog.business.integration.core.adapter.LanguageInfoAdapter;
 import com.salesmanager.catalog.business.integration.core.repository.LanguageInfoRepository;
-import com.salesmanager.core.integration.language.LanguageDTO;
+import com.salesmanager.catalog.model.integration.core.LanguageInfo;
+import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

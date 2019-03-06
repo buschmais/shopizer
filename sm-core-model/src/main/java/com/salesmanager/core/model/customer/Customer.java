@@ -30,7 +30,7 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 
 import com.salesmanager.core.integration.TransferableEntity;
-import com.salesmanager.core.integration.customer.CustomerDTO;
+import com.salesmanager.core.integration.dto.CustomerDTO;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;

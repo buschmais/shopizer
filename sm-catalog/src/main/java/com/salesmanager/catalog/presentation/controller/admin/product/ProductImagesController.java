@@ -12,7 +12,7 @@ import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.image.ProductImage;
 import com.salesmanager.catalog.presentation.model.admin.cms.ProductImages;
 import com.salesmanager.common.presentation.model.admin.Menu;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
+import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
 import org.apache.commons.collections4.CollectionUtils;

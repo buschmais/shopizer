@@ -1,6 +1,5 @@
-package com.salesmanager.core.integration.tax;
+package com.salesmanager.core.integration.dto;
 
-import com.salesmanager.core.integration.AbstractCoreCrudDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

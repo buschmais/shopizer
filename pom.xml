@@ -144,7 +144,6 @@
 	  	<module>sm-core</module>
 	  	<module>sm-shop</module>
         <module>sm-common</module>
-        <module>sm-core-model-api</module>
         <module>sm-catalog</module>
     </modules>
 

@@ -8,7 +8,7 @@ import com.salesmanager.catalog.presentation.controller.admin.ControllerConstant
 import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.file.DigitalProduct;
-import com.salesmanager.core.integration.merchant.MerchantStoreDTO;
+import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.catalog.model.content.FileContentType;
 import com.salesmanager.catalog.model.content.InputContentFile;
 import com.salesmanager.catalog.presentation.model.admin.cms.ProductFiles;
