@@ -10,7 +10,6 @@ import com.salesmanager.common.business.ajax.AjaxPageableResponse;
 import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.manufacturer.Manufacturer;
 import com.salesmanager.catalog.model.product.manufacturer.ManufacturerDescription;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -336,9 +335,8 @@ public class ManufacturerController {
 		
 		AjaxResponse resp = new AjaxResponse();
 		try {
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);

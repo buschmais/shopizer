@@ -11,7 +11,6 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +90,7 @@ public class ShopProductRelationshipTag extends RequestContextAwareTag  {
 		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute(Constants.LANGUAGE_DTO);
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 
 		StringBuilder groupKey = new StringBuilder();
 		groupKey
@@ -101,7 +100,7 @@ public class ShopProductRelationshipTag extends RequestContextAwareTag  {
 		.append("-")
 		.append(this.getGroupName())
 		.append("_")
-		.append(languageDTO.getCode());
+		.append(languageCode);
 		
 		StringBuilder groupKeyMissed = new StringBuilder();
 		groupKeyMissed
@@ -147,8 +146,8 @@ public class ShopProductRelationshipTag extends RequestContextAwareTag  {
 	private List<ReadableProduct> getProducts(HttpServletRequest request) throws Exception {
 		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute(Constants.LANGUAGE_DTO);
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 		List<ProductRelationship> relationships = productRelationshipService.getByGroup(store, this.getGroupName(), language);
 		

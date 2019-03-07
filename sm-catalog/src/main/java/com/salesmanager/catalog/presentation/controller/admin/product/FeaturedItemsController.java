@@ -14,7 +14,6 @@ import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationshipType;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import org.slf4j.Logger;
@@ -67,8 +66,8 @@ public class FeaturedItemsController {
 		
 		setMenu(model,request);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
@@ -89,11 +88,8 @@ public class FeaturedItemsController {
 		AjaxResponse resp = new AjaxResponse();
 		
 		try {
-
-
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);

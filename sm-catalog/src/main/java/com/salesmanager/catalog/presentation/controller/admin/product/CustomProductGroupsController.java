@@ -15,7 +15,6 @@ import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -249,12 +248,10 @@ public class CustomProductGroupsController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/group/edit.html", method=RequestMethod.GET)
 	public String displayCustomProductGroup(@RequestParam("id") String groupCode, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		
 		setMenu(model,request);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
@@ -278,11 +275,8 @@ public class CustomProductGroupsController {
 		AjaxResponse resp = new AjaxResponse();
 		
 		try {
-
-
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			

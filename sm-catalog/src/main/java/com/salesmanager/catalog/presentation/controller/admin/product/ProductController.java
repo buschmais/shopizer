@@ -27,7 +27,6 @@ import com.salesmanager.catalog.model.product.price.ProductPrice;
 import com.salesmanager.catalog.model.product.price.ProductPriceDescription;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.model.product.type.ProductType;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.DateUtil;
@@ -108,9 +107,8 @@ public class ProductController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/viewEditProduct.html", method=RequestMethod.GET)
 	public String displayProductEdit(@RequestParam("sku") String sku, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		Product dbProduct = productService.getByCode(sku, language);
 		
 		long productId = -1;//non existent
@@ -138,9 +136,8 @@ public class ProductController {
 
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
-		
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 		List<Manufacturer> manufacturers = manufacturerService.listByStore(store, language);
 		
@@ -274,10 +271,8 @@ public class ProductController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/save.html", method=RequestMethod.POST)
 	public String saveProduct(@Valid @ModelAttribute("product") com.salesmanager.catalog.presentation.model.admin.Product product, BindingResult result, Model model, HttpServletRequest request, Locale locale) throws Exception {
-
-
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		//display menu
 		setMenu(model,request);
@@ -566,10 +561,8 @@ public class ProductController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/product/duplicate.html", method=RequestMethod.POST)
 	public String duplicateProduct(@ModelAttribute("productId") Long  id, BindingResult result, Model model, HttpServletRequest request, Locale locale) throws Exception {
-
-
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		//display menu
 		setMenu(model,request);
@@ -819,8 +812,8 @@ public class ProductController {
 		setMenu(model,request);
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		
 		//get the product and validate it belongs to the current merchant
@@ -896,9 +889,8 @@ public class ProductController {
 				return new ResponseEntity<String>(returnString,httpHeaders,HttpStatus.OK);
 			}
 
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 			
 			Set<Category> categories = product.getCategories();
@@ -999,8 +991,8 @@ public class ProductController {
 		setMenu(model,request);
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		
 		//get the product and validate it belongs to the current merchant

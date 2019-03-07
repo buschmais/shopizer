@@ -15,7 +15,6 @@ import com.salesmanager.catalog.model.product.availability.ProductAvailability;
 import com.salesmanager.catalog.model.product.price.ProductPrice;
 import com.salesmanager.catalog.model.product.price.ProductPriceDescription;
 import com.salesmanager.catalog.model.product.price.ProductPriceType;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.DateUtil;
@@ -106,10 +105,9 @@ public class ProductPriceController {
 		String sProductId = request.getParameter("productId");
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
-		
+
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 		final HttpHeaders httpHeaders= new HttpHeaders();

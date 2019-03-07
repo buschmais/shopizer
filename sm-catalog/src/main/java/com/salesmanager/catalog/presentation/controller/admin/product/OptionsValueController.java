@@ -9,7 +9,6 @@ import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.attribute.ProductOptionValue;
 import com.salesmanager.catalog.model.product.attribute.ProductOptionValueDescription;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.catalog.model.content.InputContentFile;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
@@ -284,10 +283,8 @@ public class OptionsValueController {
 
 		
 		try {
-
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);

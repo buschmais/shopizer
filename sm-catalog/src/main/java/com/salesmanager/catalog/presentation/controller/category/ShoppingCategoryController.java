@@ -12,7 +12,6 @@ import com.salesmanager.catalog.presentation.controller.ControllerConstants;
 import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.ProductList;
 import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
@@ -138,8 +137,8 @@ public class ShoppingCategoryController {
 		//get category
 		Category category = categoryService.getBySeUrl(store, friendlyUrl);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		if(category==null) {
 			LOGGER.error("No category found for friendlyUrl " + friendlyUrl);

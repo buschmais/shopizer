@@ -3,7 +3,6 @@ package com.salesmanager.catalog.presentation.util;
 import com.salesmanager.catalog.business.integration.core.service.LanguageInfoService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -30,7 +29,6 @@ public class RestUtils {
         Validate.notNull(request,"HttpServletRequest must not be null");
         Validate.notNull(store,"MerchantStore must not be null");
 
-        LanguageDTO languageDTO = null;
         LanguageInfo language = null;
 
 
@@ -38,8 +36,8 @@ public class RestUtils {
 
         if(StringUtils.isBlank(lang)) {
             //try with HttpSession
-            languageDTO = (LanguageDTO) request.getSession().getAttribute(Constants.LANGUAGE_DTO);
-            if(languageDTO==null) {
+            String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+            if(languageCode == null) {
                 language = languageInfoService.findbyCode(store.getDefaultLanguage());
             }
 
@@ -49,8 +47,8 @@ public class RestUtils {
         } else {
             language = languageInfoService.findbyCode(lang);
             if(language==null) {
-                languageDTO = (LanguageDTO) request.getSession().getAttribute(Constants.LANGUAGE_DTO);
-                if(languageDTO==null) {
+                String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+                if(languageCode == null) {
                     language = languageInfoService.findbyCode(store.getDefaultLanguage());
                 }
 

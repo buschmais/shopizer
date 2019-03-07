@@ -7,7 +7,6 @@ import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.controller.category.facade.CategoryFacade;
 import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
 import com.salesmanager.common.presentation.constants.Constants;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -40,8 +39,8 @@ public class CatalogFilter extends HandlerInterceptorAdapter {
         String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
         MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
-        LanguageDTO languageDTO = (LanguageDTO) request.getSession().getAttribute(Constants.LANGUAGE_DTO);
-        LanguageInfo language = languageInfoService.findbyCode(languageDTO.getCode());
+        String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+        LanguageInfo language = languageInfoService.findbyCode(languageCode);
 
         /******* Top Categories ********/
         //this.getTopCategories(store, language, request);

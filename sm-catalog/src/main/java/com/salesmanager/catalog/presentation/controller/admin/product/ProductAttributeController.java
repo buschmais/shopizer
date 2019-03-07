@@ -13,7 +13,6 @@ import com.salesmanager.common.business.ajax.AjaxPageableResponse;
 import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.attribute.*;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -127,11 +126,9 @@ public class ProductAttributeController {
 			
 			
 			product = productService.getById(productId);
-			
 
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
@@ -205,8 +202,8 @@ public class ProductAttributeController {
 
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		//get product
 		Product product =  productService.getById(productId);
@@ -270,9 +267,8 @@ public class ProductAttributeController {
 
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
-		
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		//get Options
 		List<ProductOption> options = productOptionService.listByStore(store, language);

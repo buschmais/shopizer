@@ -130,14 +130,12 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 				language = merchantStore.getDefaultLanguage();
 			}
 
-			request.getSession().setAttribute(Constants.LANGUAGE, language);
-			request.getSession().setAttribute(Constants.LANGUAGE_DTO, language.toDTO());
+			request.getSession().setAttribute(Constants.LANGUAGE_CODE, language.getCode());
 
 		}
 		
 
 		request.setAttribute(Constants.LANGUAGE, language);
-		request.setAttribute(Constants.LANGUAGE_DTO, language.toDTO());
 		
 
 		if(menus==null) {

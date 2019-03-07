@@ -16,7 +16,6 @@ import com.salesmanager.catalog.presentation.populator.catalog.ReadableProductRe
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.review.ProductReview;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.product.PersistableProductReview;
 import com.salesmanager.catalog.presentation.model.product.ReadableProduct;
@@ -81,8 +80,8 @@ public class CustomerProductReviewController {
 		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute(Constants.LANGUAGE_DTO);
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
         //get product
         Product product = productService.getById(productId);
@@ -146,8 +145,8 @@ public class CustomerProductReviewController {
 		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 
 		CustomerInfo customer =  customerInfoService.findByNick(request.getRemoteUser(), store.getId());

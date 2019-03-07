@@ -13,7 +13,6 @@ import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.ProductList;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -64,8 +63,8 @@ public class ProductsController {
 		
 		setMenu(model,request);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
@@ -101,8 +100,8 @@ public class ProductsController {
 			int startRow = Integer.parseInt(request.getParameter("_startRow"));
 			int endRow = Integer.parseInt(request.getParameter("_endRow"));
 
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
 			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);

@@ -4,7 +4,6 @@ import com.salesmanager.catalog.business.integration.core.service.LanguageInfoSe
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.business.service.product.ProductService;
 import com.salesmanager.catalog.business.service.product.review.ProductReviewService;
-import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.controller.admin.ControllerConstants;
 import com.salesmanager.common.business.ajax.AjaxPageableResponse;
@@ -12,7 +11,6 @@ import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.review.ProductReview;
 import com.salesmanager.catalog.model.product.review.ProductReviewDescription;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -63,9 +61,6 @@ public class ProductReviewController {
 	public String displayProductReviews(@RequestParam("id") long productId,Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
 		
 		setMenu(model, request);
-
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 
 		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
@@ -132,11 +127,6 @@ public class ProductReviewController {
 				String returnString = resp.toJSONString();
 				return new ResponseEntity<String>(returnString,httpHeaders,HttpStatus.OK);
 			}
-
-
-			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
-
 			
 			List<ProductReview> reviews = productReviewService.getByProduct(product);
 			

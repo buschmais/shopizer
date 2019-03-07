@@ -227,7 +227,6 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 				/** language & locale **/
 				Language language = languageUtils.getRequestLanguage(request, response);
 				request.setAttribute(Constants.LANGUAGE, language);
-				request.setAttribute(Constants.LANGUAGE_DTO, language.toDTO());
 				
 				
 				Locale locale = languageService.toLocale(language, store);

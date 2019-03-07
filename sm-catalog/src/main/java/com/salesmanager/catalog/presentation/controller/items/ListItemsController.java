@@ -7,7 +7,6 @@ import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.controller.ControllerConstants;
 import com.salesmanager.catalog.model.product.manufacturer.Manufacturer;
-import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.manufacturer.ReadableManufacturer;
 import com.salesmanager.common.presentation.model.PageInformation;
@@ -51,8 +50,8 @@ public class ListItemsController {
 		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
-		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
-		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 		
 		//Manufacturer manufacturer = manufacturerService.getByUrl(store, language, url); // this needs to be checked
 

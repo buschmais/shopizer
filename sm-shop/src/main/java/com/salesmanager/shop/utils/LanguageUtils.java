@@ -32,7 +32,11 @@ public class LanguageUtils {
 		
 		Locale locale = null;
 		
-		Language language = (Language) request.getSession().getAttribute(Constants.LANGUAGE);
+		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+		Language language = null;
+		try {
+			language = languageCode != null ? languageService.getByCode(languageCode) : null;
+		} catch (Exception e) {}
 		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 		
 
@@ -87,8 +91,7 @@ public class LanguageUtils {
 			localeResolver.setLocale(request, response, locale);
 		}
 		response.setLocale(locale);
-		request.getSession().setAttribute(Constants.LANGUAGE, language);
-		request.getSession().setAttribute(Constants.LANGUAGE_DTO, language.toDTO());
+		request.getSession().setAttribute(Constants.LANGUAGE_CODE, language.getCode());
 
 		return language;
 	}
