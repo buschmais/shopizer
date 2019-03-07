@@ -8,7 +8,6 @@ import com.salesmanager.catalog.presentation.controller.category.facade.Category
 import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -38,8 +37,8 @@ public class CatalogFilter extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         request.setCharacterEncoding("UTF-8");
 
-        MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getSession().getAttribute(Constants.MERCHANT_STORE_DTO);
-        MerchantStoreInfo store = merchantStoreInfoService.findbyCode(storeDTO.getCode());
+        String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+        MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
         LanguageDTO languageDTO = (LanguageDTO) request.getSession().getAttribute(Constants.LANGUAGE_DTO);
         LanguageInfo language = languageInfoService.findbyCode(languageDTO.getCode());

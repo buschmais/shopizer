@@ -16,7 +16,6 @@ import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.model.product.review.ProductReview;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.manufacturer.PersistableManufacturer;
 import com.salesmanager.catalog.presentation.model.product.*;
@@ -103,19 +102,19 @@ public class ShopProductRESTController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShopProductRESTController.class);
 
 	private MerchantStoreInfo getMerchantStoreFromRequest(HttpServletRequest request, String store) {
-		MerchantStoreDTO merchantStoreDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		String merchantStoreCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 
-		if(merchantStoreDTO!=null) {
-			if(!merchantStoreDTO.getCode().equals(store)) {
-				merchantStoreDTO = null;
+		if(merchantStoreCode!=null) {
+			if(!merchantStoreCode.equals(store)) {
+				merchantStoreCode = null;
 			}
 		}
 		MerchantStoreInfo merchantStore;
 
-		if(merchantStoreDTO== null) {
+		if(merchantStoreCode== null) {
 			merchantStore = merchantStoreInfoService.findbyCode(store);
 		} else {
-			merchantStore = this.merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
+			merchantStore = this.merchantStoreInfoService.findbyCode(merchantStoreCode);
 		}
 		return merchantStore;
 	}

@@ -8,7 +8,6 @@ import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.controller.ControllerConstants;
 import com.salesmanager.catalog.model.product.manufacturer.Manufacturer;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.manufacturer.ReadableManufacturer;
 import com.salesmanager.common.presentation.model.PageInformation;
@@ -48,9 +47,9 @@ public class ListItemsController {
 	
 	@RequestMapping("/shop/listing/{url}.html")
 	public String displayListingPage(@PathVariable String url, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
-		
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());

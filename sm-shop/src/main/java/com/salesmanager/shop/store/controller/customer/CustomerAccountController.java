@@ -127,9 +127,9 @@ public class CustomerAccountController extends AbstractController {
 	 */
 	@RequestMapping(value="/customLogon.html", method=RequestMethod.GET)
 	public String displayLogon(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 
 
 		//dispatch to dedicated customer logon
@@ -144,9 +144,9 @@ public class CustomerAccountController extends AbstractController {
 	
 	@RequestMapping(value="/accountSummary.json", method=RequestMethod.GET)
 	public @ResponseBody ReadableCustomer customerInformation(@RequestParam String userName, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
-	
-		MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Customer customer = null;
@@ -190,9 +190,9 @@ public class CustomerAccountController extends AbstractController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
 	@RequestMapping(value="/account.html", method=RequestMethod.GET)
 	public String displayCustomerAccount(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 
 		
 		
@@ -206,9 +206,9 @@ public class CustomerAccountController extends AbstractController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
 	@RequestMapping(value="/password.html", method=RequestMethod.GET)
 	public String displayCustomerChangePassword(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 
 		CustomerPassword customerPassword = new CustomerPassword();
 		model.addAttribute("password", customerPassword);
@@ -223,9 +223,9 @@ public class CustomerAccountController extends AbstractController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
 	@RequestMapping(value="/changePassword.html", method=RequestMethod.POST)
 	public String changePassword(@Valid @ModelAttribute(value="password") CustomerPassword password, BindingResult bindingResult, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
-		
 
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 	    
 		/** template **/
 		StringBuilder template = new StringBuilder().append(ControllerConstants.Tiles.Customer.changePassword).append(".").append(store.getStoreTemplate());
@@ -428,9 +428,9 @@ public class CustomerAccountController extends AbstractController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
 	@RequestMapping(value="/billing.html", method=RequestMethod.GET)
     public String displayCustomerBillingAddress(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
 
-        MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
         Language language = getSessionAttribute(Constants.LANGUAGE, request);
     
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -463,7 +463,7 @@ public class CustomerAccountController extends AbstractController {
     @RequestMapping(value="/editAddress.html", method={RequestMethod.GET,RequestMethod.POST})
     public String editAddress(final Model model, final HttpServletRequest request,
                               @RequestParam(value = "billingAddress", required = false) Boolean billingAddress) throws Exception {
-        MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
         
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Customer customer = null;
@@ -492,8 +492,8 @@ public class CustomerAccountController extends AbstractController {
     public String updateCustomerAddress(@Valid
                                         @ModelAttribute("address") Address address,BindingResult bindingResult,final Model model, final HttpServletRequest request,
                               @RequestParam(value = "billingAddress", required = false) Boolean billingAddress) throws Exception {
-       
-        MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
         
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Customer customer = null;

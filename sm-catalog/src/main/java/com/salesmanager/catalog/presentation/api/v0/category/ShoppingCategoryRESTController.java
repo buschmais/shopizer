@@ -12,7 +12,6 @@ import com.salesmanager.catalog.business.integration.core.service.LanguageInfoSe
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,19 +61,19 @@ public class ShoppingCategoryRESTController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCategoryRESTController.class);
 	
 	private MerchantStoreInfo getMerchantStoreFromRequest(HttpServletRequest request, String store) {
-		MerchantStoreDTO merchantStoreDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 
-		if(merchantStoreDTO!=null) {
-			if(!merchantStoreDTO.getCode().equals(store)) {
-				merchantStoreDTO = null;
+		if(storeCode!=null) {
+			if(!storeCode.equals(store)) {
+				storeCode = null;
 			}
 		}
 		MerchantStoreInfo merchantStore;
 
-		if(merchantStoreDTO== null) {
+		if(storeCode== null) {
 			merchantStore = merchantStoreInfoService.findbyCode(store);
 		} else {
-			merchantStore = this.merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
+			merchantStore = this.merchantStoreInfoService.findbyCode(storeCode);
 		}
 		return merchantStore;
 	}

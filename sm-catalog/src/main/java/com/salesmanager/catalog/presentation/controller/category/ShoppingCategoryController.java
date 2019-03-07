@@ -13,7 +13,6 @@ import com.salesmanager.catalog.model.category.Category;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.ProductCriteria;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.ProductList;
 import com.salesmanager.catalog.presentation.model.category.ReadableCategory;
@@ -133,12 +132,8 @@ public class ShoppingCategoryController {
 	
 	@SuppressWarnings("unchecked")
 	private String displayCategory(final String friendlyUrl, final String ref, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
-
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
-		
-		
-		
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		//get category
 		Category category = categoryService.getBySeUrl(store, friendlyUrl);
@@ -402,20 +397,20 @@ public class ShoppingCategoryController {
 			l = languageInfoService.findbyCode(Constants.DEFAULT_LANGUAGE);
 		}
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 
-		if(storeDTO!=null) {
-			if(!storeDTO.getCode().equals(store)) {
-				storeDTO = null; //reset for the current request
+		if(storeCode!=null) {
+			if(!storeCode.equals(store)) {
+				storeCode = null; //reset for the current request
 			}
 		}
 
 		MerchantStoreInfo merchantStore;
 		
-		if(storeDTO== null) {
+		if(storeCode== null) {
 			merchantStore = merchantStoreInfoService.findbyCode(store);
 		} else {
-			merchantStore = merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			merchantStore = merchantStoreInfoService.findbyCode(storeCode);
 		}
 		
 		if(merchantStore==null) {
@@ -465,21 +460,21 @@ public class ShoppingCategoryController {
 			 * http://codetutr.com/2013/04/09/spring-mvc-easy-rest-based-json-services-with-responsebody/
 			 */
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 			Map<String,LanguageInfo> langs = languageInfoService.getLanguagesMap();
 
-			if(storeDTO!=null) {
-				if(!storeDTO.getCode().equals(store)) {
-					storeDTO = null; //reset for the current request
+			if(storeCode!=null) {
+				if(!storeCode.equals(store)) {
+					storeCode = null; //reset for the current request
 				}
 			}
 
 			MerchantStoreInfo merchantStore;
 
-			if(storeDTO== null) {
+			if(storeCode== null) {
 				merchantStore = merchantStoreInfoService.findbyCode(store);
 			} else {
-				merchantStore = merchantStoreInfoService.findbyCode(storeDTO.getCode());
+				merchantStore = merchantStoreInfoService.findbyCode(storeCode);
 			}
 			
 			if(merchantStore==null) {
@@ -604,25 +599,23 @@ public class ShoppingCategoryController {
 
 		
 		try {
-
-
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 			List<BigDecimal> prices = new ArrayList<BigDecimal>();
 			
 			Map<String,LanguageInfo> langs = languageInfoService.getLanguagesMap();
 			
-			if(storeDTO!=null) {
-				if(!storeDTO.getCode().equals(store)) {
-					storeDTO = null; //reset for the current request
+			if(storeCode!=null) {
+				if(!storeCode.equals(store)) {
+					storeCode = null; //reset for the current request
 				}
 			}
 
 			MerchantStoreInfo merchantStore;
 			
-			if(storeDTO== null) {
+			if(storeCode== null) {
 				merchantStore = merchantStoreInfoService.findbyCode(store);
 			} else {
-				merchantStore = merchantStoreInfoService.findbyCode(storeDTO.getCode());
+				merchantStore = merchantStoreInfoService.findbyCode(storeCode);
 			}
 			
 			if(merchantStore==null) {

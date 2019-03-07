@@ -8,7 +8,6 @@ import com.salesmanager.catalog.presentation.controller.admin.ControllerConstant
 import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.file.DigitalProduct;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.catalog.model.content.FileContentType;
 import com.salesmanager.catalog.model.content.InputContentFile;
 import com.salesmanager.catalog.presentation.model.admin.cms.ProductFiles;
@@ -55,8 +54,8 @@ public class DigitalProductController {
 	public String getDigitalProduct(@RequestParam("id") long productId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		this.setMenu(model, request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productId);
 		
@@ -78,8 +77,8 @@ public class DigitalProductController {
 	public String saveFile(@ModelAttribute(value="productFiles") @Valid final ProductFiles productFiles, final BindingResult bindingResult,final Model model, final HttpServletRequest request) throws Exception{
 	    
 		this.setMenu(model, request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productFiles.getProduct().getId());
 		DigitalProduct digitalProduct = new DigitalProduct();
@@ -130,9 +129,8 @@ public class DigitalProductController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/product/removeDigitalProduct.html", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<String> removeFile(@RequestParam("fileId") long fileId, HttpServletRequest request, HttpServletResponse response, Locale locale) {
-
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 		

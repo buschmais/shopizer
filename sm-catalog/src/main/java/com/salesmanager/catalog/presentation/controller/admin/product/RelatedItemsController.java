@@ -16,7 +16,6 @@ import com.salesmanager.catalog.model.product.description.ProductDescription;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationshipType;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import org.slf4j.Logger;
@@ -72,8 +71,8 @@ public class RelatedItemsController {
 		
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		//get the product and validate it belongs to the current merchant
 		Product product = productService.getById(productId);
@@ -115,8 +114,9 @@ public class RelatedItemsController {
 
 			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+
+			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			
 			if(product==null || product.getMerchantStore().getId().intValue()!= store.getId().intValue()) {
@@ -184,8 +184,8 @@ public class RelatedItemsController {
 			Long lProductId = Long.parseLong(productId);
 			Long lBaseProductId = Long.parseLong(baseProductId);
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			Product product = productService.getById(lProductId);
 			
@@ -255,8 +255,8 @@ public class RelatedItemsController {
 			Long lproductId = Long.parseLong(productId);
 			Long lBaseProductId = Long.parseLong(baseProductId);
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			Product product = productService.getById(lproductId);
 			

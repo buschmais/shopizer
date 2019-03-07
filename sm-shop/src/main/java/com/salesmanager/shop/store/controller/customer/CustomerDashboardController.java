@@ -51,7 +51,7 @@ public class CustomerDashboardController extends AbstractController {
 	public String displayCustomerDashboard(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+	    MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 	    Language language = (Language)request.getAttribute(Constants.LANGUAGE);
 	    
 		Customer customer = (Customer)request.getAttribute(Constants.CUSTOMER);

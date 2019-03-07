@@ -8,7 +8,6 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.catalog.presentation.util.UriUtils;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,18 +58,18 @@ public class ShopProductImageUrlTag extends RequestContextAwareTag {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-			MerchantStoreInfo merchantStore = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 			StringBuilder imagePath = new StringBuilder();
 			
-			String baseUrl = filePathUtils.getRelativeStoreUri(merchantStore, request.getContextPath());
+			String baseUrl = filePathUtils.getRelativeStoreUri(store, request.getContextPath());
 			imagePath.append(baseUrl);
 			
 			if(StringUtils.isBlank(this.getSize()) || this.getSize().equals(SMALL)) {
-				imagePath.append(imageUtils.buildProductImageUtils(merchantStore, this.getSku(), this.getImageName())).toString();
+				imagePath.append(imageUtils.buildProductImageUtils(store, this.getSku(), this.getImageName())).toString();
 			} else {
-				imagePath.append(imageUtils.buildLargeProductImageUtils(merchantStore, this.getSku(), this.getImageName())).toString();
+				imagePath.append(imageUtils.buildLargeProductImageUtils(store, this.getSku(), this.getImageName())).toString();
 			}
 
 			//System.out.println("Printing image -M " + imagePath.toString());

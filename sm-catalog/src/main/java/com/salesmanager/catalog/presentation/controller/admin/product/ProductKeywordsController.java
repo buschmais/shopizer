@@ -9,7 +9,6 @@ import com.salesmanager.common.business.ajax.AjaxPageableResponse;
 import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.description.ProductDescription;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.catalog.presentation.model.admin.Keyword;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
@@ -55,8 +54,8 @@ public class ProductKeywordsController {
 	public String displayKeywords(@RequestParam("id") long productId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		this.setMenu(model, request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productId);
 		
@@ -76,8 +75,8 @@ public class ProductKeywordsController {
 	@RequestMapping(value="/admin/products/product/addKeyword.html", method=RequestMethod.POST)
 	public String addKeyword(@Valid @ModelAttribute("productKeyword") Keyword keyword, final BindingResult bindingResult,final Model model, final HttpServletRequest request, Locale locale) throws Exception{
 		this.setMenu(model, request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		
 		Product product = productService.getById(keyword.getProductId());
@@ -150,8 +149,8 @@ public class ProductKeywordsController {
 
 		
 		String code = request.getParameter("code");
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 		final HttpHeaders httpHeaders= new HttpHeaders();
@@ -244,8 +243,8 @@ public class ProductKeywordsController {
 	public @ResponseBody ResponseEntity<String> pageKeywords(HttpServletRequest request, HttpServletResponse response) {
 		
 		String sProductId = request.getParameter("id");
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		AjaxResponse resp = new AjaxResponse();
 		final HttpHeaders httpHeaders= new HttpHeaders();

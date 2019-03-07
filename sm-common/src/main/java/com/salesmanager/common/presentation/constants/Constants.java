@@ -31,10 +31,10 @@ public class Constants {
 	public final static String DEFAULT_DOMAIN_NAME = "localhost:8080";
 
 	public final static String ADMIN_STORE = "ADMIN_STORE";
-	public static final String ADMIN_STORE_DTO = "ADMIN_STORE_DTO";
+	public static final String ADMIN_STORE_CODE = "ADMIN_STORE_CODE";
 	public final static String ADMIN_USER = "ADMIN_USER";
 	public final static String MERCHANT_STORE = "MERCHANT_STORE";
-	public static final String MERCHANT_STORE_DTO = "MERCHANT_STORE_DTO" ;
+	public static final String MERCHANT_STORE_CODE = "MERCHANT_STORE_CODE" ;
 	public final static String SHOPPING_CART = "SHOPPING_CART";
 	public final static String CUSTOMER = "CUSTOMER";
 	public final static String ORDER = "ORDER";

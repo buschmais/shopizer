@@ -114,7 +114,7 @@ public class ShoppingCartController extends AbstractController {
 		
 
 		//Look in the HttpSession to see if a customer is logged in
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 	    Language language = (Language)request.getAttribute(Constants.LANGUAGE);
 	    Customer customer = getSessionAttribute(  Constants.CUSTOMER, request );
 
@@ -208,8 +208,8 @@ public class ShoppingCartController extends AbstractController {
 		PageInformation pageInformation = new PageInformation();
 		pageInformation.setPageTitle(messages.getMessage("label.cart.placeorder", locale));
 		request.setAttribute(Constants.REQUEST_PAGE_INFORMATION, pageInformation);
-        
-        
+
+
 	    MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 	    Customer customer = getSessionAttribute(  Constants.CUSTOMER, request );
 
@@ -349,7 +349,7 @@ public class ShoppingCartController extends AbstractController {
 
 		//store the shopping cart in the http session
 
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 	    Language language = (Language)request.getAttribute(Constants.LANGUAGE);
 	    Customer customer = getSessionAttribute(  Constants.CUSTOMER, request );
         
@@ -390,10 +390,10 @@ public class ShoppingCartController extends AbstractController {
 	public @ResponseBody String updateShoppingCartItem( @RequestBody final ShoppingCartItem[] shoppingCartItems, final HttpServletRequest request, final  HttpServletResponse response)  {
 
 		AjaxResponse ajaxResponse = new AjaxResponse();
-		
-		
-		
-	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 	    Language language = (Language)request.getAttribute(Constants.LANGUAGE);
 
         

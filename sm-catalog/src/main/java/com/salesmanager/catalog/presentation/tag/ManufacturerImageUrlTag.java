@@ -4,7 +4,6 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.model.manufacturer.Manufacturer;
 import com.salesmanager.catalog.presentation.util.UriUtils;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +41,12 @@ public class ManufacturerImageUrlTag extends RequestContextAwareTag {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-			MerchantStoreInfo merchantStore = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			StringBuilder imagePath = new StringBuilder();
 			
-			String baseUrl = uriUtils.getStoreUri(merchantStore, request.getContextPath());
+			String baseUrl = uriUtils.getStoreUri(store, request.getContextPath());
 			imagePath.append(baseUrl);
 			
 			pageContext.getOut().print(imagePath.toString());

@@ -124,8 +124,7 @@ public class StoreBrandingController {
             //Update store
             store.setStoreLogo(imageName);
             merchantStoreService.update(store);
-            request.getSession().setAttribute(Constants.ADMIN_STORE, store);
-            request.getSession().setAttribute(Constants.ADMIN_STORE_DTO, store.toDTO());
+            request.getSession().setAttribute(Constants.ADMIN_STORE_CODE, store.getCode());
 
 		} else {
 			model.addAttribute("error","error");
@@ -149,7 +148,7 @@ public class StoreBrandingController {
 		merchantStoreService.saveOrUpdate(sessionstore);
 		
 		request.setAttribute(Constants.ADMIN_STORE, sessionstore);
-		request.setAttribute(Constants.ADMIN_STORE_DTO, sessionstore.toDTO());
+		request.setAttribute(Constants.ADMIN_STORE_CODE, sessionstore.getCode());
 		
 		//display templates
 		model.addAttribute("templates", templates);

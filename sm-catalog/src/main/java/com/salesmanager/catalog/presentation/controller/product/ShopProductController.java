@@ -25,7 +25,6 @@ import com.salesmanager.common.business.exception.ConversionException;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.common.presentation.util.DateUtil;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.product.ReadableProduct;
 import com.salesmanager.catalog.presentation.model.product.ReadableProductPrice;
@@ -108,8 +107,8 @@ public class ShopProductController {
 	@RequestMapping("/featured")
 	public String displayFeaturedItems(Model model, HttpServletRequest request) throws ServiceException, ConversionException {
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 
@@ -170,10 +169,8 @@ public class ShopProductController {
 
 
 	public String display(final String reference, final String friendlyUrl, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
-
-
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 		
@@ -380,10 +377,8 @@ public class ShopProductController {
     @RequestMapping(value={"/{productId}/calculatePrice.json"}, method=RequestMethod.POST)
 	public @ResponseBody
 	ReadableProductPrice calculatePrice(@RequestParam(value="attributeIds[]") Long[] attributeIds, @PathVariable final Long productId, final HttpServletRequest request, final HttpServletResponse response, final Locale locale) throws Exception {
-
-
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 		

@@ -28,7 +28,6 @@ import com.salesmanager.catalog.model.product.price.ProductPriceDescription;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
 import com.salesmanager.catalog.model.product.type.ProductType;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.DateUtil;
@@ -137,9 +136,8 @@ public class ProductController {
 		//display menu
 		setMenu(model,request);
 
-
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 		
@@ -284,8 +282,8 @@ public class ProductController {
 		//display menu
 		setMenu(model,request);
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Manufacturer> manufacturers = manufacturerService.listByStore(store, language);
 		
@@ -576,8 +574,8 @@ public class ProductController {
 		//display menu
 		setMenu(model,request);
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Manufacturer> manufacturers = manufacturerService.listByStore(store, language);
 		List<ProductType> productTypes = productTypeService.list();
@@ -768,8 +766,8 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<String> removeImage(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String iid = request.getParameter("imageId");
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 
@@ -819,8 +817,8 @@ public class ProductController {
 	
 		
 		setMenu(model,request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 		
@@ -858,9 +856,8 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<String> pageProductCategories(HttpServletRequest request, HttpServletResponse response) {
 
 		String sProductId = request.getParameter("productId");
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
-		
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 		
@@ -943,8 +940,8 @@ public class ProductController {
 		String sCategoryid = request.getParameter("categoryId");
 		String sProductId = request.getParameter("productId");
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 		
@@ -1000,8 +997,8 @@ public class ProductController {
 	public String addProductToCategory(@RequestParam("productId") long productId, @RequestParam("id") long categoryId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		setMenu(model,request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 		

@@ -9,7 +9,6 @@ import com.salesmanager.common.business.ajax.AjaxResponse;
 import com.salesmanager.catalog.model.product.attribute.ProductOption;
 import com.salesmanager.catalog.model.product.attribute.ProductOptionDescription;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.model.admin.Menu;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.common.presentation.util.LabelUtils;
@@ -83,8 +82,8 @@ public class OptionsController {
 
 		
 		this.setMenu(model, request);
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<LanguageInfo> languages = store.getLanguages();
 
@@ -161,8 +160,8 @@ public class OptionsController {
 		//display menu
 		setMenu(model,request);
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		ProductOption dbEntity =	null;	
 
 		if(option.getId() != null && option.getId() >0) { //edit entry
@@ -239,8 +238,8 @@ public class OptionsController {
 			LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 			LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			List<ProductOption> options = null;
 					
@@ -312,8 +311,8 @@ public class OptionsController {
 	public @ResponseBody ResponseEntity<String> deleteOption(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sid = request.getParameter("optionId");
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
 

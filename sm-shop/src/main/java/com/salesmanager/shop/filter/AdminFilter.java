@@ -63,7 +63,7 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 		
 
 		String storeCode = MerchantStore.DEFAULT_STORE;
-		MerchantStore store = (MerchantStore)request.getSession().getAttribute(Constants.ADMIN_STORE);
+		String sessionStore = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		
 		
 		String userName = request.getRemoteUser();
@@ -80,7 +80,7 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 				} else {
 					LOGGER.warn("User name not found " + userName);
 				}
-				store=null;
+				sessionStore = null;
 			}
 			
 			if(user==null) {
@@ -95,18 +95,21 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 				} else {
 					LOGGER.warn("User name not found " + userName);
 				}
-				store=null;
+				sessionStore = null;
 			}
 		
 		}
-		
-		if(store==null) {
-				store = merchantService.getByCode(storeCode);
-				request.getSession().setAttribute(Constants.ADMIN_STORE, store);
-				request.getSession().setAttribute(Constants.ADMIN_STORE_DTO, store.toDTO());
+
+		MerchantStore merchantStore;
+		if(sessionStore == null) {
+				merchantStore = merchantService.getByCode(storeCode);
+				sessionStore = storeCode;
+				request.getSession().setAttribute(Constants.ADMIN_STORE_CODE, sessionStore);
+		} else {
+			merchantStore = merchantService.getByCode(sessionStore);
 		}
-		request.setAttribute(Constants.ADMIN_STORE, store);
-		request.setAttribute(Constants.ADMIN_STORE_DTO, store.toDTO());
+		request.setAttribute(Constants.ADMIN_STORE, merchantStore);
+		request.setAttribute(Constants.ADMIN_STORE_CODE, sessionStore);
 		
 		
 		Language language = languageUtils.getRequestLanguage(request, response);
@@ -121,10 +124,10 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 			if(user!=null) {
 				language = user.getDefaultLanguage();
 				if(language==null) {
-					language = store.getDefaultLanguage();
+					language = merchantStore.getDefaultLanguage();
 				}
 			} else {
-				language = store.getDefaultLanguage();
+				language = merchantStore.getDefaultLanguage();
 			}
 
 			request.getSession().setAttribute(Constants.LANGUAGE, language);

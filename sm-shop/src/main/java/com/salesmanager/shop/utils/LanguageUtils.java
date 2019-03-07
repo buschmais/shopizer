@@ -33,7 +33,7 @@ public class LanguageUtils {
 		Locale locale = null;
 		
 		Language language = (Language) request.getSession().getAttribute(Constants.LANGUAGE);
-		MerchantStore store = (MerchantStore) request.getSession().getAttribute(Constants.MERCHANT_STORE);
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 		
 
 		if(language==null) {

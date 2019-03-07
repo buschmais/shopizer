@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +74,8 @@ public class ShopProductPriceFormatTag extends RequestContextAwareTag  {
 		HttpServletRequest request = (HttpServletRequest) pageContext
 		.getRequest();
 
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		String formatedPrice = null;
 		

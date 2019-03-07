@@ -17,7 +17,6 @@ import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.review.ProductReview;
 import com.salesmanager.catalog.business.integration.core.dto.LanguageDTO;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.product.PersistableProductReview;
 import com.salesmanager.catalog.presentation.model.product.ReadableProduct;
@@ -79,13 +78,11 @@ public class CustomerProductReviewController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
 	@RequestMapping(value="/review.html", method=RequestMethod.GET)
 	public String displayProductReview(@RequestParam Long productId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
-	    MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getSession().getAttribute(Constants.MERCHANT_STORE_DTO);
-	    LanguageDTO languageDTO = (LanguageDTO) request.getAttribute(Constants.LANGUAGE_DTO);
-
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
-        LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
+		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute(Constants.LANGUAGE_DTO);
+		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 
         //get product
         Product product = productService.getById(productId);
@@ -93,7 +90,7 @@ public class CustomerProductReviewController {
         	return "redirect:" + Constants.SHOP_URI;
         }
         
-        if(product.getMerchantStore().getId().intValue()!=storeDTO.getId().intValue()) {
+        if(product.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
         	return "redirect:" + Constants.SHOP_URI;
         }
         
@@ -146,13 +143,12 @@ public class CustomerProductReviewController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
 	@RequestMapping(value="/review/submit.html", method=RequestMethod.POST)
 	public String submitProductReview(@ModelAttribute("review") PersistableProductReview review, BindingResult bindingResult, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
-
-		MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getSession().getAttribute(Constants.MERCHANT_STORE_DTO);
 		LanguageDTO languageDTO = (LanguageDTO) request.getAttribute("LANGUAGE_DTO");
 		LanguageInfo language = this.languageInfoService.findbyCode(languageDTO.getCode());
 
-		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
 
 		CustomerInfo customer =  customerInfoService.findByNick(request.getRemoteUser(), store.getId());
         

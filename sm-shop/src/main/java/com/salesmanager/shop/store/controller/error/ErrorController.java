@@ -119,7 +119,7 @@ public class ErrorController {
 	public String handleException(Model model, Exception ex, HttpServletRequest request) {
 		
 		
-		MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 		StringBuilder template = null;
 		//ModelAndView model = null;
 		if(ex instanceof AccessDeniedException) {

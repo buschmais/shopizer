@@ -13,7 +13,6 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.LanguageInfo;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.controller.ControllerConstants;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,11 +87,11 @@ public class SearchController {
 	@ResponseBody
 	public String autocomplete(@RequestParam("q") String query, @PathVariable String store, @PathVariable final String language, Model model, HttpServletRequest request, HttpServletResponse response)  {
 
-		MerchantStoreDTO merchantStoreDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 
-		if(merchantStoreDTO!=null) {
-			if(!merchantStoreDTO.getCode().equals(store)) {
-				merchantStoreDTO = null; //reset for the current request
+		if(storeCode!=null) {
+			if(!storeCode.equals(store)) {
+				storeCode = null; //reset for the current request
 			}
 		}
 		
@@ -100,10 +99,10 @@ public class SearchController {
 
 			MerchantStoreInfo merchantStore;
 
-			if(merchantStoreDTO== null) {
+			if(storeCode== null) {
 				merchantStore = merchantStoreInfoService.findbyCode(store);
 			} else {
-				merchantStore = merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
+				merchantStore = merchantStoreInfoService.findbyCode(storeCode);
 			}
 			
 			if(merchantStore==null) {
@@ -145,7 +144,7 @@ public class SearchController {
 	//public SearchProductList search(@RequestBody String json, @PathVariable String store, @PathVariable final String language, @PathVariable int start, @PathVariable int max, Model model, HttpServletRequest request, HttpServletResponse response) {
 	public SearchProductList search(@PathVariable String store, @PathVariable final String language, @PathVariable int start, @PathVariable int max, Model model, HttpServletRequest request, HttpServletResponse response) {
 		SearchProductList returnList = new SearchProductList();
-		MerchantStoreDTO merchantStoreDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 		
 		String json = null;
 		
@@ -157,18 +156,18 @@ public class SearchController {
 			
 			Map<String,LanguageInfo> langs = languageInfoService.getLanguagesMap();
 			
-			if(merchantStoreDTO!=null) {
-				if(!merchantStoreDTO.getCode().equals(store)) {
-					merchantStoreDTO = null; //reset for the current request
+			if(storeCode!=null) {
+				if(!storeCode.equals(store)) {
+					storeCode = null; //reset for the current request
 				}
 			}
 
 			MerchantStoreInfo merchantStore;
 
-			if(merchantStoreDTO== null) {
+			if(storeCode== null) {
 				merchantStore = merchantStoreInfoService.findbyCode(store);
 			} else {
-				merchantStore = merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
+				merchantStore = merchantStoreInfoService.findbyCode(storeCode);
 			}
 			
 			if(merchantStore==null) {
@@ -208,7 +207,8 @@ public class SearchController {
 	@RequestMapping(value={"/shop/search/search.html"}, method=RequestMethod.POST)
 	public String displaySearch(@RequestParam("q") String query, Model model, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
 
-		MerchantStoreDTO store = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+		String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		model.addAttribute("q",query);
 		

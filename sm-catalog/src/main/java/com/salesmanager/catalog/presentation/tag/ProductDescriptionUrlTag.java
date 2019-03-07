@@ -7,7 +7,6 @@ import javax.servlet.jsp.JspException;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.util.UriUtils;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,13 +54,13 @@ public class ProductDescriptionUrlTag extends RequestContextAwareTag {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 			MerchantStoreInfo merchantStore;
 			//*** IF USED FROM ADMIN THE STORE WILL BE NULL, THEN TRY TO USE ADMIN STORE
-			if(storeDTO==null) {
-				storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
+			if(storeCode==null) {
+				storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
 			}
-			merchantStore = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			merchantStore = this.merchantStoreInfoService.findbyCode(storeCode);
 
 
 			

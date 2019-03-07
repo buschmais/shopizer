@@ -8,7 +8,6 @@ import com.salesmanager.catalog.business.integration.core.service.MerchantStoreI
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.util.CatalogImageFilePathUtils;
 import com.salesmanager.catalog.presentation.util.UriUtils;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,17 +55,17 @@ public class ProductImageUrlTag extends RequestContextAwareTag {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.ADMIN_STORE_DTO);
-			MerchantStoreInfo merchantStore = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 			StringBuilder imagePath = new StringBuilder();
 			
-			String baseUrl = filePathUtils.getRelativeStoreUri(merchantStore, request.getContextPath());
+			String baseUrl = filePathUtils.getRelativeStoreUri(store, request.getContextPath());
 			imagePath.append(baseUrl);
 			
 			imagePath
 
-				.append(imageUtils.buildProductImageUtils(merchantStore, product, this.getImageName())).toString();
+				.append(imageUtils.buildProductImageUtils(store, product, this.getImageName())).toString();
 
 			System.out.println("Printing image " + imagePath.toString());
 

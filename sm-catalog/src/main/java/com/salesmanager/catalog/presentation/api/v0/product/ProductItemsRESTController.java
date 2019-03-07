@@ -15,7 +15,6 @@ import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.util.RestUtils;
 import com.salesmanager.catalog.model.product.Product;
 import com.salesmanager.catalog.model.product.relationship.ProductRelationship;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import com.salesmanager.common.presentation.constants.Constants;
 import com.salesmanager.catalog.presentation.model.product.ReadableProductList;
 import com.salesmanager.catalog.presentation.controller.items.facade.ProductItemsFacade;
@@ -124,23 +123,23 @@ public class ProductItemsRESTController {
 			 * http://codetutr.com/2013/04/09/spring-mvc-easy-rest-based-json-services-with-responsebody/
 			 */
 			
-			MerchantStoreDTO merchantStoreDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 			
 			
 			Map<String,LanguageInfo> langs = languageInfoService.getLanguagesMap();
 			
-			if(merchantStoreDTO!=null) {
-				if(!merchantStoreDTO.getCode().equals(store)) {
-					merchantStoreDTO = null; //reset for the current request
+			if(storeCode!=null) {
+				if(!storeCode.equals(store)) {
+					storeCode = null; //reset for the current request
 				}
 			}
 
 			MerchantStoreInfo merchantStore;
 
-			if(merchantStoreDTO== null) {
+			if(storeCode== null) {
 				merchantStore = this.merchantStoreInfoService.findbyCode(store);
 			} else {
-				merchantStore = this.merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
+				merchantStore = this.merchantStoreInfoService.findbyCode(storeCode);
 			}
 			
 			if(merchantStore==null) {
@@ -190,21 +189,21 @@ public class ProductItemsRESTController {
 		
 		try {
 
-			MerchantStoreDTO merchantStoreDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
 
 			
-			if(merchantStoreDTO!=null) {
-				if(!merchantStoreDTO.getCode().equals(store)) {
-					merchantStoreDTO = null; //reset for the current request
+			if(storeCode!=null) {
+				if(!storeCode.equals(store)) {
+					storeCode = null; //reset for the current request
 				}
 			}
 
 			MerchantStoreInfo merchantStore;
 
-			if(merchantStoreDTO== null) {
+			if(storeCode== null) {
 				merchantStore = this.merchantStoreInfoService.findbyCode(store);
 			} else {
-				 merchantStore = this.merchantStoreInfoService.findbyCode(merchantStoreDTO.getCode());
+				 merchantStore = this.merchantStoreInfoService.findbyCode(storeCode);
 			}
 
 			if(merchantStore==null) {

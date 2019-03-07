@@ -111,12 +111,11 @@ public class LandingController {
 		try {
 			
 			request.getSession().invalidate();
-			request.getSession().removeAttribute(Constants.MERCHANT_STORE);
+			request.getSession().removeAttribute(Constants.MERCHANT_STORE_CODE);
 			
 			MerchantStore merchantStore = merchantService.getByCode(store);
 			if(merchantStore!=null) {
-				request.getSession().setAttribute(Constants.MERCHANT_STORE, merchantStore);
-				request.getSession().setAttribute(Constants.MERCHANT_STORE_DTO, merchantStore.toDTO());
+				request.getSession().setAttribute(Constants.MERCHANT_STORE_CODE, merchantStore.getCode());
 			} else {
 				LOGGER.error("MerchantStore does not exist for store code " + store);
 			}

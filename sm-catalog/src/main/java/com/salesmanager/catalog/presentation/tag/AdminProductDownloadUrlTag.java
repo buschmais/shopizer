@@ -10,7 +10,6 @@ import javax.servlet.jsp.JspException;
 import com.salesmanager.catalog.business.integration.core.service.MerchantStoreInfoService;
 import com.salesmanager.catalog.model.integration.core.MerchantStoreInfo;
 import com.salesmanager.catalog.presentation.util.CatalogFilePathUtils;
-import com.salesmanager.catalog.business.integration.core.dto.MerchantStoreDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +64,8 @@ public class AdminProductDownloadUrlTag extends RequestContextAwareTag {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			MerchantStoreDTO storeDTO = (MerchantStoreDTO) request.getAttribute(Constants.MERCHANT_STORE_DTO);
-			MerchantStoreInfo merchantStore = this.merchantStoreInfoService.findbyCode(storeDTO.getCode());
+			String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			HttpSession session = request.getSession();
 
@@ -87,12 +86,12 @@ public class AdminProductDownloadUrlTag extends RequestContextAwareTag {
 
 			
 			filePath.append(scheme).append("://")
-			.append(merchantStore.getDomainName())
+			.append(store.getDomainName())
 			//.append("/")
 			.append(request.getContextPath());
 			
 			filePath
-				.append(filePathUtils.buildAdminDownloadProductFilePath(merchantStore, digitalProduct)).toString();
+				.append(filePathUtils.buildAdminDownloadProductFilePath(store, digitalProduct)).toString();
 
 			
 

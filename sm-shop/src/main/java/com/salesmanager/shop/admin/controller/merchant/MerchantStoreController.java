@@ -359,8 +359,7 @@ public class MerchantStoreController {
 		
 		
 		//update session store
-		request.getSession().setAttribute(Constants.ADMIN_STORE, sessionStore);
-		request.getSession().setAttribute(Constants.ADMIN_STORE_DTO, sessionStore.toDTO());
+		request.getSession().setAttribute(Constants.ADMIN_STORE_CODE, sessionStore.getCode());
 
 
 		model.addAttribute("success","success");

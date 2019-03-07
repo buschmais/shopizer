@@ -66,7 +66,7 @@ public class CustomerOrdersController extends AbstractController {
 	public String listOrders(Model model, @RequestParam(value = "page", defaultValue = "1") final int page, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
     	LOGGER.info( "Fetching orders for current customer" );
-        MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
         Language language = getSessionAttribute(Constants.LANGUAGE, request);
         
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -101,8 +101,8 @@ public class CustomerOrdersController extends AbstractController {
 	@PreAuthorize("hasRole('AUTH_CUSTOMER')")
     @RequestMapping(value="/order.html", method={RequestMethod.GET,RequestMethod.POST})
     public String orderDetails(final Model model,final HttpServletRequest request,@RequestParam(value = "orderId" ,required=true) final String orderId) throws Exception{
-        
-		MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
+
+		MerchantStore store = (MerchantStore) request.getAttribute(Constants.MERCHANT_STORE);
 		
 		Language language = (Language)request.getAttribute(Constants.LANGUAGE);
 		
