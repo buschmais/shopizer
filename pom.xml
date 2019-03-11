@@ -39,6 +39,7 @@
 		<infinispan.version>6.0.2.Final</infinispan.version>
 		<mysql-jdbc-version>6.0.5</mysql-jdbc-version>
 		<simple-json-version>1.1.1</simple-json-version>
+		<hazelcast.version>3.11.2</hazelcast.version>
     </properties>
 
     <dependencies>
