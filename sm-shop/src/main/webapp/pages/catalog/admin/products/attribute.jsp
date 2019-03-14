@@ -38,7 +38,7 @@ function checkReadOnlyAttribute(optionId){
 		//$('#displayOnly').removeAttr("disabled");
 		$.ajax({
 			  type: 'POST',
-			  url: '<c:url value="/admin/products/attributes/getAttributeType.html"/>',
+			  url: '<c:url value="/catalog/admin/products/attributes/getAttributeType.html"/>',
 			  data: 'optionId=' + optionId,
 			  dataType: 'json',
 			  success: function(response){
@@ -106,7 +106,7 @@ function checkReadOnlyAttribute(optionId){
 
 
 
-				<c:url var="attributeSave" value="/admin/attributes/attribute/save.html"/>
+				<c:url var="attributeSave" value="/catalog/admin/attributes/attribute/save.html"/>
 
 
 				<form:form method="POST" commandName="attribute" action="${attributeSave}">

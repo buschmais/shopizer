@@ -14,7 +14,7 @@ response.setDateHeader ("Expires", -1);
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-								<c:set var="orders" value="${pageContext.request.contextPath}/shop/customer/orders.html"/>
+								<c:set var="orders" value="http://${pageContext.request.getHeader('X-Forwarded-Host')}/shop/customer/orders.html"/>
 								<ul class="nav nav-list">
 									<li> <a href="${orders}"><i class="fa fa-angle-right"></i> <s:message code="label.order.recent" text="Recent orders"/></a></li>
 								</ul>

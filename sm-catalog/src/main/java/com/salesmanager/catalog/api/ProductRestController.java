@@ -32,7 +32,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/catalog/product")
+@RequestMapping(path = "/product")
 public class ProductRestController {
 
     private final ProductAttributeService productAttributeService;

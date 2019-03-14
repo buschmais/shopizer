@@ -42,7 +42,7 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 			$("#store.error").show();
 			$.ajax({
 			  type: 'POST',
-			  url: '<c:url value="/admin/products/product/removeImage.html"/>',
+			  url: '<c:url value="/catalog/admin/products/product/removeImage.html"/>',
 			  data: 'imageId=' + imageId,
 			  dataType: 'json',
 			  success: function(response){
@@ -113,7 +113,7 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 				</c:if>
 				<br/><br/>
 
-      					<c:url var="productSave" value="/admin/products/save.html"/>
+      					<c:url var="productSave" value="/catalog/admin/products/save.html"/>
                         <form:form method="POST" enctype="multipart/form-data" commandName="product" action="${productSave}">
 
                             <form:errors path="*" cssClass="alert alert-error" element="div" />
@@ -445,7 +445,7 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
                         </form:form>
                         
                   <c:if test="${product.product.id!=null && product.product.id>0}">      
-                  <c:url var="createSimilar" value="/admin/products/product/duplicate.html"/>
+                  <c:url var="createSimilar" value="/catalog/admin/products/product/duplicate.html"/>
                   <form:form method="POST" enctype="multipart/form-data" commandName="product" action="${createSimilar}">
 							<input type="hidden" name="productId" value="${product.product.id}" />
 	                        <div class="form-actions">

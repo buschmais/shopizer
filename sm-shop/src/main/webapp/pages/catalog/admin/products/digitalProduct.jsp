@@ -14,7 +14,7 @@
 			$("#store.error").show();
 			$.ajax({
 			  type: 'POST',
-			  url: '<c:url value="/admin/products/product/removeDigitalProduct.html"/>?fileId=' + fileId,
+			  url: '<c:url value="/catalog/admin/products/product/removeDigitalProduct.html"/>?fileId=' + fileId,
 			  dataType: 'json',
 			  success: function(response){
 		
@@ -69,7 +69,7 @@
 
 				<br/><br/>
 		
-				<c:url var="saveProductFile" value="/admin/products/product/saveDigitalProduct.html" />
+				<c:url var="saveProductFile" value="/catalog/admin/products/product/saveDigitalProduct.html" />
 				<form:form method="POST" enctype="multipart/form-data" commandName="productFiles" action="${saveProductFile}">
 
 					<form:errors path="*" cssClass="alert alert-error" element="div" />

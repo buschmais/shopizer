@@ -66,7 +66,7 @@ response.setDateHeader ("Expires", -1);
 									</li>
 									<c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
 								   <li>
-	    								<a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>" class="current"> 
+	    								<a href="<c:url value="/catalog/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>" class="current">
 	    									<span class="name">${category.description.name}</span>
 	    								</a>
 	    							</li> 

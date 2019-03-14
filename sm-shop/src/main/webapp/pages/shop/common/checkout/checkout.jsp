@@ -933,7 +933,7 @@ $(document).ready(function() {
 				<p class="muted common-row"><s:message code="label.checkout.logon" text="Logon or signup to simplify the online purchase process!"/></p>
 	</sec:authorize>
 
-   <c:set var="commitUrl" value="${pageContext.request.contextPath}/shop/order/commitOrder.html"/>
+   <c:set var="commitUrl" value="http://${pageContext.request.getHeader('X-Forwarded-Host')}/shop/order/commitOrder.html"/>
    <form:form id="checkoutForm" method="POST" enctype="multipart/form-data" commandName="order" action="${commitUrl}">
 	   
 

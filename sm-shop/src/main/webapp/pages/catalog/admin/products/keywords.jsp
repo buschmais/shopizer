@@ -24,7 +24,7 @@
 				
 				
 			
-			<c:url var="addKeyword" value="/admin/products/product/addKeyword.html" />
+			<c:url var="addKeyword" value="/catalog/admin/products/product/addKeyword.html" />
 			<form:form method="POST" enctype="multipart/form-data" commandName="productKeyword" action="${addKeyword}">
 				<form:errors path="*" cssClass="alert alert-error" element="div" />
 				<div id="store.success" class="alert alert-success"	style="<c:choose><c:when test="${success!=null}">display:block;</c:when><c:otherwise>display:none;</c:otherwise></c:choose>">
@@ -66,9 +66,9 @@
 				 <br/>
 				 <!-- Listing grid include -->
 				 
-				 <c:set value="/admin/products/product/keywords/paging.html?id=${product.id}" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/products/product/removeKeyword.html?id=${product.id}" var="removeUrl" scope="request"/>
-				 <c:set value="/admin/products/product/keywords.html?id=${product.id}" var="afterRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/product/keywords/paging.html?id=${product.id}" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/product/removeKeyword.html?id=${product.id}" var="removeUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/product/keywords.html?id=${product.id}" var="afterRemoveUrl" scope="request"/>
 				 <c:set var="entityId" value="code" scope="request"/>
 				 <c:set var="componentTitleKey" value="label.product.searchkeywords" scope="request"/>
 				 <c:set var="groupByEntity" value="language" scope="request" />

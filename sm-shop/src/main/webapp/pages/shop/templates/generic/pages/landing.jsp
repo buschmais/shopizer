@@ -68,7 +68,7 @@ response.setDateHeader ("Expires", -1);
 	    
 	    
 	    
-	    
+
 	    
 	    
 	    <c:if test="${requestScope.CONTENT['homeMessage']!=null}">
@@ -79,4 +79,4 @@ response.setDateHeader ("Expires", -1);
 			</div>
 		</c:if>
 
-	<c:import url="${pageContext.request.contextPath}/shop/product/featured"/>
+	<c:import url="http://${pageContext.request.getHeader('X-Forwarded-Host')}/catalog/shop/product/featured"/>

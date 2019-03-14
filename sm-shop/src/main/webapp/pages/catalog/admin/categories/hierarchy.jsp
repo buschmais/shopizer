@@ -78,7 +78,7 @@
 										$.ajax({
   											type: 'POST',
   											dataType: "json",
-  											url: "<c:url value="/admin/categories/moveCategory.html" />",
+  											url: "<c:url value="/catalog/admin/categories/moveCategory.html" />",
   											data: "parentId="+ dropFolder.categoryId + "&childId=" + newRecord.categoryId,
   											success: function(response) { 
   												var msg = isc.XMLTools.selectObjects(response, "/response/statusMessage");

@@ -38,13 +38,13 @@
 				</div>			
 		
       			<!-- Listing grid include -->
-				 <c:set value="/admin/products/paging.html" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/products/group/details/paging.html?code=${group}" var="containerFetchUrl" scope="request"/>
-				 <c:set value="/admin/products/group/details/removeItem.html?code=${group}" var="containerRemoveUrl" scope="request"/>
-				 <c:set value="/admin/products/group/details/addItem.html?code=${group}" var="containerAddUrl" scope="request"/>
-				 <c:set value="/admin/products/group/details/update.html" var="containerUpdateUrl" scope="request"/>
-				 <c:set value="/admin/products/editProduct.html" var="editUrl" scope="request"/>
-				 <c:set value="/admin/products/group/edit.html?id=${group}" var="reloadUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/paging.html" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/group/details/paging.html?code=${group}" var="containerFetchUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/group/details/removeItem.html?code=${group}" var="containerRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/group/details/addItem.html?code=${group}" var="containerAddUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/group/details/update.html" var="containerUpdateUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/editProduct.html" var="editUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/group/edit.html?id=${group}" var="reloadUrl" scope="request"/>
 				 <c:set var="componentTitleKey" value="label.product.customGroup.title" scope="request"/>
 				 <c:set var="gridHeader" value="/pages/catalog/admin/products/featured-gridHeader.jsp" scope="request"/>
 				 <c:set var="gridHeaderContainer" value="/pages/catalog/admin/products/product-gridHeader.jsp" scope="request"/>

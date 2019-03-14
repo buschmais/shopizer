@@ -29,7 +29,7 @@
 		$('#checkCodeStatus').show();
 		var code = $("#code").val();
 		var id = $("#id").val();
-		checkCode(code,id,'<c:url value="/admin/categories/checkCategoryCode.html" />');
+		checkCode(code,id,'<c:url value="/catalog/admin/categories/checkCategoryCode.html" />');
 	}
 	
 	function callBackCheckCode(msg,code) {
@@ -83,7 +83,7 @@
 				</h3>	
 				<br/>
 
-				<c:url var="categorySave" value="/admin/categories/save.html"/>
+				<c:url var="categorySave" value="/catalog/admin/categories/save.html"/>
 
 
 				<form:form method="POST" commandName="category" action="${categorySave}">

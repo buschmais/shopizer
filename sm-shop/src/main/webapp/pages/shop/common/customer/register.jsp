@@ -84,7 +84,7 @@ function isFormValid() {
 
 
 
-<c:set var="register_url" value="${pageContext.request.contextPath}/shop/customer/register.html"/>
+<c:set var="register_url" value="http://${pageContext.request.getHeader('X-Forwarded-Host')}/shop/customer/register.html"/>
 
 	<div id="main-content" class="container clearfix row-fluid">
 			<div id="registrationError"  class="alert alert-warning common-row" style="display:none;"></div>

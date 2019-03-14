@@ -9,7 +9,7 @@
 <script>
 
 function getContextPath() {
-   return "${pageContext.request.contextPath}";
+   return "http://${pageContext.request.getHeader('X-Forwarded-Host')}";
 }
 
 function getMerchantStore() {

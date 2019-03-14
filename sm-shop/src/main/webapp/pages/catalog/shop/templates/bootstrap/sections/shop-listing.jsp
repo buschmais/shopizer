@@ -14,14 +14,14 @@ function buildProductsList(productList, divProductsContainer) {
 
 		for (var i = 0; i < productList.products.length; i++) {
 			var productHtml = '<li itemscope itemtype="http://schema.org/Enumeration" class="item listing-item" data-id="' + productList.products[i].id  + '" item-price="' +  productList.products[i].price +'" item-name="' +  productList.products[i].description.name +'" item-order="' +  productList.products[i].sortOrder +'">';
-			productHtml = productHtml + '<div class="product-box"><a href="<c:url value="/shop/product/" />' + productList.products[i].description.friendlyUrl + '.html<sm:breadcrumbParam/>">';
+			productHtml = productHtml + '<div class="product-box"><a href="<c:url value="/catalog/shop/product/" />' + productList.products[i].description.friendlyUrl + '.html<sm:breadcrumbParam/>">';
 			productHtml = productHtml + '<h4 class="name" itemprop="name">' + productList.products[i].description.name +'</h4></a>';
 			if(productList.products[i].discounted) {
 					   productHtml = productHtml + '<h3><del>' + productList.products[i].originalPrice +'</del>&nbsp;<span class="specialPrice">' + productList.products[i].finalPrice + '</span></h3>';
 			} else {
 					    productHtml = productHtml + '<h3>' + productList.products[i].finalPrice +'</h3>';
 			}
-			var productUrl = '<c:url value="/shop/product/" />' + productList.products[i].description.friendlyUrl + '.html<sm:breadcrumbParam/>';
+			var productUrl = '<c:url value="/catalog/shop/product/" />' + productList.products[i].description.friendlyUrl + '.html<sm:breadcrumbParam/>';
 			//if(ref!=null) {
 			//productUrl = productUrl + '/ref=' + ref;
 			//}

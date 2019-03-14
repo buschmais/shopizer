@@ -202,40 +202,40 @@ response.setDateHeader ("Expires", -1);
 			
 
 			$("#catalogue-categories-list-link").click(function() {
-				window.location='<c:url value="/admin/categories/categories.html" />';
+				window.location='<c:url value="/catalog/admin/categories/categories.html" />';
 			});
 			$("#catalogue-products-categories-link").click(function() {
-				window.location='<c:url value="/admin/products/product-categories.html" />';
+				window.location='<c:url value="/catalog/admin/products/product-categories.html" />';
 			});
 			$("#catalogue-categories-hierarchy-link").click(function() {
-				window.location='<c:url value="/admin/categories/hierarchy.html" />';
+				window.location='<c:url value="/catalog/admin/categories/hierarchy.html" />';
 			});
 			$("#catalogue-categories-create-link").click(function() {
-  				window.location='<c:url value="/admin/categories/createCategory.html" />';
+  				window.location='<c:url value="/catalog/admin/categories/createCategory.html" />';
 			});
 			$("#catalogue-options-list-link").click(function() {
-  				window.location='<c:url value="/admin/options/options.html" />';
+  				window.location='<c:url value="/catalog/admin/options/options.html" />';
 			});
 			$("#catalogue-options-create-link").click(function() {
-  				window.location='<c:url value="/admin/options/createOption.html" />';
+  				window.location='<c:url value="/catalog/admin/options/createOption.html" />';
 			});
 			$("#catalogue-optionsvalues-list-link").click(function() {
-  				window.location='<c:url value="/admin/options/optionvalues.html" />';
+  				window.location='<c:url value="/catalog/admin/options/optionvalues.html" />';
 			});
 			$("#catalogue-optionsvalues-create-link").click(function() {
-  				window.location='<c:url value="/admin/options/createOptionValue.html" />';
+  				window.location='<c:url value="/catalog/admin/options/createOptionValue.html" />';
 			});
 			$("#catalogue-featured-link").click(function() {
-  				window.location='<c:url value="/admin/catalogue/featured/list.html" />';
+  				window.location='<c:url value="/catalog/admin/catalogue/featured/list.html" />';
 			});
 			$("#catalogue-products-custom-group-link").click(function() {
-  				window.location='<c:url value="/admin/products/groups/list.html" />';
+  				window.location='<c:url value="/catalog/admin/products/groups/list.html" />';
 			});
 			$("#manufacturer-list-link").click(function() {
-  				window.location='<c:url value="/admin/catalogue/manufacturer/list.html" />';
+  				window.location='<c:url value="/catalog/admin/catalogue/manufacturer/list.html" />';
 			});
 			$("#manufacturer-create-link").click(function() {
-  				window.location='<c:url value="/admin/catalogue/manufacturer/create.html" />';
+  				window.location='<c:url value="/catalog/admin/catalogue/manufacturer/create.html" />';
 			});
 			$("#myprofile-link").click(function() {
   				window.location='<c:url value="/admin/users/displayUser.html" />';

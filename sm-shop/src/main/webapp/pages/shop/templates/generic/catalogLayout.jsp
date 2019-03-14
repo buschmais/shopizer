@@ -43,13 +43,13 @@ response.setDateHeader ("Expires", -1);
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product" item-order="{{sortOrder}}" item-name="{{description.name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
-									<a href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html">
+									<a href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html">
 										<img src="<c:url value=""/>{{image.imageUrl}}" alt="" />
 									</a>
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{description.name}}</h3></a>
+									<a class="listing-product-name" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{description.name}}</h3></a>
 									<!--<span class="text-center width-100"><div class="stars" id="productRating_{{id}}"></div></span>-->
 									<h4>
 										{{#discounted}}<del>{{originalPrice}}</del>&nbsp;<span itemprop="price" class="specialPrice">{{finalPrice}}</span>{{/discounted}}

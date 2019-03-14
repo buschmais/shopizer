@@ -23,7 +23,7 @@
 				
 				
 			
-			<c:url var="addCategory" value="/admin/products/addProductToCategories.html" />
+			<c:url var="addCategory" value="/catalog/admin/products/addProductToCategories.html" />
 			<form:form method="POST" enctype="multipart/form-data" commandName="product" action="${addCategory}">
 			<form:errors path="*" cssClass="alert alert-error" element="div" />
 			<div id="store.success" class="alert alert-success"	style="<c:choose><c:when test="${success!=null}">display:block;</c:when><c:otherwise>display:none;</c:otherwise></c:choose>">
@@ -57,9 +57,9 @@
 				
 				<br />
 				<!-- Listing grid include -->
-				<c:set value="/admin/product-categories/paging.html?productId=${product.id}" var="pagingUrl" scope="request" />
-				<c:set value="/admin/product-categories/remove.html?productId=${product.id}" var="removeUrl" scope="request" />
-				<c:set value="/admin/products/displayProductToCategories.html?id=${product.id}" var="refreshUrl" scope="request" />
+				<c:set value="/catalog/admin/product-categories/paging.html?productId=${product.id}" var="pagingUrl" scope="request" />
+				<c:set value="/catalog/admin/product-categories/remove.html?productId=${product.id}" var="removeUrl" scope="request" />
+				<c:set value="/catalog/admin/products/displayProductToCategories.html?id=${product.id}" var="refreshUrl" scope="request" />
 				<c:set var="entityId" value="categoryId" scope="request"/>
 				<c:set var="componentTitleKey" value="label.categories.title" scope="request" />
 				<c:set var="canRemoveEntry" value="true" scope="request" />

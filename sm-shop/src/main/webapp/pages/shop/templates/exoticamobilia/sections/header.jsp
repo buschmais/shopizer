@@ -38,7 +38,7 @@ $(document).ready(function() {
 			}
 			$('#hiddenQuery').val(q);
 			//log('Search string : ' + searchQuery);
-			var uri = '<c:url value="/shop/search/search.html"/>?q=' + q;
+			var uri = '<c:url value="/catalog/shop/search/search.html"/>?q=' + q;
             var res = encodeURI(uri);
 			e.preventDefault();//action url will be overriden
 	        $('#hiddenSearchForm').attr('action',res).submit();
@@ -56,7 +56,7 @@ $(document).ready(function() {
 		  </c:if>
 	    </c:if>
 	    remote: {
-    		url: '<c:url value="/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
+    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
         	filter: function (parsedResponse) {
             	// parsedResponse is the array returned from your backend
             	console.log(parsedResponse);
@@ -271,7 +271,7 @@ $(document).ready(function() {
                                         <div class="btn-group dropdown">
                                             <button type="button" class="btn dropdown-toggle no-responsive searchButton" data-toggle="dropdown"><i class="fa fa-search"></i><span class="uppercase"><s:message code="label.generic.search" text="Search" /></span></button>
                                             <!-- important for submitting search -->
-                                            <form id="hiddenSearchForm" method="post" action="<c:url value="/shop/search/search.html"/>">
+                                            <form id="hiddenSearchForm" method="post" action="<c:url value="/catalog/shop/search/search.html"/>">
 												<input type="hidden" id="hiddenQuery" name="q">
 											</form>
                                         </div>

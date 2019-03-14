@@ -60,7 +60,7 @@ response.setDateHeader ("Expires", -1);
 							<c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
 								<li
 									class="<sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/> <c:if test="${fn:length(category.children)>0}">dropdown mega-menu</c:if>">
-									<a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>" class="<c:if test="${fn:length(category.children)>0}">dropdown-toggle</c:if> active <c:if test="${category.code==code}">currentSelectedLink</c:if>" <c:if test="${fn:length(category.children)>0}">data-toggle="dropdown"</c:if>> <span class="name">${category.description.name}</span></a>
+									<a href="<c:url value="/catalog/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>" class="<c:if test="${fn:length(category.children)>0}">dropdown-toggle</c:if> active <c:if test="${category.code==code}">currentSelectedLink</c:if>" <c:if test="${fn:length(category.children)>0}">data-toggle="dropdown"</c:if>> <span class="name">${category.description.name}</span></a>
 											<c:if test="${fn:length(category.children)>0}">
 													<ul class="dropdown-menu">
 															<li>
@@ -74,11 +74,11 @@ response.setDateHeader ("Expires", -1);
 																		</c:if>
 
 																		 <div class="mega-menu-items <c:choose><c:when test="${requestScope.CONTENT[category.code]!=null}">col-sm-8 col-md-6</c:when><c:otherwise>col-sm-12 col-md-12</c:otherwise></c:choose>">
-																			<h4><a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${category.description.name}"/></a></h4>
+																			<h4><a href="<c:url value="/catalog/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${category.description.name}"/></a></h4>
 																				<div class="divider"></div>
 																				<ul class="menu">
 																					<c:forEach items="${category.children}" var="child">
-																						<li><a href="<c:url value="/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${child.description.name}"/></a></li>		
+																						<li><a href="<c:url value="/catalog/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${child.description.name}"/></a></li>
 																					</c:forEach>
 																				</ul>
 																         </div>

@@ -31,14 +31,14 @@
 				<strong><c:out value="${product.sku}"/></strong>			
 
 				<br/>	
-				<a href="<c:url value="/admin/products/attribute/createAttribute.html?productId=${product.id}"/>"><s:message code="label.product.attribute.create" text="Create product attribute" /></a>	
+				<a href="<c:url value="/catalog/admin/products/attribute/createAttribute.html?productId=${product.id}"/>"><s:message code="label.product.attribute.create" text="Create product attribute" /></a>
 				<br/><br/>
 
 				 <!-- Listing grid include -->
-				 <c:set value="/admin/products/attributes/page.html?productId=${product.id}" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/attributes/attribute/remove.html" var="removeUrl" scope="request"/>
-				 <c:set value="/admin/products/attributes/editAttribute.html" var="editUrl" scope="request"/>
-				 <c:set value="/admin/products/attributes/list.html?id=${product.id}" var="afterRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/attributes/page.html?productId=${product.id}" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/attributes/attribute/remove.html" var="removeUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/attributes/editAttribute.html" var="editUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/attributes/list.html?id=${product.id}" var="afterRemoveUrl" scope="request"/>
 				 <c:set var="entityId" value="attributeId" scope="request"/>
 				 <c:set var="appendQueryStringToEdit" value="productId=${product.id}" scope="request"/>
 				 <c:set var="groupByEntity" value="attribute" scope="request"/>

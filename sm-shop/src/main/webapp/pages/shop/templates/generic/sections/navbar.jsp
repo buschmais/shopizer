@@ -32,7 +32,7 @@ $(document).ready(function() {
 			}
 			$('#hiddenQuery').val(q);
 			//log('Search string : ' + searchQuery);
-			var uri = '<c:url value="/shop/search/search.html"/>?q=' + q;
+			var uri = '<c:url value="/catalog/shop/search/search.html"/>?q=' + q;
             var res = encodeURI(uri);
 			e.preventDefault();//action url will be overriden
 	        $('#hiddenSearchForm').attr('action',res).submit();
@@ -50,7 +50,7 @@ $(document).ready(function() {
 		  </c:if>
 	    </c:if>
 	    remote: {
-    		url: '<c:url value="/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
+    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
         	filter: function (parsedResponse) {
             	// parsedResponse is the array returned from your backend
             	console.log(parsedResponse);
@@ -112,11 +112,11 @@ $(document).ready(function() {
 								<ul>
 								<c:set var="code" value="${category.code}"/>
 								<c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
-									   <li class="<sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out value="${category.description.name}"/></a>
+									   <li class="<sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a href="<c:url value="/catalog/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out value="${category.description.name}"/></a>
 										<c:if test="${fn:length(category.children)>0}">
 										<ul>
 											<c:forEach items="${category.children}" var="child">
-												<li><a href="<c:url value="/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${child.description.name}"/></a></li>		
+												<li><a href="<c:url value="/catalog/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${child.description.name}"/></a></li>
 											</c:forEach>
 										</ul>
 										</c:if>
@@ -144,11 +144,11 @@ $(document).ready(function() {
 								<ul>
 								<c:set var="code" value="${category.code}"/>
 								<c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
-									   <li class="<sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out value="${category.description.name}"/></a>
+									   <li class="<sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a href="<c:url value="/catalog/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out value="${category.description.name}"/></a>
 										<c:if test="${fn:length(category.children)>0}">
 										<ul>
 											<c:forEach items="${category.children}" var="child">
-												<li><a href="<c:url value="/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${child.description.name}"/></a></li>		
+												<li><a href="<c:url value="/catalog/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out value="${child.description.name}"/></a></li>
 											</c:forEach>
 										</ul>
 										</c:if>

@@ -42,8 +42,8 @@
 									ID:"products", 
 									dataFormat:"json", 
 									operationBindings:[ 
-										{operationType:"fetch", dataProtocol:"postParams",dataURL: "<c:url value="/admin/products/paging.html" />"},
-										{operationType:"remove", dataProtocol:"postParams",dataURL: "<c:url value="/admin/products/remove.html" />"}
+										{operationType:"fetch", dataProtocol:"postParams",dataURL: "<c:url value="/catalog/admin/products/paging.html" />"},
+										{operationType:"remove", dataProtocol:"postParams",dataURL: "<c:url value="/catalog/admin/products/remove.html" />"}
 									],
 									transformResponse : function (dsResponse, dsRequest, jsonData) {
 										var status = isc.XMLTools.selectObjects(jsonData, "/response/status");
@@ -59,7 +59,7 @@
 										
 										if(status == 9999) {
 											
-											window.location='<c:url value="/admin/products/products.html" />';
+											window.location='<c:url value="/catalog/admin/products/products.html" />';
 										}
 									}
 								}); 
@@ -138,7 +138,7 @@
 	                						width: 65,
 	               					 		title: "<s:message code="label.entity.details" text="Details"/>",
 	                						click : function () {
-	                							window.location='<c:url value="/admin/products/editProduct.html" />?id=' + record["productId"];
+	                							window.location='<c:url value="/catalog/admin/products/editProduct.html" />?id=' + record["productId"];
 	                						}
 	            						});
 	            						return button;   

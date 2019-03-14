@@ -25,10 +25,10 @@
 
 
 				 <!-- Listing grid include -->
-				 <c:set value="/admin/catalogue/manufacturer/paging.html" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/manufacturer/remove.html" var="removeUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/manufacturer/edit.html" var="editUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/manufacturer/list.html" var="afterRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/manufacturer/paging.html" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/manufacturer/remove.html" var="removeUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/manufacturer/edit.html" var="editUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/manufacturer/list.html" var="afterRemoveUrl" scope="request"/>
 				 <c:set var="entityId" value="id" scope="request"/>
 				 <c:set var="componentTitleKey" value="menu.manufacturer-list" scope="request"/>
 				 <c:set var="gridHeader" value="/pages/catalog/admin/products/manufacturers-gridHeader.jsp" scope="request"/>

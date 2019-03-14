@@ -30,7 +30,7 @@
 				<br/><br/>
 
 
-				<c:url var="saveProductGrop" value="/admin/products/groups/save.html"/>
+				<c:url var="saveProductGrop" value="/catalog/admin/products/groups/save.html"/>
 
 
 				<form:form method="POST" commandName="group" action="${saveProductGrop}">
@@ -65,11 +65,11 @@
             	 
 				 <!-- Listing grid include -->
 				 
-				 <c:set value="/admin/products/groups/paging.html" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/products/groups/remove.html" var="removeUrl" scope="request"/>
-				 <c:set value="/admin/products/groups/update.html" var="updateUrl" scope="request"/>
-				 <c:set value="/admin/products/group/edit.html" var="editUrl" scope="request"/>
-				 <c:set value="/admin/products/groups/list.html" var="afterRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/groups/paging.html" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/groups/remove.html" var="removeUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/groups/update.html" var="updateUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/group/edit.html" var="editUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/groups/list.html" var="afterRemoveUrl" scope="request"/>
 				 <c:set var="entityId" value="code" scope="request"/>
 				 <c:set var="componentTitleKey" value="menu.catalogue-products-custom-group" scope="request"/>
 				 <c:set var="gridHeader" value="/pages/admin/catalog/products/customProductGroup-gridHeader.jsp" scope="request"/>

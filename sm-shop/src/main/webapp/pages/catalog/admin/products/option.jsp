@@ -37,7 +37,7 @@
 				</h3>
 				<br/>
 
-				<c:url var="optionSave" value="/admin/options/save.html"/>
+				<c:url var="optionSave" value="/catalog/admin/options/save.html"/>
 
 
 				<form:form method="POST" commandName="option" action="${optionSave}">

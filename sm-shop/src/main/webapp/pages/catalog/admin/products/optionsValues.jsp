@@ -27,10 +27,10 @@
 				
 				
 				<!-- Listing grid include -->
-				 <c:set value="/admin/optionsvalues/paging.html" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/optionsvalues/remove.html" var="removeUrl" scope="request"/>
-				 <c:set value="/admin/options/editOptionValue.html" var="editUrl" scope="request"/>
-				 <c:set value="/admin/options/optionvalues.html" var="afterRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/optionsvalues/paging.html" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/optionsvalues/remove.html" var="removeUrl" scope="request"/>
+				 <c:set value="/catalog/admin/options/editOptionValue.html" var="editUrl" scope="request"/>
+				 <c:set value="/catalog/admin/options/optionvalues.html" var="afterRemoveUrl" scope="request"/>
 				 <c:set var="entityId" value="optionValueId" scope="request"/>
 				 <c:set var="componentTitleKey" value="label.product.productoptionsvalues.list" scope="request"/>
 				 <c:set var="gridHeader" value="/pages/catalog/admin/products/optionsValues-gridHeader.jsp" scope="request"/>

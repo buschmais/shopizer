@@ -30,7 +30,7 @@ $(document).ready(function() {
 
 
 	    remote: {
-    		url: '<c:url value="/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
+    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
         	filter: function (parsedResponse) {
             	// parsedResponse is the array returned from your backend
             	console.log(parsedResponse);
@@ -93,7 +93,7 @@ $(document).ready(function() {
 	                    		            
 	                    		            <c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
 	    										<li class="">
-	    											<a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>" class="current"> 
+	    											<a href="<c:url value="/catalog/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>" class="current">
 	    												<span class="name">${category.description.name}</span>
 	    												<span class="desc">${category.description.highlights}</span> 
 	    											</a>
@@ -102,7 +102,7 @@ $(document).ready(function() {
                     		            </ul>
                     		            
                     		            <div id="searchGroup" class="btn-group pull-right">
-											<form id="searchForm" class="form-inline" method="post" action="<c:url value="/shop/search/search.html"/>">
+											<form id="searchForm" class="form-inline" method="post" action="<c:url value="/catalog/shop/search/search.html"/>">
 												<input id="searchField" class="tt-query" name="q" type="text" placeholder="<s:message code="label.search.searchQuery" text="Search query" />" autocomplete="off" spellcheck="false" dir="auto" value="<c:out value="${q}"/>">
 												<button id="searchButton" class="btn" type="submit"><s:message code="label.generic.search" text="Search" /></button>
 											</form>

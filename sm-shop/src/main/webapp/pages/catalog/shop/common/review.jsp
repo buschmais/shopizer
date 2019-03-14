@@ -36,7 +36,7 @@ response.setDateHeader ("Expires", -1);
 								<td>
 									<table>
 										<tr>
-											<td style="border-top: none;"><a class="details" href="<c:url value="/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>"><c:out value="${product.description.name}" /></a></td>
+											<td style="border-top: none;"><a class="details" href="<c:url value="/catalog/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>"><c:out value="${product.description.name}" /></a></td>
 										</tr>
 										<tr>
 											<td style="border-top: none;">
@@ -85,7 +85,7 @@ response.setDateHeader ("Expires", -1);
 							</c:when>
 							<c:otherwise>
 
-						<c:url var="submitReview" value="/shop/customer/review/submit.html"/>
+						<c:url var="submitReview" value="/catalog/shop/customer/review/submit.html"/>
 					    <form:form method="POST" commandName="review" action="${submitReview}">
 					        <form:errors path="*" cssClass="alert alert-error alert-danger" element="div" />
 					    	<fieldset>

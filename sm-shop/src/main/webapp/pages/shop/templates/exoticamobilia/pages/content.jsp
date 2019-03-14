@@ -33,7 +33,7 @@ response.setDateHeader ("Expires", -1);
 	{{/canBePurchased}}
 	<div class="product-image">
     {{#image}}                              
-	<img class="product-img" src="<c:url value=""/>{{image.imageUrl}}"><a class="overlay" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>"><img class="product-img" src="<c:url value="/"/>{{image.imageUrl}}"></a>
+	<img class="product-img" src="<c:url value=""/>{{image.imageUrl}}"><a class="overlay" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>"><img class="product-img" src="<c:url value="/"/>{{image.imageUrl}}"></a>
     {{/image}}
     </div>
 	<!--  *** Product Name & Price Starts *** -->
@@ -48,7 +48,7 @@ response.setDateHeader ("Expires", -1);
 		<!-- Product Name & Price Ends -->
 		<!-- Product Buttons Starts -->
 		<div class="clearfix">
-			<a class="btn btn-default pull-left" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>" class="details"><s:message code="button.label.view" text="Details" /></a>
+			<a class="btn btn-default pull-left" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>" class="details"><s:message code="button.label.view" text="Details" /></a>
 		<c:if test="${requestScope.CONFIGS['allowPurchaseItems'] == true}">
 		{{#canBePurchased}}<a class="btn btn-buy pull-right addToCart" href="javascript:void(0);" class="addToCart" productId="{{id}}"><s:message code="button.label.addToCart" text="Add to cart" /></a>{{/canBePurchased}}
 		</c:if>
@@ -81,8 +81,8 @@ response.setDateHeader ("Expires", -1);
  
  	function loadItemsProducts() {
  		
- 		//services/public/{store}/products/group/{code}
- 		var url = '<%=request.getContextPath()%>/services/public/<c:out value="${requestScope.MERCHANT_STORE.code}"/>/products/group/<c:out value="${productGroup}"/>';
+ 		//catalog/services/public/{store}/products/group/{code}
+ 		var url = '<%=request.getContextPath()%>/catalog/services/public/<c:out value="${requestScope.MERCHANT_STORE.code}"/>/products/group/<c:out value="${productGroup}"/>';
  		loadProducts(url,'#productsContainer');
 
  	}

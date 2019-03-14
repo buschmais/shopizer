@@ -28,7 +28,7 @@ response.setDateHeader ("Expires", -1);
 			
 			<br/>
 
-	<c:import url="${pageContext.request.contextPath}/shop/product/featured"/>
+    <c:import url="http://${pageContext.request.getHeader('X-Forwarded-Host')}/catalog/shop/product/featured"/>
 
 			
 		

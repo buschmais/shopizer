@@ -38,14 +38,14 @@
 				</div>			
 		
       			<!-- Listing grid include -->
-				 <c:set value="/admin/products/paging.html" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/featured/paging.html" var="containerFetchUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/featured/removeItem.html" var="containerRemoveUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/paging.html" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/featured/paging.html" var="containerFetchUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/featured/removeItem.html" var="containerRemoveUrl" scope="request"/>
 				 <c:set value="FEATURED" var="removeEntity" scope="request"/>
-				 <c:set value="/admin/catalogue/featured/addItem.html" var="containerAddUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/featured/update.html" var="containerUpdateUrl" scope="request"/>
-				 <c:set value="/admin/products/editProduct.html" var="editUrl" scope="request"/>
-				 <c:set value="/admin/catalogue/featured/list.html" var="reloadUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/featured/addItem.html" var="containerAddUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/featured/update.html" var="containerUpdateUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/editProduct.html" var="editUrl" scope="request"/>
+				 <c:set value="/catalog/admin/catalogue/featured/list.html" var="reloadUrl" scope="request"/>
 				 <c:set var="componentTitleKey" value="menu.catalogue-featured" scope="request"/>
 				 <c:set var="gridHeader" value="/pages/catalog/admin/products/featured-gridHeader.jsp" scope="request"/>
 				 <c:set var="gridHeaderContainer" value="/pages/catalog/admin/products/product-gridHeader.jsp" scope="request"/>

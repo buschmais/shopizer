@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/catalog/product-option")
+@RequestMapping(path = "/product-option")
 public class ProductOptionRestController {
 
     private final ProductOptionService productOptionService;

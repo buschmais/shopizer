@@ -34,7 +34,7 @@ response.setDateHeader ("Expires", -1);
  
  	function search() {
  		$('#productsContainer').showLoading();
- 		var url = '<%=request.getContextPath()%>/services/public/search/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/search.json';
+ 		var url = '<%=request.getContextPath()%>/catalog/services/public/search/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/search.json';
 	 	searchProducts(url,'#productsContainer','<c:out value="${q}"/>',null);
  	}
  

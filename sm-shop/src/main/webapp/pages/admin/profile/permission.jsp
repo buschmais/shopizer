@@ -24,7 +24,7 @@
 		$('#checkCodeStatus').html('<img src="<c:url value="/resources/img/ajax-loader.gif" />');
 		$('#checkCodeStatus').show();
 		var code = $("#code").val();
-		checkCode(code,'<c:url value="/admin/categories/checkCategoryCode.html" />');
+		checkCode(code,'<c:url value="/catalog/admin/categories/checkCategoryCode.html" />');
 	}
 	
 	function callBackCheckCode(msg,code) {

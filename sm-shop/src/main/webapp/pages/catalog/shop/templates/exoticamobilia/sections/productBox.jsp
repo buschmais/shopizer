@@ -29,13 +29,13 @@ response.setDateHeader ("Expires", -1);
 	    															<span class="sold-out-text"><s:message code="label.soldout" text="Sold out" /></span>
 	  													</div> 
 												    </c:if>                                    
-													<div class="product-image"><c:if test="${product.image!=null}"><a href="<c:url value="/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html"><img src="<sm:shopProductImage imageName="${product.image.imageName}"  sku="${product.sku}"/>" class="product-img" /></a></c:if></div>
+													<div class="product-image"><c:if test="${product.image!=null}"><a href="<c:url value="/catalog/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html"><img src="<sm:shopProductImage imageName="${product.image.imageName}"  sku="${product.sku}"/>" class="product-img" /></a></c:if></div>
 													
 													<!--  *** Product Name & Price Starts *** -->
 													<div class="caption">
 													<div class="product-details">
 													<div class="clearfix">
-														<!--<a href="<c:url value="/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>">-->
+														<!--<a href="<c:url value="/catalog/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>">-->
 														<h3 class="product-heading product-name" itemprop="name"><c:out value="${product.description.name}"/></h3>
 														<!--</a>-->
 														<h4 class="price">
@@ -54,7 +54,7 @@ response.setDateHeader ("Expires", -1);
 													<!-- Product Name & Price Ends -->
 													<!-- Product Buttons Starts -->
 														<div class="clearfix">
-															<a class="btn btn-default pull-left" href="<c:url value="/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>"><s:message code="button.label.view" text="Details" /></a>
+															<a class="btn btn-default pull-left" href="<c:url value="/catalog/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>"><s:message code="button.label.view" text="Details" /></a>
 															<c:choose>
 																<c:when test="${requestScope.FEATURED==true}">
 																	<c:if test="${requestScope.CONFIGS['displayAddToCartOnFeaturedItems']==true && requestScope.CONFIGS['allowPurchaseItems']==true && product.canBePurchased}"><a class="btn btn-buy pull-right addToCart" href="javascript:void(0);" productId="${product.id}"><s:message code="button.label.addToCart" text="Add to cart" /></a>

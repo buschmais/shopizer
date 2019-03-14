@@ -34,7 +34,7 @@
 			$("#store.error").show();
 			$.ajax({
 			  type: 'POST',
-			  url: '<c:url value="/admin/manufacturers/manufacturer/removeImage.html"/>',
+			  url: '<c:url value="/catalog/admin/manufacturers/manufacturer/removeImage.html"/>',
 			  data: 'imageId=' + imageId,
 			  dataType: 'json',
 			  success: function(response){
@@ -70,7 +70,7 @@
 		$('#checkCodeStatus').show();
 		var code = $("#code").val();
 		var id = $("#id").val();
-		checkCode(code,id,'<c:url value="/admin/manufacturer/checkCode.html" />');
+		checkCode(code,id,'<c:url value="/catalog/admin/manufacturer/checkCode.html" />');
 	}
 	
 	function callBackCheckCode(msg,code) {
@@ -116,7 +116,7 @@
 				</h3>
 				<br/><br/>
 								
-				<c:url var="manufacturerSave" value="/admin/catalogue/manufacturer/save.html"/>
+				<c:url var="manufacturerSave" value="/catalog/admin/catalogue/manufacturer/save.html"/>
  
 				<form:form method="POST" commandName="manufacturer" action="${manufacturerSave}">
 

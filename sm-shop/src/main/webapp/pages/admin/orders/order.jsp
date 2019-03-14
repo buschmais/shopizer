@@ -586,7 +586,7 @@ function captureOrder(orderId){
 			            	
 							<tr> 
 								<td colspan="2"> 
-									<c:out value="${orderProduct.productName}" /> - <a href="<c:url value="/admin/products/viewEditProduct.html?sku=${orderProduct.sku}"/>"><c:out value="${orderProduct.sku}" /></a>
+									<c:out value="${orderProduct.productName}" /> - <a href="<c:url value="/catalog/admin/products/viewEditProduct.html?sku=${orderProduct.sku}"/>"><c:out value="${orderProduct.sku}" /></a>
 									<c:if test="${fn:length(orderProduct.orderAttributes)>0}">
 										<br/>
 											<ul>

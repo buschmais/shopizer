@@ -149,7 +149,7 @@ function print() {
 							<span class="productName">
 							<c:choose>
 							<c:when test="${product.product!=null}">
-								<a href="<c:url value="/shop/product/" /><c:out value="${product.product.description.friendlyUrl}"/>.html"><c:out value="${product.productName}"/></a>
+								<a href="<c:url value="/catalog/shop/product/" /><c:out value="${product.product.description.friendlyUrl}"/>.html"><c:out value="${product.productName}"/></a>
 							</c:when>
 							<c:otherwise>
 								<c:out value="${product.productName}"/>

@@ -10,7 +10,7 @@
 								isc.RestDataSource.create({ 
 									ID:"products", 
 									dataFormat:"json", 
-									dataURL: "<c:url value="/admin/products/paging.html" />",
+									dataURL: "<c:url value="/catalog/admin/products/paging.html" />",
 									operationBindings:[ 
 										{operationType:"fetch", dataProtocol:"postParams"} 
 									]
@@ -93,7 +93,7 @@
 	                							width: 65,
 	               					 			title: "<s:message code="label.entity.details" text="Details"/>",
 	                							click : function () {
-	                    							var url = '<c:url value="/admin/products/editProduct.html" />?id=' + record["productId"];
+	                    							var url = '<c:url value="/catalog/admin/products/editProduct.html" />?id=' + record["productId"];
 	                    							<c:if test="${appendQueryStringToEdit!=null && appendQueryStringToEdit!=''}">
 	                    									url = url + '&<c:out value="${appendQueryStringToEdit}" />' ;
 	                    							</c:if>

@@ -156,7 +156,7 @@ response.setDateHeader ("Expires", -1);
 	}
  
  	function loadCategoryProducts() {
- 		var url = '<%=request.getContextPath()%>/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/<c:out value="${category.description.friendlyUrl}"/>';
+ 		var url = '<%=request.getContextPath()%>/catalog/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/<c:out value="${category.description.friendlyUrl}"/>';
 	 	
  		if(filter!=null) {
  			url = url + '/filter=' + filter + '/filter-value=' + filterValue +'';
@@ -280,7 +280,7 @@ response.setDateHeader ("Expires", -1);
 							<c:forEach items="${subCategories}" var="subCategory">
 								<c:if test="${subCategory.visible}">
               					<li>
-              					<a href="<c:url value="/shop/category/${subCategory.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${subCategory.id}"/>"><i class="fa fa-angle-right"></i> <c:out value="${subCategory.description.name}" />
+              					<a href="<c:url value="/catalog/shop/category/${subCategory.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${subCategory.id}"/>"><i class="fa fa-angle-right"></i> <c:out value="${subCategory.description.name}" />
               						<c:if test="${subCategory.productCount>0}">&nbsp;<span class="countItems">(<c:out value="${subCategory.productCount}" />)</span></c:if></a>
               					</li>
               					</c:if>

@@ -75,7 +75,7 @@
 "menu":{
 "code":"catalogue",
 "icon":"icon-tags", 
-"url":"/admin/products/products.html", 
+"url":"/catalog/admin/products/products.html",
 "role":"PRODUCTS",
 "order":3,
 "menus":[
@@ -83,10 +83,10 @@
 		"code":"catalogue-products","url":"","role":"PRODUCTS","order":0,"menus":
 		[
 			{"menu":{
-				"code":"catalogue-products-create","url":"/admin/products/createProduct.html","role":"PRODUCTS","order":0
+				"code":"catalogue-products-create","url":"/catalog/admin/products/createProduct.html","role":"PRODUCTS","order":0
 			}},
 			{"menu":{
-				"code":"catalogue","url":"/admin/products/products.html","role":"PRODUCTS","order":2
+				"code":"catalogue","url":"/catalog/admin/products/products.html","role":"PRODUCTS","order":2
 			}}
 		]
 	}},
@@ -94,13 +94,13 @@
 		"code":"catalogue-categories","url":"","role":"PRODUCTS","order":1,"menus":
 		[
 			{"menu":{
-				"code":"catalogue-categories-create","url":"/admin/categories/createCategory.html","role":"PRODUCTS","order":0
+				"code":"catalogue-categories-create","url":"/catalog/admin/categories/createCategory.html","role":"PRODUCTS","order":0
 			}},
 			{"menu":{
-				"code":"catalogue-categories-list","url":"/admin/categories/categories.html","role":"PRODUCTS","order":1
+				"code":"catalogue-categories-list","url":"/catalog/admin/categories/categories.html","role":"PRODUCTS","order":1
 			}},
 			{"menu":{
-				"code":"catalogue-categories-hierarchy","url":"/admin/categories/hierarchy.html","role":"PRODUCTS","order":2
+				"code":"catalogue-categories-hierarchy","url":"/catalog/admin/categories/hierarchy.html","role":"PRODUCTS","order":2
 			}}
 		]
 	}},
@@ -108,27 +108,27 @@
 		"code":"catalogue-options","url":"","role":"PRODUCTS","order":2,"menus":
 		[
 			{"menu":{
-				"code":"catalogue-options-list","url":"/admin/catalogue/options/options.html","role":"PRODUCTS","order":1
+				"code":"catalogue-options-list","url":"/catalog/admin/catalogue/options/options.html","role":"PRODUCTS","order":1
 			}},
 			{"menu":{
-				"code":"catalogue-options-create","url":"/admin/catalogue/options/option.html","role":"PRODUCTS","order":1
+				"code":"catalogue-options-create","url":"/catalog/admin/catalogue/options/option.html","role":"PRODUCTS","order":1
 			}},
 			{"menu":{
-				"code":"catalogue-optionsvalues-list","url":"/admin/catalogue/options/optionsvalues.html","role":"PRODUCTS","order":1
+				"code":"catalogue-optionsvalues-list","url":"/catalog/admin/catalogue/options/optionsvalues.html","role":"PRODUCTS","order":1
 			}},
 			{"menu":{
-				"code":"catalogue-optionsvalues-create","url":"/admin/options/createOptionValue.html","role":"PRODUCTS","order":1
+				"code":"catalogue-optionsvalues-create","url":"/catalog/admin/options/createOptionValue.html","role":"PRODUCTS","order":1
 			}}
 		]
 	}},
 	{"menu":{
-		"code":"catalogue-products-group","url":"/admin/catalogue/groups/list.html","role":"PRODUCTS","order":3,"menus":
+		"code":"catalogue-products-group","url":"/catalog/admin/catalogue/groups/list.html","role":"PRODUCTS","order":3,"menus":
 		[
 			{"menu":{
-				"code":"catalogue-featured","url":"/admin/catalogue/featured/list.html","role":"PRODUCTS","order":0
+				"code":"catalogue-featured","url":"/catalog/admin/catalogue/featured/list.html","role":"PRODUCTS","order":0
 			}},
 			{"menu":{
-				"code":"catalogue-products-custom-group","url":"/admin/catalogue/groups/list.html","role":"PRODUCTS","order":1
+				"code":"catalogue-products-custom-group","url":"/catalog/admin/catalogue/groups/list.html","role":"PRODUCTS","order":1
 			}}
 		]
 	}},
@@ -136,10 +136,10 @@
 		"code":"manufacturer-list","url":"","role":"PRODUCTS","order":4,"menus":
 		[
 			{"menu":{
-				"code":"manufacturer-list","url":"/admin/catalogue/manufacturer/list.html","role":"PRODUCTS","order":0
+				"code":"manufacturer-list","url":"/catalog/admin/catalogue/manufacturer/list.html","role":"PRODUCTS","order":0
 			}},
 			{"menu":{
-				"code":"manufacturer-create","url":"/admin/catalogue/manufacturer/create.html","role":"PRODUCTS","order":1
+				"code":"manufacturer-create","url":"/catalog/admin/catalogue/manufacturer/create.html","role":"PRODUCTS","order":1
 			}}
 		]
 	}}

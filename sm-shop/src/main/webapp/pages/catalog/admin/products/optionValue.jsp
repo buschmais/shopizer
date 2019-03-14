@@ -13,7 +13,7 @@
 			$("#store.error").show();
 			$.ajax({
 			  type: 'POST',
-			  url: '<c:url value="/admin/optionsvalues/removeImage.html"/>',
+			  url: '<c:url value="/catalog/admin/optionsvalues/removeImage.html"/>',
 			  dataType: 'json',
 			  data: 'optionId=' + id,
 			  success: function(response){
@@ -66,7 +66,7 @@
 				</h3>
 				<br/>
 
-				<c:url var="optionSave" value="/admin/options/saveOptionValue.html"/>
+				<c:url var="optionSave" value="/catalog/admin/options/saveOptionValue.html"/>
 
 
 				<form:form method="POST" enctype="multipart/form-data" commandName="optionValue" action="${optionSave}">

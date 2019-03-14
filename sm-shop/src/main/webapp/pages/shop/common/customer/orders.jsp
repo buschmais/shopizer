@@ -15,8 +15,8 @@ response.setDateHeader ("Expires", -1);
  
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<c:set var="ordersAction" value="${pageContext.request.contextPath}/shop/customer/orders.html"/>
-<c:set var="customerOrder" value="${pageContext.request.contextPath}/shop/customer/order.html"/>
+<c:set var="ordersAction" value="http://${pageContext.request.getHeader('X-Forwarded-Host')}/shop/customer/orders.html"/>
+<c:set var="customerOrder" value="http://${pageContext.request.getHeader('X-Forwarded-Host')}/shop/customer/order.html"/>
 
 <div id="main-content" class="container clearfix row-fluid">
 		<div class="span12 col-md-12 common-row">

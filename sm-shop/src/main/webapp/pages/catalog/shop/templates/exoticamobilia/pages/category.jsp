@@ -38,7 +38,7 @@ response.setDateHeader ("Expires", -1);
 	{{/canBePurchased}}
 	<div class="product-image">
     {{#image}}                              
-	<img class="product-img" src="<c:url value=""/>{{image.imageUrl}}"><a class="overlay" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>"><img class="product-img" src="<c:url value="/"/>{{image.imageUrl}}"></a>
+	<img class="product-img" src="<c:url value=""/>{{image.imageUrl}}"><a class="overlay" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>"><img class="product-img" src="<c:url value="/"/>{{image.imageUrl}}"></a>
     {{/image}}
     </div>
 	<!--  *** Product Name & Price Starts *** -->
@@ -53,7 +53,7 @@ response.setDateHeader ("Expires", -1);
 		<!-- Product Name & Price Ends -->
 		<!-- Product Buttons Starts -->
 		<div class="clearfix">
-			<a class="btn btn-default pull-left" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>" class="details"><s:message code="button.label.view" text="Details" /></a>
+			<a class="btn btn-default pull-left" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>" class="details"><s:message code="button.label.view" text="Details" /></a>
 		<c:if test="${requestScope.CONFIGS['allowPurchaseItems'] == true}">
 		{{#canBePurchased}}<a class="btn btn-buy pull-right addToCart" href="javascript:void(0);" class="addToCart" productId="{{id}}"><s:message code="button.label.addToCart" text="Add to cart" /></a>{{/canBePurchased}}
 		</c:if>
@@ -197,7 +197,7 @@ response.setDateHeader ("Expires", -1);
 	}
  
  	function loadCategoryProducts() {
- 		var url = '<%=request.getContextPath()%>/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/<c:out value="${category.description.friendlyUrl}"/>';
+ 		var url = '<%=request.getContextPath()%>/catalog/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/<c:out value="${category.description.friendlyUrl}"/>';
 	 	
  		if(filter!=null) {
  			url = url + '/filter=' + filter + '/filter-value=' + filterValue +'';
@@ -332,7 +332,7 @@ response.setDateHeader ("Expires", -1);
 							<c:forEach items="${subCategories}" var="subCategory">
 								<c:if test="${subCategory.visible}">
               					<li>
-              					<a href="<c:url value="/shop/category/${subCategory.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${subCategory.id}"/>"><i class="fa fa-angle-right"></i> <c:out value="${subCategory.description.name}" />
+              					<a href="<c:url value="/catalog/shop/category/${subCategory.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${subCategory.id}"/>"><i class="fa fa-angle-right"></i> <c:out value="${subCategory.description.name}" />
               						<c:if test="${subCategory.productCount>0}">&nbsp;<span class="countItems">(<c:out value="${subCategory.productCount}" />)</span></c:if></a>
               					</li>
               					</c:if>

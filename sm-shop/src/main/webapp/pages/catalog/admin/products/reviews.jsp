@@ -35,9 +35,9 @@
 
 
 				 <!-- Listing grid include -->
-				 <c:set value="/admin/products/reviews/paging.html?productId=${product.id}" var="pagingUrl" scope="request"/>
-				 <c:set value="/admin/products/reviews/remove.html" var="removeUrl" scope="request"/>
-				 <c:set value="/admin/products/reviews/paging.html?productId=${product.id}" var="refreshUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/reviews/paging.html?productId=${product.id}" var="pagingUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/reviews/remove.html" var="removeUrl" scope="request"/>
+				 <c:set value="/catalog/admin/products/reviews/paging.html?productId=${product.id}" var="refreshUrl" scope="request"/>
 				 <c:set var="entityId" value="reviewId" scope="request"/>
 				 <c:set var="componentTitleKey" value="label.product.reviews" scope="request"/>
 				 <c:set var="gridHeader" value="/pages/catalog/admin/products/reviews-gridHeader.jsp" scope="request"/>

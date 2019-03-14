@@ -25,7 +25,7 @@
 				<br/>
 				
 			<!--  Add content images -->
-			<c:url var="saveProductImage" value="/admin/products/images/url/save.html" />
+			<c:url var="saveProductImage" value="/catalog/admin/products/images/url/save.html" />
 			<form:form method="POST" commandName="productImage" action="${saveProductImage}">
 			<form:errors path="*" cssClass="alert alert-error" element="div" />
 			<div id="store.success" class="alert alert-success"	style="<c:choose><c:when test="${success!=null}">display:block;</c:when><c:otherwise>display:none;</c:otherwise></c:choose>">
@@ -82,9 +82,9 @@
 				
 				<br />
 				<!-- Listing grid include -->
-				<c:set value="/admin/products/images/url/page.html?productId=${product.id}" var="pagingUrl" scope="request" />
-				<c:set value="/admin/products/images/remove.html" var="removeUrl" scope="request" />
-				<c:set value="/admin/products/images/url/list.html?id=${product.id}" var="refreshUrl" scope="request" />
+				<c:set value="/catalog/admin/products/images/url/page.html?productId=${product.id}" var="pagingUrl" scope="request" />
+				<c:set value="/catalog/admin/products/images/remove.html" var="removeUrl" scope="request" />
+				<c:set value="/catalog/admin/products/images/url/list.html?id=${product.id}" var="refreshUrl" scope="request" />
 				<c:set var="componentTitleKey" value="menu.catalogue-products-images" scope="request" />
 				<c:set var="canRemoveEntry" value="true" scope="request" />
 				<c:set var="gridHeader" value="/pages/catalog/admin/products/product-images-url-gridHeader.jsp" scope="request"/>

@@ -60,7 +60,7 @@
 		
 	$.ajax({  
 		 type: 'POST',  
-		 url: getContextPath() + '/shop/product/' + productId + '/calculatePrice.json',  
+		 url: getContextPath() + '/catalog/shop/product/' + productId + '/calculatePrice.json',
 		 dataType: 'json', 
 		 data:{"attributeIds":values},
 		 cache:false,
