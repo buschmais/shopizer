@@ -76,7 +76,7 @@ public class ProductAttributeController {
 		
 		
 		setMenu(model,request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		Product product = productService.getById(productId);
@@ -129,7 +129,7 @@ public class ProductAttributeController {
 
 			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			//List<ProductAttribute> attributes = productAttributeService.getByProductId(store, product, language);
@@ -200,7 +200,7 @@ public class ProductAttributeController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
@@ -265,7 +265,7 @@ public class ProductAttributeController {
 		
 		model.addAttribute("product",product);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
@@ -408,7 +408,7 @@ public class ProductAttributeController {
 	public @ResponseBody ResponseEntity<String> deleteProductPrice(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sAttributeid = request.getParameter("attributeId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		AjaxResponse resp = new AjaxResponse();
 		final HttpHeaders httpHeaders= new HttpHeaders();
@@ -455,7 +455,7 @@ public class ProductAttributeController {
 
 		String sOptionId = request.getParameter("optionId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();

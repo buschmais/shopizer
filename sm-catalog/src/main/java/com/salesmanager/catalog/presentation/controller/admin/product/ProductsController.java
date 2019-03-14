@@ -66,7 +66,7 @@ public class ProductsController {
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Category> categories = categoryService.listByStore(store, language);
@@ -103,7 +103,7 @@ public class ProductsController {
 			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			ProductCriteria criteria = new ProductCriteria();
@@ -218,7 +218,7 @@ public class ProductsController {
 	public @ResponseBody ResponseEntity<String> deleteProduct(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sid = request.getParameter("productId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();

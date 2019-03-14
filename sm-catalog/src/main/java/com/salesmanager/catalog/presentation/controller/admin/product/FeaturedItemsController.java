@@ -68,7 +68,7 @@ public class FeaturedItemsController {
 
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Category> categories = categoryService.listByStore(store,language);
@@ -91,7 +91,7 @@ public class FeaturedItemsController {
 			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 			List<ProductRelationship> relationships = productRelationshipService.getByType(store, ProductRelationshipType.FEATURED_ITEM, language);
@@ -151,7 +151,7 @@ public class FeaturedItemsController {
 
 			Long lProductId = Long.parseLong(productId);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			Product product = productService.getById(lProductId);
@@ -206,7 +206,7 @@ public class FeaturedItemsController {
 
 			Long lproductId = Long.parseLong(productId);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			Product product = productService.getById(lproductId);

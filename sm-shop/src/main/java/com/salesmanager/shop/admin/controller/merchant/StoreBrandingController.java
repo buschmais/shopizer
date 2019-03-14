@@ -148,8 +148,7 @@ public class StoreBrandingController {
 		merchantStoreService.saveOrUpdate(sessionstore);
 		
 		request.setAttribute(Constants.ADMIN_STORE, sessionstore);
-		request.setAttribute(Constants.ADMIN_STORE_CODE, sessionstore.getCode());
-		
+
 		//display templates
 		model.addAttribute("templates", templates);
 

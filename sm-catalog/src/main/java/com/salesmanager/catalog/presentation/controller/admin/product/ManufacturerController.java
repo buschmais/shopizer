@@ -87,7 +87,7 @@ public class ManufacturerController {
 		setMenu(model,request);
 		
 		//List<Language> languages = languageService.getLanguages();
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		List<LanguageInfo> languages = store.getLanguages();
@@ -170,7 +170,7 @@ public class ManufacturerController {
 		this.setMenu(model, request);
 		//save or edit a manufacturer
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		List<LanguageInfo> languages = languageInfoService.getLanguages();
@@ -338,7 +338,7 @@ public class ManufacturerController {
 			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			List<Manufacturer> manufacturers = null;				
@@ -384,7 +384,7 @@ public class ManufacturerController {
 	
 		AjaxResponse resp = new AjaxResponse();
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		final HttpHeaders httpHeaders= new HttpHeaders();
@@ -434,7 +434,7 @@ public class ManufacturerController {
 
 		final HttpHeaders httpHeaders= new HttpHeaders();
 	    httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();

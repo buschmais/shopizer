@@ -70,7 +70,7 @@ public class ProductPriceController {
 		
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		//get the product and validate it belongs to the current merchant
@@ -103,7 +103,7 @@ public class ProductPriceController {
 	public @ResponseBody ResponseEntity<String> pagePrices(HttpServletRequest request, HttpServletResponse response) {
 
 		String sProductId = request.getParameter("productId");
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
@@ -213,7 +213,7 @@ public class ProductPriceController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/price/edit.html", method=RequestMethod.GET)
 	public String editProductPrice(@RequestParam("id") long productPriceId, @RequestParam("productId") long productId,Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productId);
@@ -235,7 +235,7 @@ public class ProductPriceController {
 	@PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/price/create.html", method=RequestMethod.GET)
 	public String displayCreateProductPrice(@RequestParam("productId") long productId,@RequestParam("availabilityId") long avilabilityId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productId);
@@ -255,7 +255,7 @@ public class ProductPriceController {
 	}
 	
 	private String displayProductPrice(Product product, Long productPriceId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		com.salesmanager.catalog.presentation.model.admin.ProductPrice pprice = new com.salesmanager.catalog.presentation.model.admin.ProductPrice();
@@ -355,7 +355,7 @@ public class ProductPriceController {
 		
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		Product product = price.getProduct();
@@ -460,7 +460,7 @@ public class ProductPriceController {
 	public @ResponseBody ResponseEntity<String> deleteProductPrice(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sPriceid = request.getParameter("priceId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		AjaxResponse resp = new AjaxResponse();

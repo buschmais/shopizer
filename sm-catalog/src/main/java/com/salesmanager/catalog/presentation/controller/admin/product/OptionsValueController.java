@@ -90,7 +90,7 @@ public class OptionsValueController {
 
 		
 		this.setMenu(model, request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<LanguageInfo> languages = store.getLanguages();
@@ -169,7 +169,7 @@ public class OptionsValueController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		ProductOptionValue dbEntity =	null;	
@@ -286,7 +286,7 @@ public class OptionsValueController {
 			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			List<ProductOptionValue> options = null;
@@ -342,7 +342,7 @@ public class OptionsValueController {
 	public @ResponseBody ResponseEntity<String> deleteOptionValue(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sid = request.getParameter("optionValueId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -384,7 +384,7 @@ public class OptionsValueController {
 	public @ResponseBody ResponseEntity<String> removeImage(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String optionValueId = request.getParameter("optionId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();

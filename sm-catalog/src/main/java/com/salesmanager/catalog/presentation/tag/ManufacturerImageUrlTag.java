@@ -41,7 +41,7 @@ public class ManufacturerImageUrlTag extends RequestContextAwareTag {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			StringBuilder imagePath = new StringBuilder();

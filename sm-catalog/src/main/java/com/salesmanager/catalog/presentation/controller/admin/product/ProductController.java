@@ -134,7 +134,7 @@ public class ProductController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
@@ -277,7 +277,7 @@ public class ProductController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Manufacturer> manufacturers = manufacturerService.listByStore(store, language);
@@ -567,7 +567,7 @@ public class ProductController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Manufacturer> manufacturers = manufacturerService.listByStore(store, language);
@@ -759,7 +759,7 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<String> removeImage(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String iid = request.getParameter("imageId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -810,7 +810,7 @@ public class ProductController {
 	
 		
 		setMenu(model,request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
@@ -849,7 +849,7 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<String> pageProductCategories(HttpServletRequest request, HttpServletResponse response) {
 
 		String sProductId = request.getParameter("productId");
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -932,7 +932,7 @@ public class ProductController {
 		String sCategoryid = request.getParameter("categoryId");
 		String sProductId = request.getParameter("productId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -989,7 +989,7 @@ public class ProductController {
 	public String addProductToCategory(@RequestParam("productId") long productId, @RequestParam("id") long categoryId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		setMenu(model,request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);

@@ -109,8 +109,7 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 			merchantStore = merchantService.getByCode(sessionStore);
 		}
 		request.setAttribute(Constants.ADMIN_STORE, merchantStore);
-		request.setAttribute(Constants.ADMIN_STORE_CODE, sessionStore);
-		
+
 		
 		Language language = languageUtils.getRequestLanguage(request, response);
 		

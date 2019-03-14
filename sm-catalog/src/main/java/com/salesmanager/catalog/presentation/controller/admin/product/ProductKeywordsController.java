@@ -54,7 +54,7 @@ public class ProductKeywordsController {
 	public String displayKeywords(@RequestParam("id") long productId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		this.setMenu(model, request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productId);
@@ -75,7 +75,7 @@ public class ProductKeywordsController {
 	@RequestMapping(value="/admin/products/product/addKeyword.html", method=RequestMethod.POST)
 	public String addKeyword(@Valid @ModelAttribute("productKeyword") Keyword keyword, final BindingResult bindingResult,final Model model, final HttpServletRequest request, Locale locale) throws Exception{
 		this.setMenu(model, request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		
@@ -149,7 +149,7 @@ public class ProductKeywordsController {
 
 		
 		String code = request.getParameter("code");
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -243,7 +243,7 @@ public class ProductKeywordsController {
 	public @ResponseBody ResponseEntity<String> pageKeywords(HttpServletRequest request, HttpServletResponse response) {
 		
 		String sProductId = request.getParameter("id");
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		AjaxResponse resp = new AjaxResponse();

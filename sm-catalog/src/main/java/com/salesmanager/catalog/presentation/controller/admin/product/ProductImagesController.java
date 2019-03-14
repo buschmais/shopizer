@@ -67,7 +67,7 @@ public class ProductImagesController {
 		
 		
 		setMenu(model,request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		Product product = productService.getById(productId);
@@ -91,7 +91,7 @@ public class ProductImagesController {
 		
 		
 		setMenu(model,request);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		Product product = productService.getById(productId);
@@ -149,7 +149,7 @@ public class ProductImagesController {
 			
 			product = productService.getById(productId);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			if(product.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
@@ -225,7 +225,7 @@ public class ProductImagesController {
 			
 			product = productService.getById(productId);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 			if(product.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
@@ -282,7 +282,7 @@ public class ProductImagesController {
 	    
 		this.setMenu(model, request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		Product product = productService.getById(productImages.getProductId());
@@ -344,7 +344,7 @@ public class ProductImagesController {
 	    
 		this.setMenu(model, request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
         Map< String, String > mediaTypes = new HashMap<String, String>();  
@@ -393,7 +393,7 @@ public class ProductImagesController {
 	public @ResponseBody ResponseEntity<String> deleteImage(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sImageId = request.getParameter("id");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		AjaxResponse resp = new AjaxResponse();
 		final HttpHeaders httpHeaders= new HttpHeaders();
@@ -444,7 +444,7 @@ public class ProductImagesController {
 												final HttpServletResponse response, 
 												final Locale locale) {
 		final String sImageId = request.getParameter("id");
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		final AjaxResponse resp = new AjaxResponse();
 		final HttpHeaders httpHeaders= new HttpHeaders();

@@ -58,7 +58,7 @@ public class ProductDescriptionUrlTag extends RequestContextAwareTag {
 			MerchantStoreInfo merchantStore;
 			//*** IF USED FROM ADMIN THE STORE WILL BE NULL, THEN TRY TO USE ADMIN STORE
 			if(storeCode==null) {
-				storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+				storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			}
 			merchantStore = this.merchantStoreInfoService.findbyCode(storeCode);
 

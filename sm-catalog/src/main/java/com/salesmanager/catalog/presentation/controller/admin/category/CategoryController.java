@@ -83,7 +83,7 @@ public class CategoryController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
@@ -157,7 +157,7 @@ public class CategoryController {
 		//display menu
 		setMenu(model,request);
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
 		if(category.getId() != null && category.getId() >0) { //edit entry
@@ -263,7 +263,7 @@ public class CategoryController {
 			String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 			LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
 
-			String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+			String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 			MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 			
 			List<Category> categories = null;
@@ -328,7 +328,7 @@ public class CategoryController {
 		//get the list of categories
 		String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
 		LanguageInfo language = this.languageInfoService.findbyCode(languageCode);
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		List<Category> categories = categoryService.listByStore(store, language);
@@ -343,7 +343,7 @@ public class CategoryController {
 	public @ResponseBody ResponseEntity<String> deleteCategory(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		String sid = request.getParameter("categoryId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -386,7 +386,7 @@ public class CategoryController {
 		String parentid = request.getParameter("parentId");
 		String childid = request.getParameter("childId");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
@@ -448,7 +448,7 @@ public class CategoryController {
 		String code = request.getParameter("code");
 		String id = request.getParameter("id");
 
-		String storeCode = (String) request.getAttribute(Constants.ADMIN_STORE_CODE);
+		String storeCode = (String) request.getSession().getAttribute(Constants.ADMIN_STORE_CODE);
 		MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 		
 		AjaxResponse resp = new AjaxResponse();
