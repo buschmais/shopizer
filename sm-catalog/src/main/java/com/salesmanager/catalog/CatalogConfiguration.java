@@ -1,6 +1,7 @@
 package com.salesmanager.catalog;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.salesmanager.common.presentation.util.LabelUtils;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.infinispan.Cache;
@@ -53,11 +54,18 @@ public class CatalogConfiguration {
     @Autowired
     private Environment environment;
 
-    @Autowired
-    private DefaultCacheManager defaultCacheManager;
+    @Bean
+    LabelUtils labelUtils() {
+        return new LabelUtils();
+    }
 
     @Bean
-    TreeCache catalogTreeCache() {
+    DefaultCacheManager catalogCacheManager() {
+        return new DefaultCacheManager();
+    }
+
+    @Bean
+    TreeCache catalogTreeCache(DefaultCacheManager catalogCacheManager) {
         final PersistenceConfigurationBuilder persistConfig = new ConfigurationBuilder().persistence();
         persistConfig.passivation(false);
         final SingleFileStoreConfigurationBuilder fileStore = new SingleFileStoreConfigurationBuilder(persistConfig).location(environment.getProperty("catalog.cms.location"));
@@ -67,8 +75,8 @@ public class CatalogConfiguration {
         fileStore.jmxStatistics().disable();
         final org.infinispan.configuration.cache.Configuration config = persistConfig.addStore(fileStore).build();
         config.compatibility().enabled();
-        defaultCacheManager.defineConfiguration("CatalogRepository", config);
-        final Cache<String, String> cache = defaultCacheManager.getCache("CatalogRepository");
+        catalogCacheManager.defineConfiguration("CatalogRepository", config);
+        final Cache<String, String> cache = catalogCacheManager.getCache("CatalogRepository");
         TreeCacheFactory f = new TreeCacheFactory();
         TreeCache treeCache = f.createTreeCache(cache);
         cache.start();

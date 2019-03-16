@@ -9,7 +9,7 @@ zuul:
   routes:
     catalog:
       path: /catalog/**
-      url: http://localhost:8081
+      url: http://localhost:8082
       strip-prefix: true
       sensitive-headers:
     core:
