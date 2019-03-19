@@ -37,9 +37,11 @@ public class CatalogFilter extends HandlerInterceptorAdapter {
         request.setCharacterEncoding("UTF-8");
 
         String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
+        request.setAttribute(Constants.MERCHANT_STORE_CODE, storeCode);
         MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
 
         String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
+        request.setAttribute(Constants.LANGUAGE_CODE, languageCode);
         LanguageInfo language = languageInfoService.findbyCode(languageCode);
 
         /******* Top Categories ********/

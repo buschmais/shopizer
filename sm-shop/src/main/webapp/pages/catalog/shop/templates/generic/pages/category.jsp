@@ -156,7 +156,7 @@ response.setDateHeader ("Expires", -1);
 	}
  
  	function loadCategoryProducts() {
- 		var url = '<%=request.getContextPath()%>/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE.code}"/>/<c:out value="${requestScope.LANGUAGE.code}"/>/<c:out value="${category.description.friendlyUrl}"/>';
+ 		var url = '<%=request.getContextPath()%>/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>/<c:out value="${requestScope.LANGUAGE_CODE}"/>/<c:out value="${category.description.friendlyUrl}"/>';
 	 	
  		if(filter!=null) {
  			url = url + '/filter=' + filter + '/filter-value=' + filterValue +'';
