@@ -15,6 +15,8 @@ public class MerchantStoreDTO extends AbstractCoreCrudDTO {
 
     private Integer id;
 
+    private String name;
+
     private String code;
 
     private String currency;
@@ -30,6 +32,10 @@ public class MerchantStoreDTO extends AbstractCoreCrudDTO {
     private String storeTemplate;
 
     private String domainName;
+
+    private String weightUnitCode;
+
+    private String sizeUnitCode;
 
     private List<String> languages;
 

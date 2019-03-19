@@ -48,6 +48,7 @@ public class MerchantStoreInfoAdapter {
     public MerchantStoreInfo createOrUpdateMerchantStoreInfo(MerchantStoreDTO storeDTO) {
         MerchantStoreInfo storeInfo = new MerchantStoreInfo(
                 storeDTO.getId(),
+                storeDTO.getName(),
                 storeDTO.getCode(),
                 storeDTO.getCurrency(),
                 storeDTO.getDefaultLanguage(),
@@ -56,6 +57,8 @@ public class MerchantStoreInfoAdapter {
                 storeDTO.isUseCache(),
                 storeDTO.getStoreTemplate(),
                 storeDTO.getDomainName(),
+                storeDTO.getWeightUnitCode(),
+                storeDTO.getSizeUnitCode(),
                 getLanguages(storeDTO));
         return merchantStoreInfoService.save(storeInfo);
     }

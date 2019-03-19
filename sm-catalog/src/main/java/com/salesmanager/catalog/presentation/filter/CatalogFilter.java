@@ -39,6 +39,11 @@ public class CatalogFilter extends HandlerInterceptorAdapter {
         String storeCode = (String) request.getSession().getAttribute(Constants.MERCHANT_STORE_CODE);
         request.setAttribute(Constants.MERCHANT_STORE_CODE, storeCode);
         MerchantStoreInfo store = this.merchantStoreInfoService.findbyCode(storeCode);
+        request.setAttribute(Constants.STORE_NAME, store.getName());
+        request.setAttribute(Constants.CURRENCY_CODE, store.getCurrency());
+        request.setAttribute(Constants.DOMAIN_NAME, store.getDomainName());
+        request.setAttribute(Constants.WEIGHT_UNIT_CODE, store.getWeightUnitCode());
+        request.setAttribute(Constants.SIZE_UNIT_CODE, store.getSizeUnitCode());
 
         String languageCode = (String) request.getSession().getAttribute(Constants.LANGUAGE_CODE);
         request.setAttribute(Constants.LANGUAGE_CODE, languageCode);

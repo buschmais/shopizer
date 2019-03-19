@@ -60,8 +60,8 @@ response.setDateHeader ("Expires", -1);
 								<strong><s:message code="label.product.code" text="Product code"/></strong> <span itemprop="identifier" content="mpn:${product.sku}">${product.sku}</span><br>								
 							</address>
 							<span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
-							<meta itemprop="seller" content="${requestScope.MERCHANT_STORE.storename}"/>
-							<meta itemprop="currency" content="<c:out value="${requestScope.MERCHANT_STORE.currency.code}" />" />
+							<meta itemprop="seller" content="${requestScope.STORE_NAME}"/>
+							<meta itemprop="currency" content="<c:out value="${requestScope.CURRENCY_CODE}" />" />
 							<h3 id="productPrice">
 									<c:choose>
 										<c:when test="${product.discounted}">

@@ -108,8 +108,8 @@ response.setDateHeader ("Expires", -1);
 									<!-- product rating -->
 									<jsp:include page="/pages/catalog/shop/common/rating.jsp" />
 									<span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
-									<meta itemprop="seller" content="${requestScope.MERCHANT_STORE.storename}"/>
-									<meta itemprop="currency" content="<c:out value="${requestScope.MERCHANT_STORE.currency.code}" />" />
+									<meta itemprop="seller" content="${requestScope.STORE_NAME}"/>
+									<meta itemprop="currency" content="<c:out value="${requestScope.CURRENCY_CODE}" />" />
 									<span id="productPrice" class="price">
 										<c:choose>
 											<c:when test="${product.discounted}">
@@ -127,8 +127,8 @@ response.setDateHeader ("Expires", -1);
 							      </c:if>
 								  </span>
 								  <p>
-								  <!--<div class="fb-like" data-href="<c:out value="${requestScope.MERCHANT_STORE.domainName}"/><c:url value="/shop/${product.description.friendlyUrl}.html"/>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>-->
-								  <iframe src="https://www.facebook.com/plugins/share_button.php?href=<c:out value="${requestScope.CONFIGS['SHOP_SCHEME']}"/>%3A%2F%2F<c:out value="${requestScope.MERCHANT_STORE.domainName}"/><c:url value="/shop/${product.description.friendlyUrl}.html"/>&layout=button_count&size=large&mobile_iframe=true&appId=<c:out value="${requestScope.CONFIGS['shopizer.facebook-appid']}"/>&width=83&height=28" width="83" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+								  <!--<div class="fb-like" data-href="<c:out value="${requestScope.DOMAIN_NAME}"/><c:url value="/shop/${product.description.friendlyUrl}.html"/>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>-->
+								  <iframe src="https://www.facebook.com/plugins/share_button.php?href=<c:out value="${requestScope.CONFIGS['SHOP_SCHEME']}"/>%3A%2F%2F<c:out value="${requestScope.DOMAIN_NAME}"/><c:url value="/shop/${product.description.friendlyUrl}.html"/>&layout=button_count&size=large&mobile_iframe=true&appId=<c:out value="${requestScope.CONFIGS['shopizer.facebook-appid']}"/>&width=83&height=28" width="83" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 								  </p>
 								  <jsp:include page="/pages/catalog/shop/common/addToCartProduct.jsp" />
 								</div>
@@ -156,13 +156,13 @@ response.setDateHeader ("Expires", -1);
 														<p>
 															<dl class="dl-horizontal">
 																<!--<dt><s:message code="label.product.weight" text="Weight" />:</dt>
-																<dd><fmt:formatNumber value="${product.productWeight}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.weightunit.${requestScope.MERCHANT_STORE.weightunitcode}" text="Pounds" /></dd>-->
+																<dd><fmt:formatNumber value="${product.productWeight}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.weightunit.${requestScope.WEIGHT_UNIT_CODE}" text="Pounds" /></dd>-->
 																<dt><s:message code="label.product.height" text="Height" />:</dt>
-																<dd><fmt:formatNumber value="${product.productHeight}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.sizeunit.${requestScope.MERCHANT_STORE.seizeunitcode}" text="Inches" /></dd>
+																<dd><fmt:formatNumber value="${product.productHeight}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.sizeunit.${requestScope.SIZE_UNIT_CODE}" text="Inches" /></dd>
 																<dt><s:message code="label.product.width" text="Width" />:</dt>
-																<dd><fmt:formatNumber value="${product.productWidth}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.sizeunit.${requestScope.MERCHANT_STORE.seizeunitcode}" text="Inches" /></dd>
+																<dd><fmt:formatNumber value="${product.productWidth}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.sizeunit.${requestScope.SIZE_UNIT_CODE}" text="Inches" /></dd>
 																<dt><s:message code="label.product.length" text="Length" />:</dt>
-																<dd><fmt:formatNumber value="${product.productLength}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.sizeunit.${requestScope.MERCHANT_STORE.seizeunitcode}" text="Inches" /></dd>
+																<dd><fmt:formatNumber value="${product.productLength}" maxFractionDigits="2"/>&nbsp;<s:message code="label.generic.sizeunit.${requestScope.SIZE_UNIT_CODE}" text="Inches" /></dd>
 															</dl>
 														</p>
 														<c:if test="${product.manufacturer.code=='green' || product.manufacturer.code=='local'}">

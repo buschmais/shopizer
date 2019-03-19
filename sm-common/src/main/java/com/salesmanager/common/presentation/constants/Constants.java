@@ -127,4 +127,9 @@ public class Constants {
 
 	public final static String DEBUG_MODE = "debugMode";
 
+	public static final String STORE_NAME = "STORE_NAME";
+	public static final String CURRENCY_CODE = "CURRENCY_CODE";
+	public static final String DOMAIN_NAME = "DOMAIN_NAME";
+	public static final String WEIGHT_UNIT_CODE = "WEIGHT_UNIT_CODE";
+	public static final String SIZE_UNIT_CODE = "SIZE_UNIT_CODE";
 }

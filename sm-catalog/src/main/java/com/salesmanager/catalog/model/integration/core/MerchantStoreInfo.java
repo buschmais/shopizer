@@ -22,6 +22,10 @@ public class MerchantStoreInfo {
     private Integer id;
 
     @NotEmpty
+    @Column(name = "STORE_NAME", nullable=false, length=100)
+    private String name;
+
+    @NotEmpty
     @Pattern(regexp="^[a-zA-Z0-9_]*$")
     @Column(name = "STORE_CODE", nullable=false, unique=true, length=100)
     private String code;
@@ -46,6 +50,12 @@ public class MerchantStoreInfo {
 
     @Column(name="DOMAIN_NAME", length=80)
     private String domainName;
+
+    @Column(name = "WEIGHTUNITCODE", length=5)
+    private String weightUnitCode;
+
+    @Column(name = "SEIZEUNITCODE", length=5)
+    private String sizeUnitCode;
 
     @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER)

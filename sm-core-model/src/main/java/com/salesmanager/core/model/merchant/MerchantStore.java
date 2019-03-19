@@ -356,6 +356,7 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 		List<String> languages = this.languages.stream().map(Language::getCode).collect(Collectors.toList());
 		return new MerchantStoreDTO(
 				this.id,
+				this.storename,
 				this.code,
 				this.currency.getCode(),
 				this.defaultLanguage.getCode(),
@@ -364,6 +365,8 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 				this.useCache,
 				this.storeTemplate,
 				this.domainName,
+				this.weightunitcode,
+				this.seizeunitcode,
 				languages);
 	}
 

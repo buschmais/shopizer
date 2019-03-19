@@ -120,9 +120,9 @@
 										<span itemprop="offerDetails" itemscope
 											itemtype="http://data-vocabulary.org/Offer">
 											<meta itemprop="seller"
-												content="${requestScope.MERCHANT_STORE.storename}" />
+												content="${requestScope.STORE_NAME}" />
 											<meta itemprop="currency"
-												content="<c:out value="${requestScope.MERCHANT_STORE.currency.code}" />" />
+												content="<c:out value="${requestScope.CURRENCY_CODE}" />" />
 											<span id="productPrice" class="price"> <c:choose>
 													<c:when test="${product.discounted}">
 														<del>
@@ -143,7 +143,7 @@
 										page="/pages/catalog/shop/common/addToCartProduct.jsp" />
 									<div class="action-heiper">
 										<iframe
-											src="https://www.facebook.com/plugins/share_button.php?locale=${LOCALE.language}_${LOCALE.country}&href=<c:out value="${requestScope.CONFIGS['SHOP_SCHEME']}"/>%3A%2F%2F<c:out value="${requestScope.MERCHANT_STORE.domainName}"/><c:url value="/shop/${product.description.friendlyUrl}.html"/>&layout=button_count&size=large&mobile_iframe=true&appId=<c:out value="${requestScope.CONFIGS['shopizer.facebook-appid']}"/>&width=83&height=28"
+											src="https://www.facebook.com/plugins/share_button.php?locale=${LOCALE.language}_${LOCALE.country}&href=<c:out value="${requestScope.CONFIGS['SHOP_SCHEME']}"/>%3A%2F%2F<c:out value="${requestScope.DOMAIN_NAME}"/><c:url value="/shop/${product.description.friendlyUrl}.html"/>&layout=button_count&size=large&mobile_iframe=true&appId=<c:out value="${requestScope.CONFIGS['shopizer.facebook-appid']}"/>&width=83&height=28"
 											width="100" height="28" style="border: none; overflow: hidden"
 											scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 									</div>
@@ -183,7 +183,7 @@
 															maxFractionDigits="2" />
 														&nbsp;
 														<s:message
-															code="label.generic.weightunit.${requestScope.MERCHANT_STORE.weightunitcode}"
+															code="label.generic.weightunit.${requestScope.WEIGHT_UNIT_CODE}"
 															text="Pounds" />
 													</dd>
 													<dt>
@@ -195,7 +195,7 @@
 															maxFractionDigits="2" />
 														&nbsp;
 														<s:message
-															code="label.generic.sizeunit.${requestScope.MERCHANT_STORE.seizeunitcode}"
+															code="label.generic.sizeunit.${requestScope.SIZE_UNIT_CODE}"
 															text="Inches" />
 													</dd>
 													<dt>
@@ -207,7 +207,7 @@
 															maxFractionDigits="2" />
 														&nbsp;
 														<s:message
-															code="label.generic.sizeunit.${requestScope.MERCHANT_STORE.seizeunitcode}"
+															code="label.generic.sizeunit.${requestScope.SIZE_UNIT_CODE}"
 															text="Inches" />
 													</dd>
 													<dt>
@@ -219,7 +219,7 @@
 															maxFractionDigits="2" />
 														&nbsp;
 														<s:message
-															code="label.generic.sizeunit.${requestScope.MERCHANT_STORE.seizeunitcode}"
+															code="label.generic.sizeunit.${requestScope.SIZE_UNIT_CODE}"
 															text="Inches" />
 													</dd>
 												</dl>
