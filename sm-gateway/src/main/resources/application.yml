@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sm-gateway
+
+zuul:
+  routes:
+    core:
+      path: /**
+      url: http://localhost:8081
+      sensitive-headers:
+  ignored-patterns: /routes/**

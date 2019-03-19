@@ -146,6 +146,7 @@
 	  	<module>sm-shop</module>
         <module>sm-common</module>
         <module>sm-catalog</module>
+        <module>sm-gateway</module>
     </modules>
 
     <repositories>

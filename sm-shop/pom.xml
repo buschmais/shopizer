@@ -125,6 +125,13 @@
         	<scope>provided</scope>
     	</dependency>
 
+		<!-- Service Discovery -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+			<version>1.4.6.RELEASE</version>
+		</dependency>
+
 		<!-- Hazelcast -->
 		<dependency>
 			<groupId>com.hazelcast</groupId>
@@ -194,7 +201,19 @@
         </dependency>
 		
 	</dependencies>
-	
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Camden.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<plugins>
 			<plugin>
