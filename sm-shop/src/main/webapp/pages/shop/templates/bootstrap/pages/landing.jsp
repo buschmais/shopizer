@@ -28,7 +28,13 @@ response.setDateHeader ("Expires", -1);
 			
 			<br/>
 
-    <c:import url="http://${pageContext.request.getHeader('X-Forwarded-Host')}/catalog/shop/product/featured"/>
+	<%
+		String host = request.getHeader("X-Forwarded-Host");
+		String sessionId = request.getSession().getId();
+		String url = "http://" + host + "/catalog/shop/product/featured?jsessionid=" + sessionId;
+	%>
+
+	<c:import url='<%=url%>'/>
 
 			
 		

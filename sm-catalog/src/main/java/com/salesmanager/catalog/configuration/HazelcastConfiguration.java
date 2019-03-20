@@ -1,4 +1,4 @@
-package com.salesmanager.shop.application;
+package com.salesmanager.catalog.configuration;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.UserCodeDeploymentConfig;
