@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="featured.*" template="/pages/catalog/shop/templates/{1}/catalogLayout.jsp">
+		<put-attribute name="body" value="/pages/catalog/shop/templates/{1}/pages/featured.jsp" />
+	</definition>
+
+  	<definition name="category.*" template="/pages/catalog/shop/templates/{1}/catalogLayout.jsp">
+  		 <put-attribute name="header" value="/pages/catalog/shop/templates/{1}/sections/header.jsp" />
+  		<put-attribute name="navbar" value="/pages/catalog/shop/templates/{1}/sections/navbar.jsp" />
+  		<put-attribute name="body" value="/pages/catalog/shop/templates/{1}/pages/category.jsp" />
+  		<put-attribute name="footer" value="/pages/catalog/shop/templates/{1}/sections/footer.jsp" />
+  	</definition>
+  	
+  	
+  	<definition name="items.manufacturer.*" template="/pages/catalog/shop/templates/{1}/catalogLayout.jsp">
+  		 <put-attribute name="header" value="/pages/catalog/shop/templates/{1}/sections/header.jsp" />
+  		<put-attribute name="navbar" value="/pages/catalog/shop/templates/{1}/sections/navbar.jsp" />
+  		<put-attribute name="body" value="/pages/catalog/shop/templates/{1}/pages/items.jsp" />
+  		<put-attribute name="footer" value="/pages/catalog/shop/templates/{1}/sections/footer.jsp" />
+  	</definition>
+  	
+  	<definition name="product.*" template="/pages/catalog/shop/templates/{1}/catalogLayout.jsp">
+  		 <put-attribute name="header" value="/pages/catalog/shop/templates/{1}/sections/header.jsp" />
+  		<put-attribute name="navbar" value="/pages/catalog/shop/templates/{1}/sections/navbar.jsp" />
+  		<put-attribute name="body" value="/pages/catalog/shop/templates/{1}/pages/product.jsp" />
+  		<put-attribute name="footer" value="/pages/catalog/shop/templates/{1}/sections/footer.jsp" />
+  	</definition>
+  	
+  	<definition name="review.*" template="/pages/catalog/shop/templates/{1}/catalogLayout.jsp">
+  		 <put-attribute name="header" value="/pages/catalog/shop/templates/{1}/sections/header.jsp" />
+  		<put-attribute name="navbar" value="/pages/catalog/shop/templates/{1}/sections/navbar.jsp" />
+  		<put-attribute name="body" value="/pages/catalog/shop/common/review.jsp" />
+  		<put-attribute name="footer" value="/pages/catalog/shop/templates/{1}/sections/footer.jsp" />
+  	</definition>
+  	
+  	<definition name="search.*" template="/pages/catalog/shop/templates/{1}/catalogLayout.jsp">
+  		 <put-attribute name="header" value="/pages/catalog/shop/templates/{1}/sections/header.jsp" />
+  		<put-attribute name="navbar" value="/pages/catalog/shop/templates/{1}/sections/navbar.jsp" />
+  		<put-attribute name="body" value="/pages/catalog/shop/templates/{1}/pages/search.jsp" />
+  		<put-attribute name="footer" value="/pages/catalog/shop/templates/{1}/sections/footer.jsp" />
+  	</definition>
+
+</tiles-definitions>

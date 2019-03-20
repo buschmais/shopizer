@@ -36,7 +36,6 @@
          </attribute>
 </tag>
 
-
 <tag>
  		 <!-- Builds a content block -->
          <name>pageContent</name>
@@ -53,7 +52,6 @@
 
 </tag>
 
-
 <tag>
  		 <!-- Core configuration -->
          <name>config</name>
@@ -69,56 +67,6 @@
          </attribute>
 
 </tag>
-
-
-<tag>
- 		 <!-- Builds the manufacturer image URL -->
-         <name>manufacturerImage</name>
-         <tag-class>com.salesmanager.catalog.presentation.tag.ManufacturerImageUrlTag</tag-class>
-         <body-content>scriptless</body-content>
-
- 
-         <attribute>
-                 <name>imageName</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>java.lang.String</type>
-         </attribute>
-         
-         <attribute>
-                 <name>manufacturer</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>com.salesmanager.core.business.catalog.product.model.manufacturer.Manufacturer</type>
-         </attribute>         
-
-</tag>
-
-
-<tag>
- 		 <!-- Builds the product image URL -->
-         <name>productImage</name>
-         <tag-class>com.salesmanager.catalog.presentation.tag.ProductImageUrlTag</tag-class>
-         <body-content>scriptless</body-content>
-
- 
-         <attribute>
-                 <name>imageName</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>java.lang.String</type>
-         </attribute>
-         
-         <attribute>
-                 <name>product</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>com.salesmanager.core.business.catalog.product.model.Product</type>
-         </attribute>
-         
-
-</tag>
-
 
 <tag>
  		 <!-- Builds the product image URL -->
@@ -150,26 +98,6 @@
 
 </tag>
 
-
-<tag>
- 		 <!-- Builds the product image URL -->
-         <name>shopProductGroup</name>
-         <tag-class>com.salesmanager.catalog.presentation.tag.ShopProductRelationshipTag</tag-class>
-         <body-content>scriptless</body-content>
-
- 
-         <attribute>
-                 <name>groupName</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>java.lang.String</type>
-         </attribute>
-         
-
-         
-
-</tag>
-
 <tag>
  		 <!-- Product price utility -->
          <name>monetary</name>
@@ -189,22 +117,6 @@
                  <required>false</required>
                  <rtexprvalue>true</rtexprvalue>
                  <type>com.salesmanager.core.business.reference.currency.model.Currency</type>
-         </attribute>
-         
-
-</tag>
-
-<tag>
- 		 <!-- Builds the admin product download URL -->
-         <name>adminProductDownload</name>
-         <tag-class>com.salesmanager.catalog.presentation.tag.AdminProductDownloadUrlTag</tag-class>
-         <body-content>scriptless</body-content>
-         
-         <attribute>
-                 <name>digitalProduct</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>com.salesmanager.core.business.catalog.product.model.file.DigitalProduct</type>
          </attribute>
          
 
@@ -231,7 +143,6 @@
          
 
 </tag>
-
 
 <tag>
  		 <!-- Builds the store logo URL -->
@@ -269,25 +180,6 @@
 
 </tag>
 
-
-<tag>
- 		 <!-- Builds the product URL -->
-         <name>productUrl</name>
-         <tag-class>com.salesmanager.catalog.presentation.tag.ProductDescriptionUrlTag</tag-class>
-         <body-content>scriptless</body-content>
-
- 
-
-         <attribute>
-                 <name>productDescription</name>
-                 <required>true</required>
-                 <rtexprvalue>true</rtexprvalue>
-                 <type>com.salesmanager.core.business.catalog.product.model.description.ProductDescription</type>
-         </attribute>
-         
-
-</tag>
-
 <tag>
  		 <!-- Decides if the link anlalyzed has to be handled as the active link -->
          <name>activeLink</name>
@@ -315,9 +207,6 @@
          
 
 </tag>
-
-
-
 
 </taglib>
 

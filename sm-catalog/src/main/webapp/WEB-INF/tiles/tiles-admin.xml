@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+  	
+  	 <definition name="admin-products" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/products.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-catalogue-featured" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/featured.jsp" />
+  	</definition>
+  	
+  	 <definition name="admin-products-groups" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/customProductGroup.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-groups-details" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/customProductGroupDetails.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-edit" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/product.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-attributes" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/attributes.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-attribute-details" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/attribute.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-related" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/related.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-bundles" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/bundles.jsp" />
+  	</definition>
+  	
+  	 <definition name="admin-products-prices" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/prices.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-price" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/price.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-digital" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/digitalProduct.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-keywords" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/keywords.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-images" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/productImages.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-images-url" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/productImagesUrl.jsp" />
+  	</definition>
+  	
+  	<definition name="admin-products-manufacturer" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/manufacturers.jsp" />
+  	</definition>
+  	
+  	 <definition name="admin-products-manufacturer-details" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/manufacturer.jsp" />
+  	</definition>
+  	
+  	<definition name="catalogue-products-categories" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/productsCategories.jsp" />
+  	</definition>
+  	
+  	<definition name="catalogue-product-categories" template="/layout/admin/layout.jsp"> 
+  		<put-attribute name="body" value="/pages/catalog/admin/products/productsCategories.jsp" />
+  	</definition>
+  	
+  	<definition name="catalogue-product-reviews" template="/layout/admin/layout.jsp"> 
+  		<put-attribute name="body" value="/pages/catalog/admin/products/reviews.jsp" />
+  	</definition>
+
+  	<definition name="catalogue-categories" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/categories/categories.jsp" />
+  	</definition>
+  	
+  	 <definition name="catalogue-categories-category" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/categories/category.jsp" />
+  	</definition>
+  	
+  	<definition name="catalogue-categories-hierarchy" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/categories/hierarchy.jsp" />
+  	</definition>
+  	
+  	 <definition name="catalogue-options-list" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/options.jsp" />
+  	</definition>
+  	
+  	<definition name="catalogue-options-details" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/option.jsp" />
+  	</definition>
+  	
+  	 <definition name="catalogue-optionsvalues-list" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/optionsValues.jsp" />
+  	</definition>
+  	
+  	<definition name="catalogue-optionsvalues-details" template="/layout/admin/layout.jsp">
+  		<put-attribute name="body" value="/pages/catalog/admin/products/optionValue.jsp" />
+  	</definition>
+
+</tiles-definitions>
