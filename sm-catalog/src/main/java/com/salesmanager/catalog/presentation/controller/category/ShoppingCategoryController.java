@@ -249,6 +249,7 @@ public class ShoppingCategoryController {
 		
 		if(parentProxy!=null) {
 			request.setAttribute(Constants.LINK_CODE, parentProxy.getDescription().getFriendlyUrl());
+			request.getSession().setAttribute(Constants.LINK_CODE, parentProxy.getDescription().getFriendlyUrl());
 		}
 		
 		

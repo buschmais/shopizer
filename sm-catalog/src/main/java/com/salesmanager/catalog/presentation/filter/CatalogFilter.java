@@ -51,6 +51,8 @@ public class CatalogFilter extends HandlerInterceptorAdapter {
         request.setAttribute(Constants.LANGUAGE_CODE, languageCode);
         LanguageInfo language = languageInfoService.findbyCode(languageCode);
 
+        request.setAttribute(Constants.REQUEST_CONFIGS, request.getSession().getAttribute(Constants.REQUEST_CONFIGS));
+
         /******* Top Categories ********/
         //this.getTopCategories(store, language, request);
         this.setTopCategories(store, language, request);

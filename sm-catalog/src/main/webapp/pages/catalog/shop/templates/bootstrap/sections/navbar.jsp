@@ -30,7 +30,7 @@ $(document).ready(function() {
 
 
 	    remote: {
-    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
+    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE_CODE}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
         	filter: function (parsedResponse) {
             	// parsedResponse is the array returned from your backend
             	console.log(parsedResponse);
@@ -71,7 +71,7 @@ $(document).ready(function() {
 	                		<c:otherwise>
 	                			<h1>
 	                			<a href="<c:url value="/shop/"/>">
-	                				<c:out value="${requestScope.MERCHANT_STORE.storename}"/>
+	                				<c:out value="${requestScope.STORE_NAME}"/>
 	                			</a>  
 	                			</h1>
 	                		</c:otherwise>

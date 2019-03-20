@@ -30,7 +30,7 @@ public class SessionFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SessionFilter extends ZuulFilter {
                 Cookie[] cookies = requestContext.getRequest().getCookies();
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
-                        if (cookie.getName().equalsIgnoreCase("jsessionid")) {
+                        if (cookie.getName().equalsIgnoreCase("SESSION")) {
                             sessionIdCookiePresent = true;
                         }
                     }

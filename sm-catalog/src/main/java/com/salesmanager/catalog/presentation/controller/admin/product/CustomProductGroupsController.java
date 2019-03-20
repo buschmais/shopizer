@@ -463,7 +463,7 @@ public class CustomProductGroupsController {
 		activeMenus.put("catalogue-products-group", "catalogue-products-group");
 		
 		@SuppressWarnings("unchecked")
-		Map<String, Menu> menus = (Map<String, Menu>)request.getAttribute("MENUMAP");
+		Map<String, Menu> menus = (Map<String, Menu>)request.getSession().getAttribute("MENUMAP");
 		
 		Menu currentMenu = (Menu)menus.get("catalogue");
 		model.addAttribute("currentMenu",currentMenu);

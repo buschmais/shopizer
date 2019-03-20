@@ -423,7 +423,7 @@ public class OptionsValueController {
 		activeMenus.put("catalogue-options", "catalogue-options");
 		
 		@SuppressWarnings("unchecked")
-		Map<String, Menu> menus = (Map<String, Menu>)request.getAttribute("MENUMAP");
+		Map<String, Menu> menus = (Map<String, Menu>)request.getSession().getAttribute("MENUMAP");
 		
 		Menu currentMenu = (Menu)menus.get("catalogue");
 		model.addAttribute("currentMenu",currentMenu);

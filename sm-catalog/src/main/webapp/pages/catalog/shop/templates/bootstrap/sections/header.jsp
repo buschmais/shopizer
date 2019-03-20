@@ -105,7 +105,7 @@ response.setDateHeader ("Expires", -1);
 												<input id="signin_password" style="margin-bottom: 15px;" type="password" name="password" size="30" />
 											</div>
 									</div>
-									<input id="signin_storeCode" name="storeCode" type="hidden" value="<c:out value="${requestScope.MERCHANT_STORE.code}"/>"/>					 
+									<input id="signin_storeCode" name="storeCode" type="hidden" value="<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>"/>
 									<button type="submit" style="width:100%" class="btn btn-large" id="login-button"><s:message code="button.label.login" text="Login" /></button>
 									
 								</form>

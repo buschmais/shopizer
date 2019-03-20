@@ -30,7 +30,7 @@ response.setDateHeader ("Expires", -1);
     			<title><c:out value="${requestScope.PAGE_INFORMATION.pageTitle}" /></title>
     			<meta name="viewport" content="width=device-width, initial-scale=1.0">
     			<meta name="description" content="<c:out value="${requestScope.PAGE_INFORMATION.pageDescription}" />">
-    			<meta name="author" content="<c:out value="${requestScope.MERCHANT_STORE.storename}"/>">
+    			<meta name="author" content="<c:out value="${requestScope.STORE_NAME}"/>">
 
 				<!-- mobile settings -->
 		        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>

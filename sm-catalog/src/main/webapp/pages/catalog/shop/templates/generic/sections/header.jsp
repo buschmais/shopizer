@@ -161,7 +161,7 @@ response.setDateHeader ("Expires", -1);
 						                			<!-- Use store name -->
 						                			<h1>
 						                			<a class="grey store-name" href="<c:url value="/shop/"/>">
-						                				<c:out value="${requestScope.MERCHANT_STORE.storename}"/>
+						                				<c:out value="${requestScope.STORE_NAME}"/>
 						                			</a>  
 						                			</h1>
 						                		</c:otherwise>

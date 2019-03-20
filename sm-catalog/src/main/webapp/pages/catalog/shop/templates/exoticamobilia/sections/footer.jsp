@@ -25,7 +25,7 @@ response.setDateHeader ("Expires", -1);
 			        <div class="row">
 			             <div class="col-md-6">
 			                 <div class="logo">
-						          <a class="store-name" href="<c:url value="/shop/"/>"><c:out value="${requestScope.MERCHANT_STORE.storename}"/></a>  
+						          <a class="store-name" href="<c:url value="/shop/"/>"><c:out value="${requestScope.STORE_NAME}"/></a>
 			                 </div>
 			             </div>
 			        </div>

@@ -135,6 +135,7 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 				
 				//remove link set from controllers for declaring active - inactive links
 				request.removeAttribute(Constants.LINK_CODE);
+				request.getSession().removeAttribute(Constants.LINK_CODE);
 				
 				if(!StringUtils.isBlank(storeCode)) {
 					if(sessionStoreCode!=null) {
@@ -400,6 +401,7 @@ public class StoreFilter extends HandlerInterceptorAdapter {
 			
 			if(configs!=null && configs.size()>0) {
 				request.setAttribute(Constants.REQUEST_CONFIGS, configs);
+				request.getSession().setAttribute(Constants.REQUEST_CONFIGS, configs);
 			}
 		   
 		   

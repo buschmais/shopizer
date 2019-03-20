@@ -35,7 +35,7 @@ public class StoreBreadcrumbsTag extends TagSupport {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			Breadcrumb breadCrumb = (Breadcrumb)request.getAttribute(Constants.BREADCRUMB);
+			Breadcrumb breadCrumb = (Breadcrumb)request.getSession().getAttribute(Constants.BREADCRUMB);
 
 			StringBuilder ref = new StringBuilder();
 

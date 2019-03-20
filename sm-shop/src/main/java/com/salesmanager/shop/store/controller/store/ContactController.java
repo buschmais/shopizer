@@ -64,6 +64,7 @@ public class ContactController extends AbstractController {
 		MerchantStore store = (MerchantStore)request.getAttribute(Constants.MERCHANT_STORE);
 		
 		request.setAttribute(Constants.LINK_CODE, CONTACT_LINK);
+		request.getSession().setAttribute(Constants.LINK_CODE, CONTACT_LINK);
 
 		Language language = (Language)request.getAttribute("LANGUAGE");
 		

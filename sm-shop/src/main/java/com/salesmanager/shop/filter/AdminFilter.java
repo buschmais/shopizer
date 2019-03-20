@@ -183,6 +183,7 @@ public class AdminFilter extends HandlerInterceptorAdapter {
 		
 		
 		request.setAttribute("MENUMAP", menus);
+		request.getSession().setAttribute("MENUMAP", menus);
 		response.setCharacterEncoding("UTF-8");
 		
 		return true;

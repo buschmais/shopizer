@@ -59,6 +59,7 @@ public class LandingController {
 		MerchantStore store = (MerchantStore)request.getAttribute(Constants.MERCHANT_STORE);
 
 		request.setAttribute(Constants.LINK_CODE, HOME_LINK_CODE);
+		request.getSession().setAttribute(Constants.LINK_CODE, HOME_LINK_CODE);
 		
 		Content content = contentService.getByCode(LANDING_PAGE, store, language);
 		

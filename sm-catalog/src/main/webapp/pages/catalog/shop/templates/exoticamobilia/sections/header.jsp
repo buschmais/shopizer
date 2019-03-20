@@ -56,7 +56,7 @@ $(document).ready(function() {
 		  </c:if>
 	    </c:if>
 	    remote: {
-    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE.code}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
+    		url: '<c:url value="/catalog/services/public/search/${requestScope.MERCHANT_STORE_CODE}/${requestScope.LANGUAGE.code}/autocomplete.json"/>?q=%QUERY',
         	filter: function (parsedResponse) {
             	// parsedResponse is the array returned from your backend
             	console.log(parsedResponse);
@@ -194,7 +194,7 @@ $(document).ready(function() {
 							<input class="form-control" id="signin_password" type="password" name="password" />
 							<i class="fa fa-lock form-control-feedback"></i>
 					</div>
-					<input id="signin_storeCode" name="storeCode" type="hidden" value="<c:out value="${requestScope.MERCHANT_STORE.code}"/>"/>
+					<input id="signin_storeCode" name="storeCode" type="hidden" value="<c:out value="${requestScope.MERCHANT_STORE_CODE}"/>"/>
 					<button id="login-button" type="submit" class="btn btn-group btn-dark btn-sm"><s:message code="button.label.login" text="Login" /></button>
 					<span></span>
 					<br/>
@@ -338,7 +338,7 @@ $(document).ready(function() {
 						                			<div class="logo">
 						                			<h1>
 						                			<a class="grey store-name" href="<c:url value="/shop/"/>">
-						                				<c:out value="${requestScope.MERCHANT_STORE.storename}"/>
+						                				<c:out value="${requestScope.STORE_NAME}"/>
 						                			</a>  
 						                			</h1>
 						                			</div>

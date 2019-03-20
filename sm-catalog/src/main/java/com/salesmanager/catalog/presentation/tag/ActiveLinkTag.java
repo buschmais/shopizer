@@ -34,7 +34,7 @@ public class ActiveLinkTag extends TagSupport {
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
 
-			String requestLinkCode = (String)request.getAttribute(Constants.LINK_CODE);
+			String requestLinkCode = (String)request.getSession().getAttribute(Constants.LINK_CODE);
 
 			if(StringUtils.isBlank(requestLinkCode)) {
 				if(!StringUtils.isBlank(inactiveReturnCode)) {
