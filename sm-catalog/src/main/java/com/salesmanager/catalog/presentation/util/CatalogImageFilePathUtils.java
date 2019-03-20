@@ -17,7 +17,7 @@ public class CatalogImageFilePathUtils {
     private String basePath = Constants.STATIC_URI;
 
     public String getBasePath() {
-        return basePath;
+        return "/catalog" + basePath;
     }
 
     public void setBasePath(String context) {
