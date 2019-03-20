@@ -1,7 +1,6 @@
 package com.salesmanager.shop.init.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salesmanager.catalog.init.CatalogInitializer;
 import com.salesmanager.core.business.constants.SystemConstants;
 import com.salesmanager.common.business.exception.ServiceException;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
@@ -39,7 +38,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 
-@Component
+//@Component
 public class InitializationLoader {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(InitializationLoader.class);
@@ -79,10 +78,7 @@ public class InitializationLoader {
     @Inject
     private ResourceLoader resourceLoader;
 
-    @Inject
-	private CatalogInitializer catalogInitializer;
-	
-	@EventListener(ApplicationReadyEvent.class)
+	//@EventListener(ApplicationReadyEvent.class)
 	public void init() {
 		
 		try {
@@ -106,8 +102,7 @@ public class InitializationLoader {
 				LOGGER.info(String.format("%s : Shopizer database is empty, populate it....", "sm-shop"));
 		
 				 initializationDatabase.initCore("sm-shop");
-				 catalogInitializer.initCatalog("sm-shop");
-				
+
 				 MerchantStore store = merchantService.getByCode(MerchantStore.DEFAULT_STORE);
 				
 				 //security groups and permissions
@@ -175,7 +170,6 @@ public class InitializationLoader {
 			}
 
 			initData.initInitialData();
-			catalogInitializer.initInitialData();
 
 			configuration = new SystemConfiguration();
 			configuration.getAuditSection().setModifiedBy(SystemConstants.SYSTEM_USER);

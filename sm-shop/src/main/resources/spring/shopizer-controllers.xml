@@ -64,11 +64,6 @@
   			<mvc:mapping path="/shop/**"/>
   			<bean class="com.salesmanager.shop.filter.StoreFilter"/>
  		</mvc:interceptor>
-
-		<mvc:interceptor>
-			<mvc:mapping path="/shop/**"/>
-			<bean class="com.salesmanager.catalog.presentation.filter.CatalogFilter"/>
-		</mvc:interceptor>
  		
  		<!-- public services cors filter -->
  		<mvc:interceptor>
