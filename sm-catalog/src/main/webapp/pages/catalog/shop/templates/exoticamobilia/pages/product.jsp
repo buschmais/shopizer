@@ -22,7 +22,7 @@ response.setDateHeader ("Expires", -1);
      <div id="shop" class="container">
             
             
-            <jsp:include page="/pages/shop/templates/exoticamobilia/sections/breadcrumb.jsp" />
+            <jsp:include page="/pages/catalog/shop/templates/exoticamobilia/sections/breadcrumb.jsp" />
             
             <c:if test="${product.images!=null && fn:length(product.images) gt 1}">
             	<c:forEach items="${product.images}" var="thumbnail">

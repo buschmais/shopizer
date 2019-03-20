@@ -19,7 +19,52 @@ response.setDateHeader ("Expires", -1);
  <script src="<c:url value="/resources/js/jquery-sort-filter-plugin.js" />"></script>
  <script src="<c:url value="/resources/js/jquery.alphanumeric.pack.js" />"></script>
  
-
+ 
+ <script type="text/html" id="productBoxTemplate">
+{{#products}}
+<div itemscope itemtype="http://schema.org/Enumeration" class="col-md-4 productItem" item-order="{{sortOrder}}" item-name="{{description.name}}" item-price="{{price}}" data-id="{{id}}" class="col-sm-4">
+<div class="box-style-4 white-bg object-non-visible animated object-visible">
+ 	{{#description.highlights}}  
+    <div class="ribbon-wrapper-green">
+   		<div class="ribbon-green">
+   			{{description.highlights}} 
+   		</div>
+   	</div>
+    {{/description.highlights}}
+	{{^canBePurchased}}
+		<div class="sold-out-box">
+	    			<span class="sold-out-text"><s:message code="label.soldout" text="Sold out" /></span>
+	  	</div> 
+	{{/canBePurchased}}
+	<div class="product-image">
+    {{#image}}                              
+	<img class="product-img" src="<c:url value=""/>{{image.imageUrl}}"><a class="overlay" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>"><img class="product-img" src="<c:url value="/"/>{{image.imageUrl}}"></a>
+    {{/image}}
+    </div>
+	<!--  *** Product Name & Price Starts *** -->
+	<div class="caption">
+	<div class="product-details">
+	<div class="clearfix">
+		<h3 class="product-heading product-name" itemprop="name">{{description.name}}</h3>
+		<h4 class="price">
+			{{#discounted}}<del>{{originalPrice}}</del>&nbsp;<span itemprop="price" class="specialPrice">{{finalPrice}}</span>{{/discounted}}
+			{{^discounted}}<span itemprop="price" class="specialPrice">{{finalPrice}}</span>{{/discounted}}
+		</h4>
+		<!-- Product Name & Price Ends -->
+		<!-- Product Buttons Starts -->
+		<div class="clearfix">
+			<a class="btn btn-default pull-left" href="<c:url value="/catalog/shop/product/" />{{description.friendlyUrl}}.html<sm:breadcrumbParam/>" class="details"><s:message code="button.label.view" text="Details" /></a>
+		<c:if test="${requestScope.CONFIGS['allowPurchaseItems'] == true}">
+		{{#canBePurchased}}<a class="btn btn-buy pull-right addToCart" href="javascript:void(0);" class="addToCart" productId="{{id}}"><s:message code="button.label.addToCart" text="Add to cart" /></a>{{/canBePurchased}}
+		</c:if>
+		</div>
+	</div>
+	</div>
+	</div>
+</div>
+</div>
+{{/products}}
+</script>
 
 
  <!-- don't change that script except max_oroducts -->
@@ -31,12 +76,6 @@ response.setDateHeader ("Expires", -1);
  var filterValue = null;
 
  $(function(){
-	
-	/** specific to this template ***/
-	var tpl = $('#productBoxTemplate').text();
-	tpl = tpl.replace("COLUMN-SIZE", "4");//size of the div
-	$('#productBoxTemplate').text(tpl);
-	/*** ***/
 	 
     //price minimum/maximum
 	$('.numeric').numeric();
@@ -64,6 +103,8 @@ response.setDateHeader ("Expires", -1);
  		var orderBy = $("#filter").val();
 		var minimumPrice = $('#priceFilterMinimum').val();
 		var maximumPrice = $('#priceFilterMaximum').val();
+		
+		//orderProducts(orderBy);
 		orderProducts(orderBy, minimumPrice, maximumPrice);
  	}
  
@@ -99,7 +140,7 @@ response.setDateHeader ("Expires", -1);
 		  //console.log(data);
 		  
 		  
-		  listedData = data.find('.product');
+		  listedData = data.find('.productItem');
 		  
 		  //console.log('Listed Data');
 		  //console.log(listedData);
@@ -193,7 +234,8 @@ response.setDateHeader ("Expires", -1);
 			} else {
 					$("#button_nav").hide();
 			}
-			hideSMLoading('#productsContainer');
+			$('#productsContainer').hideLoading();
+
 			visualize();
 			
 			var productQty = productList.productCount + ' <s:message code="label.search.items.found" text="item(s) found" />';
@@ -210,7 +252,7 @@ response.setDateHeader ("Expires", -1);
 
 
 <div id="mainContent" class="container">
-	
+			
 			  <header class="page-header row">
 			  <c:if test="${category.description.name!=null}">
 			  <div class="fixed-image section dark-translucent-bg parallax-bg-3">
@@ -219,60 +261,70 @@ response.setDateHeader ("Expires", -1);
 					</div>
 			  </div>
 			  </c:if>
-			  <jsp:include page="/pages/shop/templates/exoticamobilia/sections/breadcrumb.jsp" />
+			  <jsp:include page="/pages/catalog/shop/templates/exoticamobilia/sections/breadcrumb.jsp" />
 			  </header>
 
 			  
 			  <c:if test="${category.description.description!=null}">
-			  <div class="container">
-			  	<p><c:out value="${category.description.description}" escapeXml="false"/></p>
+			  <div class="row">
+			  	<p class="lead"><c:out value="${category.description.description}" escapeXml="false"/></p>
 			  </div>
 			  </c:if>
 			  
 
-			<div class="bedroom-all-product-area ptb-80">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-						<!-- category-products-area-start -->
-						<div class="caregory-products-area">
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-									<div class="product-option">
-										<div class="porduct-option-left floatleft">
-											<div class="sort-by">
-												<label><s:message code="label.generic.sortby" text="Sort by" /></label>
 
-												<select id="filter" class="cust-select">
-													<option value="item-order"><s:message code="label.generic.default" text="Default" /></option>
-													<option value="item-name"><s:message code="label.generic.name" text="Name" /></option>
-													<option value="item-price"><s:message code="label.generic.price" text="Price" /></option>
-												</select>
-											</div>
-										</div>
-										<div class="product-option-right floatright">
-											&nbsp;
-										</div>
-									</div>
-								</div>
+			   <div id="shop" class="row">
+                  <div class="sorting-filters">
+                     <form class="form-inline">
+	                     <div class="form-group">
+	                      <label><s:message code="label.generic.sortby" text="Sort by" />:</label>
+										<select id="filter" class="form-control">
+											<option value="item-order"><s:message code="label.generic.default" text="Default" /></option>
+											<option value="item-name"><s:message code="label.generic.name" text="Name" /></option>
+											<option value="item-price"><s:message code="label.generic.price" text="Price" /></option>
+										</select>
+						 </div>
+						 <div class="form-group">
+						    <label><s:message code="label.generic.price" text="Price" /> (<s:message code="label.entity.minimum" text="Minimum"/>/<s:message code="label.entity.maximum" text="Maximum"/>):</label>
+						    <div class="row grid-space-10">
+						 		<div class="col-sm-6">
+						 		    <input id="priceFilterMinimum" name="priceFilterMinimum" class="form-control numeric filterByField" type="text">
+						 		</div>
+						 		<div class="col-sm-6">
+						 		    <input id="priceFilterMaximum" name="priceFilterMaximum" class="form-control numeric filterByField" type="text">
+						 		</div>
+						    </div>
+						 </div>
+						 <div class="form-group">
+						 	<div class="col-sm-6">
+						 	</div>
+						 </div>
+                     </form>
+                  </div>
+						<div class="col-md-9">
+						
+							<div class="row product-list">
+							
+							
+							<!-- just copy that block for havimg products displayed -->
+							<!-- products are loaded by ajax -->
+        					<div id="productsContainer" class="list-unstyled"></div>
+			
+							<nav id="button_nav" style="text-align:center;display:none;">
+								<button id="moreProductsButton" class="btn btn-primary btn-large" style="width:400px;" onClick="loadCategoryProducts();"><s:message code="label.product.moreitems" text="Display more items" />...</button>
+							</nav>
+							<span id="end_nav" style="display:none;"><s:message code="label.product.nomoreitems" text="No more items to be displayed" /></span>
+          					<!-- end block -->
+
 							</div>
-						</div>
-						<div class="tab-content category-products">
-								<div class="tab-pane active" id="viewed">
-									<div class="row">
-									<section class="products-grid">
-									    <!-- Products here -->
-									    <div id="productsContainer" class="list-unstyled"></div>
-										<span id="end_nav" style="display:none;"><s:message code="label.product.nomoreitems" text="No more items to be displayed" /></span>
-          								<!-- end block -->
-										<!-- hidden -->
-										<div id="hiddenProductsContainer" style="display:none;"></div>
-									</section>
-									</div>
-								</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+							
+							<!-- hidden -->
+							<div id="hiddenProductsContainer" style="display:none;"></div>
+
+						</div><!-- /col-md-9 -->
+
+						<sidebar class="col-md-3">
+							<!-- categories -->
 							<c:if test="${parent!=null}">
               					<h3><c:out value="${parent.description.name}" /></h3>
              				</c:if>
@@ -287,6 +339,7 @@ response.setDateHeader ("Expires", -1);
               				</c:forEach>
 							</ul>
 							<br/>
+							<!-- manufacturers -->
 							<c:if test="${fn:length(manufacturers) > 0}">
 					          	<h3><s:message code="label.manufacturer.collection" text="Collection" /></h3>
 					            <ul class="nav nav-list">
@@ -298,8 +351,12 @@ response.setDateHeader ("Expires", -1);
 					            </ul>
 					          </div>          
           					</c:if>
-					</div>
-				</div>
+
+
+
+						</sidebar>
+
+
+
 			</div>
 		</div>
-</div>		

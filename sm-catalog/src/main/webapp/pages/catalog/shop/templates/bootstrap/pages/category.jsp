@@ -123,7 +123,7 @@ response.setDateHeader ("Expires", -1);
  
 </script>
 
-       <jsp:include page="/pages/shop/templates/bootstrap/sections/breadcrumb.jsp" />
+       <jsp:include page="/pages/catalog/shop/templates/bootstrap/sections/breadcrumb.jsp" />
  
 	   <c:if test="${category.description.description!=null}">
 	   		<!-- category description -->
