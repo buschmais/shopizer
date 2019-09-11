@@ -1,0 +1,53 @@
+[[dto:Default]]
+[role=group,includesConcepts="dto:DTO",includesConstraints="dto:DtoClassName,dto:DtoInheritance"]
+
+== DTO
+
+=== Concepts
+
+[[dto:DTO]]
+[source,cypher,role=concept,requiresConcepts="preparation:ShopizerFiles"]
+.Every non-abstract classes extending from 'AbstractDTO' is marked as a DTO.
+----
+MATCH
+  (abstractDto:Shopizer:Type{name: 'AbstractDTO'}),
+  (a:Artifact)-[:CONTAINS]->(dto:Shopizer:Type),
+  (dto)-[:EXTENDS*]->(abstractDto)
+WHERE
+  not exists(dto.abstract)
+SET
+  dto:DTO
+RETURN
+  a.name as Artifact, collect(dto.fqn) as DTOs
+ORDER BY
+  Artifact
+----
+
+=== Constraints
+
+[[dto:DtoClassName]]
+[source,cypher,role=constraint,requiresConcepts="dto:DTO"]
+.Every class ending on 'DTO' has to extend from 'AbstractDTO'.
+----
+MATCH
+  (abstractDTO:Shopizer:Type{name: 'AbstractDTO'}),
+  (dto:Shopizer:Type)
+WHERE
+  abstractDTO <> dto AND
+  dto.fqn ENDS WITH "DTO" AND
+  NOT EXISTS((dto)-[:EXTENDS*]->(abstractDTO))
+RETURN
+  dto.fqn AS INVALID_DTO
+----
+
+[[dto:DtoInheritance]]
+[source,cypher,role=constraint,requiresConcepts="dto:DTO"]
+.Every DTO has to end with 'DTO'
+----
+MATCH
+  (dto:DTO)
+WHERE
+  NOT dto.fqn ENDS WITH "DTO"
+RETURN
+  dto.fqn AS INVALID_DTO
+----
