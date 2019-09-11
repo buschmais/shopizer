@@ -129,8 +129,13 @@
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
 		    <version>${simple-json-version}</version>
-		</dependency>	
-		
+		</dependency>
+
+		<dependency>
+			<groupId>org.jqassistant.contrib.plugin</groupId>
+			<artifactId>jqassistant-java-ddd-annotations</artifactId>
+			<version>${jqassistant.version}</version>
+		</dependency>
     </dependencies>
 
 	<modules>
@@ -197,9 +202,20 @@
 						<configuration>
 							<warnOnSeverity>MINOR</warnOnSeverity>
 							<failOnSeverity>MAJOR</failOnSeverity>
+							<groups>
+								<group>default</group>
+								<group>java-ddd:Default</group>
+							</groups>
 						</configuration>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.jqassistant.contrib.plugin</groupId>
+						<artifactId>jqassistant-java-ddd-plugin</artifactId>
+						<version>${jqassistant.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
