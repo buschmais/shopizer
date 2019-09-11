@@ -1,0 +1,40 @@
+[[api:Default]]
+[role=group,includesConcepts="api:API",includesConstraints="api:BcDependencyToNonApi"]
+
+== API
+
+=== Concepts
+
+[[api:API]]
+[source,cypher,role=concept,requiresConcepts="dto:DTO"]
+.Every API class is marked as API.
+----
+MATCH
+  (apiType:Shopizer:Type)
+WHERE
+  apiType:DTO
+    AND not exists(apiType.abstract)
+    AND (apiType.fqn STARTS WITH "com.salesmanager.core.integration"
+      OR apiType.fqn STARTS WITH "com.salesmanager.catalog.api")
+  OR apiType:Interface AND apiType.fqn STARTS WITH "com.salesmanager.catalog.api"
+SET
+  apiType:API
+RETURN
+  apiType.fqn AS API
+----
+
+=== Constraints
+
+[[api:BcDependencyToNonApi]]
+[source,cypher,role=constraint,requiresConcepts="api:API,java-ddd:*"]
+.Dependencies between bounded contexts is only allowed to API
+----
+MATCH
+  (bc1:DDD:BoundedContext)-[:CONTAINS]->(t1:Shopizer:Type),
+  (bc2:DDD:BoundedContext)-[:CONTAINS]->(t2:Shopizer:Type),
+  (t1)-[:DEPENDS_ON]->(t2)
+WHERE
+  bc1 <> bc2 AND NOT t2:API
+RETURN
+  bc1.name AS DependentBc, t1.fqn AS DependentType, bc2.name AS BcDependency, t2.fqn AS TypeDependency
+----
