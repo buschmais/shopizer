@@ -2,10 +2,15 @@
 
 This document manifests the architecture of the Shopizer e-commerce System and specifies rules to keep the architecture on track.
 
-== Executed Groups
+== Summary
+
+include::jQA:Summary[]
 
 [[default]]
 [role=group,includesGroups="preparation:Default"]
-- <<preparation:Default>>
+
+== Rules
+
+This section describes the architecture and design rules.
 
 include::preparation.adoc[]
