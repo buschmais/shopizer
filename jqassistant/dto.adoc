@@ -12,7 +12,7 @@
 MATCH
   (abstractDto:Shopizer:Type{name: 'AbstractDTO'}),
   (a:Artifact)-[:CONTAINS]->(dto:Shopizer:Type),
-  (dto)-[:EXTENDS*]->(abstractDto)
+  (dto)-[:EXTENDS|IMPLEMENTS*]->(abstractDto)
 WHERE
   not exists(dto.abstract)
 SET

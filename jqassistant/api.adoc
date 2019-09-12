@@ -17,8 +17,7 @@ WHERE
     AND (apiType.fqn STARTS WITH "com.salesmanager.core.integration"
       OR apiType.fqn STARTS WITH "com.salesmanager.catalog.api")
   OR apiType:Interface AND apiType.fqn STARTS WITH "com.salesmanager.catalog.api"
-  OR apiType.fqn = "com.salesmanager.catalog.api.dto.AbstractCatalogCrudDTO$EventType"
-  OR apiType.fqn = "com.salesmanager.core.integration.AbstractCoreCrudDTO$EventType"
+  OR apiType.fqn STARTS WITH "com.salesmanager.catalog.api" AND apiType.fqn ENDS WITH "RestController"
 SET
   apiType:API
 RETURN
