@@ -34,7 +34,11 @@ MATCH
   (bc2:DDD:BoundedContext)-[:CONTAINS]->(t2:Shopizer:Type),
   (t1)-[:DEPENDS_ON]->(t2)
 WHERE
-  bc1 <> bc2 AND NOT t2:API
+  bc1 <> bc2 AND NOT t2:API AND
+  NOT t2.fqn IN [
+    "com.salesmanager.catalog.presentation.CatalogApplicationConfiguration",
+    "com.salesmanager.catalog.init.CatalogInitializer"
+  ]
 RETURN
   bc1.name AS DependentBc, t1.fqn AS DependentType, bc2.name AS BcDependency, t2.fqn AS TypeDependency
 ----
