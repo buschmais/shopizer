@@ -1,5 +1,5 @@
 [[api:Default]]
-[role=group,includesConcepts="api:API",includesConstraints="api:BcDependencyToNonApi"]
+[role=group,includesConcepts="api:API"]
 
 == API
 
@@ -22,24 +22,4 @@ SET
   apiType:API
 RETURN
   apiType.fqn AS API
-----
-
-=== Constraints
-
-[[api:BcDependencyToNonApi]]
-[source,cypher,role=constraint,requiresConcepts="api:API,java-ddd:*"]
-.Dependencies between bounded contexts is only allowed to API
-----
-MATCH
-  (bc1:DDD:BoundedContext)-[:CONTAINS]->(t1:Shopizer:Type),
-  (bc2:DDD:BoundedContext)-[:CONTAINS]->(t2:Shopizer:Type),
-  (t1)-[:DEPENDS_ON]->(t2)
-WHERE
-  bc1 <> bc2 AND NOT t2:API AND
-  NOT t2.fqn IN [
-    "com.salesmanager.catalog.presentation.CatalogApplicationConfiguration",
-    "com.salesmanager.catalog.init.CatalogInitializer"
-  ]
-RETURN
-  bc1.name AS DependentBc, t1.fqn AS DependentType, bc2.name AS BcDependency, t2.fqn AS TypeDependency
 ----
