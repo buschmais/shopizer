@@ -1,0 +1,20 @@
+[[boundedContext:Default]]
+[role=group,includesConcepts="boundedContext:BoundedContextDependency"]
+
+== Bounded Context
+
+=== Concepts
+
+[[boundedContext:BoundedContextDependency]]
+[source,cypher,role=concept,requiresConcepts="java-ddd:*",reportType="plantuml-component-diagram"]
+.Visualization of Bounded Contexts and their dependencies
+----
+MATCH
+  (bc1:DDD:BoundedContext)
+OPTIONAL MATCH
+  (bc1)-[d:DEPENDS_ON]->(bc2)
+WHERE
+  bc1 <> bc2
+RETURN
+  *
+----
